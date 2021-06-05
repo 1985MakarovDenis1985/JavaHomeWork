@@ -1,36 +1,13 @@
 public class HomeWork {
-    private static int s = 0;
-    private static double tax = 0;
 
-    public static double newTax(double salary) {
-        double[] a = {2000, 3000, 4000, 5000, 6000, 7000};
-        double[] b = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1};
-        System.out.println(s);
-
-
-        if (s == a.length - 1) {
-            double res = (salary - a[s]) * b[s] + tax;
-            System.out.println(res);
-            return res;
-        } else if (salary > a[s] && salary > a[s + 1]) {
-            double res = (a[s + 1] - a[s]) * b[s];
-            tax += res;
-            System.out.println(tax);
-            s = s + 1;
-            newTax(salary);
-        } else if (salary > a[s] && salary < a[s + 1] ) {
-            double res = (salary - a[s]) * b[s] + tax;
-            System.out.println(res);
-            return res;
-        }
-        return tax;
-    }
 
 
     public static void main(String[] args) {
-        double x = newTax(9000);
+// --> own solution
+        double x = newTax(100, 1);
         System.out.println(x);
 
+//--> from lesson
 //        double salary = 8000;
 //        double res = taxIsrael(salary, 2.25);
 //        System.out.println(res);
@@ -38,12 +15,11 @@ public class HomeWork {
 //        System.out.println(salaryNetto);
 //        System.out.println();
     }
-
+    //// ------------  Solution from lesson ------------ ////
     public static double salaryNetto(double salaryArg, double tax) {
         double salary = salaryArg - tax;
         return salary;
     }
-
     public static double taxIsrael(double salary, double taxAllowance) {
         double tax = -(taxAllowance * 219);
 
@@ -92,4 +68,36 @@ public class HomeWork {
         double res = tax + (salary - 54300) * 0.5;
         return res > 0 ? res : 0;
     }
+
+
+
+    //// ------------  Solution with recursion ------------ ////
+    private static int posOfSalary = 0;
+    private static double tax = 0;
+
+    public static double newTax(double salary, double index) {
+        double[] posSal = {2000, 3000, 4000, 5000, 6000, 7000};
+        double[] posTax = {0.1, 0.1, 0.1, 0.1, 0.1, 0.2};
+//        double idx = -(index * 1);
+
+
+        if (posOfSalary == posSal.length - 1) {
+            double res = (salary - posSal[posOfSalary]) * posTax[posOfSalary];
+            tax +=res;
+        } else if (salary >= posSal[posOfSalary] && salary >= posSal[posOfSalary + 1]) {
+            double res = (posSal[posOfSalary + 1] - posSal[posOfSalary]) * posTax[posOfSalary]  ;
+            tax += res;
+            posOfSalary = posOfSalary + 1;
+            newTax(salary, index);
+        } else if (salary > posSal[posOfSalary] && salary < posSal[posOfSalary + 1] ) {
+            double res = (salary - posSal[posOfSalary]) * posTax[posOfSalary] + tax;
+            System.out.println(res);
+            tax =+ res;
+        }
+//        tax = tax - 1;
+
+        tax = (tax <=0) ? 0 : tax - 1;
+        return tax;
+    }
+
 }
