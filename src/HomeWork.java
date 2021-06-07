@@ -8,7 +8,7 @@ public class HomeWork {
 // --> own solution with recurs
         double tax = newTax(salary, indexOfTax);
         System.out.println("home tax: " + tax);
-        double salaryNettoHW = salary - tax;
+        double salaryNettoHW = salaryNetto(salary, tax);
         System.out.println("home - salaryNetto: " + salaryNettoHW);
 
 //--> solution from lesson
