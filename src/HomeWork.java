@@ -1,7 +1,7 @@
 public class HomeWork {
 
     public static void main(String[] args) {
-        starsFun(31, 4);
+        starsFun(34, 7);
     }
 
 
@@ -11,14 +11,14 @@ public class HomeWork {
         System.out.println(x);
 
         while (n > 0) {
-            if (n % stars != x && n % stars != x-5) {
-                n--;
-                if (n!=0){
+            if (n % stars != x) {
+                if (n != 0) {
                     System.out.print("*");
-                } else {
+                } else if (n== 7) {
                     System.out.println("*");
                 }
-            } else {
+                n--;
+            } else if(n % stars != x){
                 System.out.println("*");
                 n--;
             }
