@@ -2,37 +2,49 @@ public class HomeWork {
 
     public static void main(String[] args) {
         int[] arr = new int[10];
+        fillArr(arr, 10, 99);
         printArr(arr);
-        revArrVoid(arr);
-        System.out.println("--- old arr ---");
-        printArr(arr);
-        System.out.println("--- fun revers");
-        reversArr(arr);
-        System.out.println("--- old arr ---");
-        printArr(arr);
-
+        int minDig = findMin(arr);
+        int indexOfMinOfDig = indexOfMin(arr);
+        System.out.println("min value: " + minDig);
+        System.out.println("index of min value: " + indexOfMinOfDig);
 
         // --> TAX ISRAEL - solution with recurs and arrays
-        System.out.println();
-        System.out.println("TAX ISRAEL - solution with recurs and arrays: ");
-        double salary = 10000;
-        double indexOfTax = 2.5;
-        double tax = newTax(salary, indexOfTax);
-        System.out.println("tax: " + tax);
+//        System.out.println();
+//        System.out.println("TAX ISRAEL - solution with recurs and arrays: ");
+//        double salary = 10000;
+//        double indexOfTax = 2.5;
+//        double tax = newTax(salary, indexOfTax);
+//        System.out.println("tax: " + tax);
     }
 
-    public static void revArrVoid(int[] arr) {
-        for (int i = arr.length - 1; i >= 0; i--) {
-            System.out.print(i * i + "\t");
+
+    public static int indexOfMin(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            if (findMin(arr) == arr[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int findMin(int[] arr) {
+        int res = arr[1];
+        for (int i = 0; i < arr.length; i++) {
+            if (res > arr[i]) {
+                res = arr[i];
+            }
+        }
+        return res;
+    }
+
+    public static void fillArr(int[] arr, int min, int max) {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = (int) (min + Math.random() * (max - min + 1));
         }
         System.out.println();
     }
-    public static int[] reversArr(int[] arr) {
-        for (int i = arr.length - 1; i >= 0; i--) {
-            arr[i] = ((arr.length - 1) - i) * ((arr.length - 1) - i);
-        }
-        return arr;
-    }
+
     public static void printArr(int[] arr) {
         for (int i = 0; i < arr.length; i++) {
             System.out.print(arr[i] + "\t");
@@ -41,10 +53,8 @@ public class HomeWork {
     }
 
 
-    /// ------ tax Israel by arrays and recurs
-
-
-    //// ------------  Solution with recursion ------------ ////
+    //// ------ tax Israel by arrays and recurs ------ ////
+    //// ------ Solution with recursion ------ ////
     private static int posOfSalary = 0;
     private static double tax;
 
