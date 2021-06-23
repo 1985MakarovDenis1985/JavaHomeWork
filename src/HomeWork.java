@@ -20,8 +20,9 @@ public class HomeWork {
 
 
     public static int indexOfMin(int[] arr) {
+        int min = findMin(arr);
         for (int i = 0; i < arr.length; i++) {
-            if (findMin(arr) == arr[i]) {
+            if (min == arr[i]) {
                 return i;
             }
         }
