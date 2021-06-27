@@ -1,82 +1,40 @@
 public class HomeWork {
 
     public static void main(String[] args) {
-        int[] arr = new int[10];
-        fillArr(arr, 10, 99);
-        printArr(arr);
-        int minDig = findMin(arr);
-        int indexOfMinOfDig = indexOfMin(arr);
-        System.out.println("min value: " + minDig);
-        System.out.println("index of min value: " + indexOfMinOfDig);
+        int[] arr1 = {1, 2,3};
+        int[] arr2 = {4, 5, 6};
+        int[] arr3 = mergeArrays_1(arr1, arr2);
+        int[] arr4 = mergeArrays_2(arr1, arr2);
 
-        // --> TAX ISRAEL - solution with recurs and arrays
-//        System.out.println();
-//        System.out.println("TAX ISRAEL - solution with recurs and arrays: ");
-//        double salary = 10000;
-//        double indexOfTax = 2.5;
-//        double tax = newTax(salary, indexOfTax);
-//        System.out.println("tax: " + tax);
+//        showArr(arr3);
+//        showArr(arr4);
+
     }
 
+    public static int[] mergeArrays_1(int[] arr1, int[] arr2) {
+        int[] tempArr = new int[arr1.length + arr2.length];
+        for (int i = 0; i < tempArr.length; i++) {
+            tempArr[i] = i < arr1.length ? arr1[i] : arr2[i - arr1.length];
+        }
+        return tempArr;
+    }
 
-    public static int indexOfMin(int[] arr) {
-        int min = findMin(arr);
+    public static int[] mergeArrays_2(int[] arr1, int[] arr2) {
+        int[] tempArr = new int[arr1.length + arr2.length];
+
+        for (int i = 0; i < arr1.length; i++) {
+            tempArr[i] = arr1[i];
+        }
+        for (int i = 0; i < arr2.length; i++) {
+            tempArr[arr1.length + i] = arr2[i];
+        }
+        return tempArr;
+    }
+
+    static void showArr(int[] arr) {
         for (int i = 0; i < arr.length; i++) {
-            if (min == arr[i]) {
-                return i;
-            }
+            System.out.println(arr[i]);
         }
-        return -1;
-    }
-
-    public static int findMin(int[] arr) {
-        int res = arr[1];
-        for (int i = 0; i < arr.length; i++) {
-            if (res > arr[i]) {
-                res = arr[i];
-            }
-        }
-        return res;
-    }
-
-    public static void fillArr(int[] arr, int min, int max) {
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (min + Math.random() * (max - min + 1));
-        }
-        System.out.println();
-    }
-
-    public static void printArr(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + "\t");
-        }
-        System.out.println();
-    }
-
-
-    //// ------ tax Israel by arrays and recurs ------ ////
-    //// ------ Solution with recursion ------ ////
-    private static int posOfSalary = 0;
-    private static double tax;
-
-    public static double newTax(double salary, double index) {
-        double[] posSal = {6000, 9000, 14580, 20260, 42160, 54300};
-        double[] posTax = {0.1, 0.14, 0.2, 0.31, 0.35, 0.47, 0.5};
-        double idx = -(index * 219);
-
-        if (posOfSalary == posSal.length - 1) {
-            tax = (salary - posSal[posOfSalary]) * posTax[posOfSalary + 1] + tax + (posSal[0] * posTax[0]) + idx;
-        } else if (salary >= posSal[posOfSalary] && salary >= posSal[posOfSalary + 1]) {
-            tax = (posSal[posOfSalary + 1] - posSal[posOfSalary]) * posTax[posOfSalary + 1] + tax;
-            posOfSalary += 1;
-            newTax(salary, index);
-        } else if (salary >= posSal[posOfSalary] && salary < posSal[posOfSalary + 1]) {
-            tax = ((salary - posSal[posOfSalary]) * posTax[posOfSalary + 1] + tax) + (posSal[0] * posTax[0]) + idx;
-        } else if (salary <= posSal[0]) {
-            tax = (salary) * posTax[posOfSalary] + tax + idx;
-        }
-        tax = (tax <= 0) ? tax = 0 : tax;
-        return tax;
     }
 }
 
