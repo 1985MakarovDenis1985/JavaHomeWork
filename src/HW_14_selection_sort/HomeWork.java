@@ -1,13 +1,13 @@
+package HW_14_selection_sort;
+
 public class HomeWork {
 
     public static void main(String[] args) {
         int[] arr = {7, 3, 5, 1, 8, 4};
         showArr(arr);
         selectionSort(arr);
-        System.out.println();
-
         showArr(arr);
-        System.out.println(binarySearch(arr, 2));
+        System.out.println(binarySearch(arr, 12));
     }
 
     // with probably position
