@@ -3,6 +3,7 @@ package HW_15.controller;
 import HW_15.employee.Employee;
 
 public class Controller {
+
     public static void main(String[] args) {
         Employee john = new Employee();
         john.id = 1;
@@ -12,6 +13,7 @@ public class Controller {
         john.taxIsrael();
         john.salNetto();
         john.display();
+
 
         Employee peter = new Employee();
         peter.id = 2;

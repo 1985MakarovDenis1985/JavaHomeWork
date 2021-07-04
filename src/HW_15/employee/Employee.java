@@ -18,7 +18,6 @@ public class Employee {
         System.out.println("salaryNetto: " + salaryNetto);
     }
 
-
     public double taxIsrael() {
         double tax = -(taxAllowance * 219);
         if (salary < 6330) {
@@ -58,9 +57,17 @@ public class Employee {
             tax = tax + (54300 - 42160) * 0.47;
         }
         taxSalary = tax + (salary - 54300) * 0.5;
-        return taxSalary = taxSalary > 0 ? taxSalary : 0;
+        return taxSalary > 0 ? taxSalary : 0;
     }
+
     public double salNetto() {
-        return salaryNetto = salary - taxSalary;
+        return salary - taxSalary;
+    }
+
+    public static void main(String[] args) {
+        Employee john = new Employee();
+        john.salary = 33000;
+        System.out.println(john.taxIsrael());
+        System.out.println(john.salNetto());
     }
 }
