@@ -1,13 +1,68 @@
 package HW_15.employee;
 
 public class Employee {
-    public int id;
-    public String name;
-    public double salary;
-    public double taxAllowance;
+    private int id;
+    private String name;
+    private double salary;
+    private double taxAllowance;
+    private double taxSalary;
+    private double salaryNetto;
 
-    public double taxSalary;
-    public double salaryNetto;
+
+    public Employee(int id, String name, double salary, double taxAllowance) { // public - обязательно
+        if (id >= 0){
+            this.id = id;
+        }
+        this.name = name;
+        setSalary(salary);
+        setTaxAllowance(taxAllowance);
+        this.taxSalary = taxIsrael();
+        this.salaryNetto = salary - taxSalary;
+    }
+
+    public double getSalary(){
+        return salary;
+    }
+    public void setSalary(double salary){
+       if (salary > 0) {
+           this.salary = salary;
+       }
+    }
+    public int getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getTaxAllowance() {
+        return taxAllowance;
+    }
+
+    public void setTaxAllowance(double taxAllowance) {
+        if (this.taxAllowance > 0){
+            this.taxAllowance = taxAllowance;
+        }
+    }
+
+    public double getTaxSalary() {
+        return taxSalary;
+    }
+
+    public void setTaxSalary(double taxSalary) {
+        this.taxSalary = taxSalary;
+    }
+
+    public double getSalaryNetto() {
+        return salaryNetto;
+    }
+
+    public void setSalaryNetto(double salaryNetto) {
+        this.salaryNetto = salaryNetto;
+    }
 
     public void display() {
         System.out.println("ID: " + id);
@@ -17,7 +72,6 @@ public class Employee {
         System.out.println("tax: " + taxSalary);
         System.out.println("salaryNetto: " + salaryNetto);
     }
-
     public double taxIsrael() {
         double tax = -(taxAllowance * 219);
         if (salary < 6330) {
@@ -59,15 +113,14 @@ public class Employee {
         taxSalary = tax + (salary - 54300) * 0.5;
         return taxSalary > 0 ? taxSalary : 0;
     }
-
-    public double salNetto() {
-        return salary - taxSalary;
-    }
-
     public static void main(String[] args) {
-        Employee john = new Employee();
-        john.salary = 33000;
-        System.out.println(john.taxIsrael());
-        System.out.println(john.salNetto());
+        Employee john = new Employee(1000, "John", 20000, 2.25);
+        Employee peter = new Employee(2000, "Peter", 33000, 5.25);
+        john.display();
+        double totalSalary = john.getSalary() + peter.getSalary();
+        john.setSalary(-35000); // так как минусовай зарплаты небывает => условие метода вернуть предыдущую зп
+        System.out.println(john.salary);
+
+//        System.out.println("totalSalary: " + totalSalary);
     }
 }
