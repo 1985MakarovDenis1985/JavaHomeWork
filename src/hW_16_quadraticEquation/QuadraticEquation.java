@@ -33,31 +33,30 @@ public class QuadraticEquation {
 
     private int resQ(){
         int d = b*b - 4*a*c;
-        System.out.println(d);
         return d;
     }
 
     public void shoeQE(){
         int d = resQ();
         if (d > 0) {
+            double q2 = (-b - Math.sqrt(d))/2*a; // => формулу корня нашел к сожалению только в интернете.
             System.out.println("2 корня");
         } else if(d==0){
+            double q1 = (-b + Math.sqrt(d))/2*a;
             System.out.println("1 корень");
-        }else {
+        }else if (d < 0){
             System.out.println("нет корней");
         }
     }
 
     public void display(){
         System.out.println("Квадратное уровнение: ");
-        System.out.println(a + "x^2+" + b+"x+" + c);
+        System.out.println(a + "x^2+" + b+"x+" + c + "=0");
     }
 
-
     public static void main(String[] args) {
-//        a.QuadraticEquation qEquation = new a.QuadraticEquation(10,-10, 10);
-//        qEquation.display();
-//        qEquation.resQ();
-//        qEquation.shoeQE();
+        QuadraticEquation qEquation = new QuadraticEquation(7,5,-6);
+        qEquation.display();
+        qEquation.shoeQE();
     }
 }
