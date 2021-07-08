@@ -65,12 +65,14 @@ public class ObjBook {
 
 
     public static void main(String[] args) {
-        ObjBook myBook1 = new ObjBook(139294992, "Lord of The Rings", "Dj.R.R. Tolkien", "1948", "English" ,true);
-        ObjBook myBook2 = new ObjBook(849280880, "Silmarilion", "Dj.R.R. Tolkien", "English" );
-        ObjBook myBook3 = new ObjBook(729384025, "Witcher", "Andrzej Sapkowski", "1986", "Polish", true);
+        ObjBook[] books = new ObjBook[3];
 
-        myBook1.display();
-        myBook2.display();
-        myBook3.display();
+        books[0] = new ObjBook(139294992, "Lord of The Rings", "Dj.R.R. Tolkien", "1948", "English" ,true);
+        books[1] = new ObjBook(849280880, "Silmarilion", "Dj.R.R. Tolkien", "English" );
+        books[2] = new ObjBook(729384025, "Witcher", "Andrzej Sapkowski", "1986", "Polish", true);
+
+        books[0].display();
+        books[1].display();
+        books[2].display();
     }
 }
