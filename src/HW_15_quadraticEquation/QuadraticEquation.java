@@ -1,10 +1,10 @@
-package hW_16_quadraticEquation;
+package HW_15_quadraticEquation;
 
 public class QuadraticEquation {
 
-    public int a;
-    public int b;
-    public int c;
+    public double a;
+    public double b;
+    public double c;
 
     QuadraticEquation(int a, int b, int c){
         this.a = a;
@@ -12,34 +12,34 @@ public class QuadraticEquation {
         this.c = c;
     }
 
-    public int getA() {
+    public double getA() {
         return a;
     }
     public void setA(int a) {
         this.a = a;
     }
-    public int getB() {
+    public double getB() {
         return b;
     }
     public void setB(int b) {
         this.b = b;
     }
-    public int getC() {
+    public double getC() {
         return c;
     }
     public void setC(int c) {
         this.c = c;
     }
 
-    private int resQ(){
-        int d = b*b - 4*a*c;
+    private double resQ(){
+        double d = b*b - 4*a*c;
         return d;
     }
 
     public void shoeQE(){
-        int d = resQ();
+        double d = resQ();
         if (d > 0) {
-            double q2 = (-b - Math.sqrt(d))/2*a; // => формулу корня нашел к сожалению только в интернете.
+            double q2 = (-b - Math.sqrt(d))/2*a;
             System.out.println("2 корня");
         } else if(d==0){
             double q1 = (-b + Math.sqrt(d))/2*a;
