@@ -5,6 +5,7 @@ public class QuadraticEquation {
     public int a;
     public int b;
     public int c;
+    public int d = resQ();
 
     QuadraticEquation(int a, int b, int c){
         this.a = a;
@@ -37,7 +38,6 @@ public class QuadraticEquation {
     }
 
     public void shoeQE(){
-        int d = resQ();
         if (d > 0) {
             double q2 = (-b - Math.sqrt(d))/2*a; // => формулу корня нашел к сожалению только в интернете.
             System.out.println("2 корня");
