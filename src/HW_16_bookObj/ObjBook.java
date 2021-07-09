@@ -6,7 +6,7 @@ public class ObjBook {
     String author;
     String yearOfPublishing = "Unfortunately unknown";
     String language;
-    Boolean bestSeller = false;
+    boolean bestSeller;
 
 
     public ObjBook(int isbn, String title, String author, String yearOfPublishing, String language, boolean bestSeller) {
@@ -31,7 +31,6 @@ public class ObjBook {
         this.author = author;
         this.language = language;
     }
-
 
 
     public int getIsbn() {
