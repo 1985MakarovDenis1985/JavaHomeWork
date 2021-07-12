@@ -32,7 +32,6 @@ public class ObjBook {
         this.language = language;
     }
 
-
     public int getIsbn() {
         return isbn;
     }
@@ -48,7 +47,9 @@ public class ObjBook {
     public String getLanguage() {
         return language;
     }
-
+    public void setYearOfPublishing(String yearOfPublishing) {
+        this.yearOfPublishing = yearOfPublishing;
+    }
     public void setIsbn(int isbn) {
         this.isbn = isbn;
     }
