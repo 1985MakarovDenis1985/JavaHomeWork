@@ -1,7 +1,7 @@
 package HW_16_bookObj;
 
 public class ObjBook {
-    int isbn;
+    long isbn;
     String title;
     String author;
     String yearOfPublishing = "Unfortunately unknown";
@@ -9,7 +9,7 @@ public class ObjBook {
     boolean bestSeller;
 
 
-    public ObjBook(int isbn, String title, String author, String yearOfPublishing, String language, boolean bestSeller) {
+    public ObjBook(long isbn, String title, String author, String yearOfPublishing, String language, boolean bestSeller) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
@@ -18,21 +18,21 @@ public class ObjBook {
         this.bestSeller = bestSeller;
     }
 
-    public ObjBook(int isbn, String title, String author, String language, boolean bestSeller) {
+    public ObjBook(long isbn, String title, String author, String language, boolean bestSeller) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.language = language;
         this.bestSeller = bestSeller;
     }
-    public ObjBook(int isbn, String title, String author, String language) {
+    public ObjBook(long isbn, String title, String author, String language) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.language = language;
     }
 
-    public int getIsbn() {
+    public long getIsbn() {
         return isbn;
     }
     public String getTitle() {
@@ -67,12 +67,12 @@ public class ObjBook {
     public static void main(String[] args) {
         ObjBook[] books = new ObjBook[3];
 
-        books[0] = new ObjBook((int) 1392949929385L, "Lord of The Rings", "Dj.R.R. Tolkien", "1948", "English" ,true);
-        books[1] = new ObjBook((int) 8492875489088L, "Silmarilion", "Dj.R.R. Tolkien", "English" );
-        books[2] = new ObjBook((int) 7299384028475L, "Witcher", "Andrzej Sapkowski", "1986", "Polish", true);
+        books[0] = new ObjBook( 1392949929385L, "Lord of The Rings", "Dj.R.R. Tolkien", "1948", "English" ,true);
+        books[1] = new ObjBook( 8492875489088L, "Silmarilion", "Dj.R.R. Tolkien", "English" );
+        books[2] = new ObjBook( 7299384028475L, "Witcher", "Andrzej Sapkowski", "1986", "Polish", true);
 
-        books[0].display();
-        books[1].display();
-        books[2].display();
+        for (int i = 0; i < books.length; i++) {
+            books[i].display();
+        }
     }
 }
