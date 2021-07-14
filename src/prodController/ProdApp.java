@@ -16,7 +16,9 @@ public class ProdApp {
         for (int i = 0; i < products.length; i++) {
             System.out.println(products[i]);
             products[i].printDataSale();
-            System.out.println("============== NEXT PRODUCT==============");
+            if (i !=  products.length-1){
+                System.out.println("============== NEXT PRODUCT==============");
+            }
         }
     }
 }
