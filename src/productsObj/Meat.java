@@ -26,7 +26,6 @@ public class Meat extends Food{
         this.meatType = meatType;
     }
 
-
     public String toString(){
         return  super.toString() + " | Meat type: " + meatType;
     }

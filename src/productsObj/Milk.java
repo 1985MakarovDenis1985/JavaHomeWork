@@ -40,6 +40,7 @@ public class Milk extends Food{
     public void setMilkType(String milkType) {
         this.milkType = milkType;
     }
+
     public String toString(){
         return  super.toString() + " | Fat: " + fat + " | Milk type: " + milkType;
     }
