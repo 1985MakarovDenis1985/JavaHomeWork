@@ -51,7 +51,7 @@ public class Product {
         return sale;
     }
 
-    public void setSale(long barCode) {
+    public void setSale(double sale) {
         this.sale = sale;
     }
 
