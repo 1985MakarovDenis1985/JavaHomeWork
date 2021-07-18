@@ -5,17 +5,18 @@ public class Product {
     double price;
     long barCode;
     double sale;
+    double newPrice;
 
     public Product(String name, double price, long barCode, double sale) {
         this.name = name;
-        this.price = price;
+        this.price = (price < 0) ? -price : price;
         this.barCode = barCode;
         this.sale = sale;
     }
 
     public Product(String name, double price, long barCode) {
         this.name = name;
-        this.price = price;
+        this.price = (price < 0) ? -price : price;
         this.barCode = barCode;
     }
 
@@ -53,20 +54,32 @@ public class Product {
 
     public void setSale(double sale) {
         this.sale = sale;
+        this.newPrice = price - percent();
     }
 
-    public String toString() {
-        return "Name: " + ((getName() == null) ? "Unknown" : getName()) + " | Price: " + getPrice() + " | Code: " + barCode + " | Sale: " + sale;
+    public double getNewPrice() {
+        return (sale != 0.0) ? price - percent() : price;
+    }
+
+    public double percent() {
+        double percent = price / 100 * sale;
+        return percent;
     }
 
     public void printDataSale() {
         double percent = price / 100 * sale;
-        double newPrice = price - percent;
-        if (percent != 0){
+        newPrice = price - percent;
+        if (percent != 0) {
             System.out.println("Sale: " + sale + "% | New price: " + newPrice + " -> code of product: " + barCode);
         } else {
             System.out.println("Without sale :(");
         }
-
     }
+
+    public String toString() {
+        return "Name: " + ((getName() == null) ? "Unknown" : getName()) + " | Price: " + getPrice() + " | Sale: " +
+                ((getSale() != 0.0) ? sale + "%" + " -> new price: " + getNewPrice() : "without sale :(") +
+                " | Code: " + barCode;
+    }
+
 }

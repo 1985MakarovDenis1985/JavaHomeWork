@@ -24,7 +24,24 @@ public class Food extends Product {
 
     }
 
+    public boolean isKosher() {
+        return kosher;
+    }
+
+    public void setKosher(boolean kosher) {
+        this.kosher = kosher;
+    }
+
+    public String getExpDate() {
+        return expDate;
+    }
+
+    public void setExpDate(String expDate) {
+        this.expDate = expDate;
+    }
+
     public String toString(){
-        return  super.toString() + " | Kosher: " + kosher + " | Exp Date: " + expDate;
+        return  super.toString() + " | Kosher: " + ((kosher) ? "Yes" : "No" )
+                + " | Exp Date: " + expDate;
     }
 }
