@@ -55,17 +55,6 @@ public class ProdApp {
         System.out.println("Product from " + type + ": " + countProd);
     }
 
-//    public static void getSameType(Product[] products, String type) {
-//        int countProd = 0;
-//        for (int i = 0; i < products.length; i++) {
-//            if (products[i] instanceof Milk && ((Milk) products[i]).getMilkType() == type || products[i] instanceof Meat && ((Meat) products[i]).getMeatType() == type) {
-//                System.out.println(products[i]);
-//                countProd += 1;
-//            }
-//        }
-//        System.out.println("Product from " + type + ": " + countProd);
-//    }
-
     public static void main(String[] args) {
         Product[] products = new Product[8];
         products[0] = new Product("Bread", 15, 668986581);
@@ -77,11 +66,14 @@ public class ProdApp {
         products[6] = new Meat("Meat", 70, 55687432, false, "17.08.2021", "Pig");
         products[7] = new Meat("Meat", 54, 345875789, false, "17.08.2021", "Pig");
 
+//        Product p = new Meat("Meat", 67, 779875765, false, "17.08.2021", "Pig");
+//        System.out.println(p.equals(products[4]));
+
 //        products[1].printDataSale();
 //        displayAllProducts(products);
 //        displayProductsKosher(products);
 //        System.out.println("sum all: " + totalPrice(products));
 //        System.out.println("sum kosher: " + totalPriceKosher(products));
-        getSameType(products, "Goat");
+        getSameType(products, "Pig");
     }
 }

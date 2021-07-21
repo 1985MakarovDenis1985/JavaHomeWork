@@ -1,5 +1,7 @@
 package productsObj;
 
+import java.util.Objects;
+
 public class Meat extends Food{
     String meatType;
 
@@ -29,4 +31,21 @@ public class Meat extends Food{
     public String toString(){
         return  super.toString() + " | Meat type: " + meatType;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Meat)) return false;
+        if (!super.equals(obj)) return false;
+        Meat meat = (Meat) obj;
+        return super.equals(meat) && this.meatType.equals(meatType);
+    }
+
+//    стартовая функция
+//    @Override
+//    public boolean equals(Object obj) {
+//        Meat product = (Meat) obj;
+//        return super.equals(product) && this.meatType.equals(meatType);
+//    }
 }

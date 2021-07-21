@@ -1,5 +1,7 @@
 package productsObj;
 
+import java.util.Objects;
+
 public class Product {
     String name;
     double price;
@@ -85,14 +87,17 @@ public class Product {
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         Product product = (Product) obj;
-        return this.price == product.price && this.barCode == product.barCode &&  this.sale == product.sale && this.newPrice == product.newPrice && this.name.equals(product.name);
+        return this.name.equals(product.name) && this.price == product.price && this.barCode == product.barCode && this.sale == product.sale && this.newPrice == product.newPrice;
     }
 
+//    стартовая функция
+//    @Override
 //    public boolean equals(Object obj) {
 //        Product product = (Product) obj;
-//        return Double.compare(product.price, price) == 0 && barCode == product.barCode && Double.compare(product.sale, sale) == 0 && Double.compare(product.newPrice, newPrice) == 0 && Objects.equals(name, product.name);
+//        return this.name.equals(product.name) && this.price == product.price && this.barCode == product.barCode && this.sale == product.sale && this.newPrice == product.newPrice;
 //    }
 
-//
 }

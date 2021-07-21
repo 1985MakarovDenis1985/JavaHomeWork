@@ -1,5 +1,7 @@
 package productsObj;
 
+import java.util.Objects;
+
 public class Food extends Product {
     private boolean kosher;
     private String expDate;
@@ -40,15 +42,25 @@ public class Food extends Product {
         this.expDate = expDate;
     }
 
-
     @Override
     public String toString(){
         return  super.toString() + " | Kosher: " + ((kosher) ? "Yes" : "No" )
                 + " | Exp Date: " + expDate;
     }
+
     @Override
     public boolean equals(Object obj) {
-        Food product = (Food) obj;
-        return super.equals(product) && product.kosher == kosher && expDate == product.expDate;
+        if (this == obj) return true;
+        if (!(obj instanceof Food)) return false;
+        if (!super.equals(obj)) return false;
+        Food food = (Food) obj;
+        return super.equals(food) && this.kosher == food.kosher && this.expDate.equals(food.expDate);
     }
+
+//    стартовая функция
+//    @Override
+//    public boolean equals(Object obj) {
+//        Food product = (Food) obj;
+//        return super.equals(product) && this.kosher == product.kosher && this.expDate.equals(product.expDate);
+//    }
 }
