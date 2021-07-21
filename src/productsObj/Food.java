@@ -40,8 +40,15 @@ public class Food extends Product {
         this.expDate = expDate;
     }
 
+
+    @Override
     public String toString(){
         return  super.toString() + " | Kosher: " + ((kosher) ? "Yes" : "No" )
                 + " | Exp Date: " + expDate;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        Food product = (Food) obj;
+        return super.equals(product) && product.kosher == kosher && expDate == product.expDate;
     }
 }

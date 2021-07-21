@@ -44,4 +44,10 @@ public class Milk extends Food{
     public String toString(){
         return  super.toString() + " | Fat: " + fat + " | Milk type: " + milkType;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Milk product = (Milk) obj;
+        return super.equals(product) && product.fat == this.fat && this.milkType == product.milkType;
+    }
 }
