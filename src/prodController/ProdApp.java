@@ -63,11 +63,11 @@ public class ProdApp {
         products[3] = new Meat("Meat", 67, 779875765, false, "17.08.2021", "Pig");
         products[4] = new Milk("Milk", 8, 57842943, true, "11.11.2021", 23, 1.5, "Goat");
         products[5] = new Meat("Meat", 45, 779875756, false, "17.08.2021", "Pig");
-        products[6] = new Meat("Meat", 70, 55687432, false, "17.08.2021", "Pig");
+        products[6] = new Meat("Meat", 70, 55687432, false, "17.08.2021", 15, "Pig");
         products[7] = new Meat("Meat", 54, 345875789, false, "17.08.2021", "Pig");
 
-//        Product p = new Meat("Meat", 67, 779875765, false, "17.08.2021", "Pig");
-//        System.out.println(p.equals(products[4]));
+//        Product p = new Meat("Meat", 70, 55687432, false, "17.08.2021", 15, "Pig");
+//        System.out.println(p.equals(products[6]));
 
 //        products[1].printDataSale();
 //        displayAllProducts(products);

@@ -59,11 +59,4 @@ public class Milk extends Food {
         return super.equals(milk) && milk.fat == this.fat && this.milkType.equals(milk.milkType);
     }
 
-//    стартовая функция
-//    @Override
-//    public boolean equals(Object obj) {
-//        Milk product = (Milk) obj;
-//        return super.equals(product) && product.fat == this.fat && this.milkType.equals(product.milkType);
-//    }
-
 }

@@ -41,11 +41,4 @@ public class Meat extends Food{
         Meat meat = (Meat) obj;
         return super.equals(meat) && this.meatType.equals(meatType);
     }
-
-//    стартовая функция
-//    @Override
-//    public boolean equals(Object obj) {
-//        Meat product = (Meat) obj;
-//        return super.equals(product) && this.meatType.equals(meatType);
-//    }
 }

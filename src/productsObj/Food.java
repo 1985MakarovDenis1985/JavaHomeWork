@@ -57,10 +57,4 @@ public class Food extends Product {
         return super.equals(food) && this.kosher == food.kosher && this.expDate.equals(food.expDate);
     }
 
-//    стартовая функция
-//    @Override
-//    public boolean equals(Object obj) {
-//        Food product = (Food) obj;
-//        return super.equals(product) && this.kosher == product.kosher && this.expDate.equals(product.expDate);
-//    }
 }
