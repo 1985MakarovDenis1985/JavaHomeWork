@@ -1,18 +1,16 @@
-package productsObj;
-
-import java.util.Objects;
+package models;
 
 public class Food extends Product {
     private boolean kosher;
     private String expDate;
 
-    public Food(String name, double price, long barCode, boolean kosher, String expDate, double sale) {
-        super(name, price, barCode, sale);
+    public Food(String name, int count, double price, long barCode, boolean kosher, String expDate, double sale) {
+        super(name, count, price, barCode, sale);
         this.kosher = kosher;
         this.expDate = expDate;
     }
-    public Food(String name, double price, long barCode, boolean kosher, String expDate) {
-        super(name, price, barCode);
+    public Food(String name, int count, double price, long barCode, boolean kosher, String expDate) {
+        super(name, count, price, barCode);
         this.kosher = kosher;
         this.expDate = expDate;
     }

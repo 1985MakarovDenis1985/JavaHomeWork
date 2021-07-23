@@ -1,6 +1,4 @@
-package productsObj;
-
-import java.util.Objects;
+package models;
 
 public class Product {
     String name;
@@ -8,15 +6,18 @@ public class Product {
     long barCode;
     double sale;
     double newPrice;
+    int count = 1;
 
-    public Product(String name, double price, long barCode, double sale) {
+    public Product(String name, int count, double price, long barCode, double sale) {
         this.name = name;
+        this.count = count;
         this.price = (price < 0) ? -price : price;
         this.barCode = barCode;
         this.sale = sale;
     }
 
-    public Product(String name, double price, long barCode) {
+    public Product(String name, int count, double price, long barCode) {
+        this.count = count;
         this.name = name;
         this.price = (price < 0) ? -price : price;
         this.barCode = barCode;
@@ -54,6 +55,14 @@ public class Product {
         return sale;
     }
 
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     public void setSale(double sale) {
         this.sale = sale;
         this.newPrice = price - percent();
@@ -80,7 +89,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Name: " + ((getName() == null) ? "Unknown" : getName()) + " | Price: " + getPrice() + " | Sale: " +
+        return "Name: " + ((getName() == null) ? "Unknown" : getName()) + " | Count: " + getCount() + " | Price: " + getPrice() + " | Sale: " +
                 ((getSale() != 0.0) ? sale + "%" + " -> new price: " + getNewPrice() + " ILS" : "without sale :(") +
                 " | Code: " + barCode;
     }
@@ -92,5 +101,4 @@ public class Product {
         Product product = (Product) obj;
         return this.name.equals(product.name) && this.price == product.price && this.barCode == product.barCode && this.sale == product.sale && this.newPrice == product.newPrice;
     }
-
 }

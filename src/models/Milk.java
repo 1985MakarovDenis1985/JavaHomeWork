@@ -1,19 +1,17 @@
-package productsObj;
-
-import java.util.Objects;
+package models;
 
 public class Milk extends Food {
     double fat;
     String milkType;
 
-    public Milk(String name, double price, long barCode, boolean kosher, String expDate, double sale, double fat, String milkType) {
-        super(name, price, barCode, kosher, expDate, sale);
+    public Milk(String name, int count, double price, long barCode, boolean kosher, String expDate, double sale, double fat, String milkType) {
+        super(name, count, price, barCode, kosher, expDate, sale);
         this.fat = fat;
         this.milkType = milkType;
     }
 
-    public Milk(String name, double price, long barCode, boolean kosher, String expDate, double fat, String milkType) {
-        super(name, price, barCode, kosher, expDate);
+    public Milk(String name, int count, double price, long barCode, boolean kosher, String expDate, double fat, String milkType) {
+        super(name, count, price, barCode, kosher, expDate);
         this.fat = fat;
         this.milkType = milkType;
     }
