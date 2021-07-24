@@ -8,7 +8,7 @@ import models.Product;
 public class SupermarketApp {
 
     public static void main(String[] args) {
-        Supermarket mall = new Supermarket(10);
+        Supermarket mall = new Supermarket(4);
 
                                                     // создает либо новый продукт либо увеличивавет его количество на полках
         mall.addProduct(new Product("Bread", 2, 15, 668986581));

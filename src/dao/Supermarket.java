@@ -71,10 +71,10 @@ public class Supermarket {
     public boolean removeProd(long barCode) {
         for (int i = 0; i < currentIdx; i++) {
             if (products[i].getBarCode() == barCode) {
-                for (int j = i; j < currentIdx; j++) {
+                for (int j = i; j < currentIdx-1; j++) {
                     products[j] = products[j + 1];
                 }
-                products[currentIdx - 1] = null;
+                products[currentIdx-1] = null;
                 currentIdx--;
                 return true;
             }
