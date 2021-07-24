@@ -22,14 +22,24 @@ public class Supermarket {
      переделал функцию /addProduct/, что бы добавляла в случае нахождение уже такого продукта увеличивала его количество на полке
      (Вы говорили что можно добавлять свой функционал)
     */
-    public void addProduct(Product product) {
+//    public void addProduct(Product product) {
+//        if (currentIdx < products.length && findProduct(product.getBarCode()) == null) {
+//            products[currentIdx] = product;
+//            currentIdx++;
+//        } else if (findProduct(product.getBarCode()) != null) {
+//            Product oldProduct = findProduct(product.getBarCode());
+//            oldProduct.setCount(product.getCount() + oldProduct.getCount());
+//        }
+//    }
+
+
+    public boolean addProduct(Product product) {
         if (currentIdx < products.length && findProduct(product.getBarCode()) == null) {
             products[currentIdx] = product;
             currentIdx++;
-        } else if (findProduct(product.getBarCode()) != null) {
-            Product oldProduct = findProduct(product.getBarCode());
-            oldProduct.setCount(product.getCount() + oldProduct.getCount());
+            return true;
         }
+        return false;
     }
 
     public Product findProduct(long barCode) {
@@ -41,17 +51,32 @@ public class Supermarket {
         return null;
     }
 
+    /* remove которая уменьшает количество товара а затем удаляет */
+//    public boolean removeProd(long barCode) {
+//        for (int i = 0; i < currentIdx; i++) {
+//            if (products[i].getBarCode() == barCode) {
+//                products[i].setCount(products[i].getCount() - 1); // уменьшаю количество продуктов на 1
+//            }
+//            if (products[i].getCount() == 0) {
+//                for (int j = i; j < currentIdx; j++) {
+//                    products[j] = products[j + 1];
+//                }
+//                products[currentIdx - 1] = null; // удаляю элемент если кол 0
+//                currentIdx -= 1;
+//            }
+//        }
+//        return false;
+//    }
+
     public boolean removeProd(long barCode) {
         for (int i = 0; i < currentIdx; i++) {
             if (products[i].getBarCode() == barCode) {
-                products[i].setCount(products[i].getCount() - 1); // уменьшаю количество продуктов на 1
-            }
-            if (products[i].getCount() == 0) {
                 for (int j = i; j < currentIdx; j++) {
                     products[j] = products[j + 1];
                 }
-                products[currentIdx - 1] = null; // удаляю элемент если кол 0
-                currentIdx -= 1;
+                products[currentIdx - 1] = null;
+                currentIdx--;
+                return true;
             }
         }
         return false;
@@ -115,7 +140,7 @@ public class Supermarket {
             }
         }
         System.out.println("====================================");
-        System.out.println(currentIdx + " products with different bar code in the mall");
+        System.out.println(currentIdx + " products in the mall");
 
     }
 }
