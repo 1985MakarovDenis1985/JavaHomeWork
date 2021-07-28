@@ -51,6 +51,30 @@ public class Supermarket {
         return null;
     }
 
+
+    // first solution
+    public boolean changePrice(long barCode, double price) {
+        Product product = findProduct(barCode);
+        if (product != null){
+            product.setPrice(price);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean changeName(long barCode, String name){
+        Product product = findProduct(barCode);
+        if (product != null){
+            product.setName(name);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     /* remove которая уменьшает количество товара а затем удаляет */
 //    public boolean removeProd(long barCode) {
 //        for (int i = 0; i < currentIdx; i++) {
@@ -71,16 +95,66 @@ public class Supermarket {
     public boolean removeProd(long barCode) {
         for (int i = 0; i < currentIdx; i++) {
             if (products[i].getBarCode() == barCode) {
-                for (int j = i; j < currentIdx-1; j++) {
+                for (int j = i; j < currentIdx - 1; j++) {
                     products[j] = products[j + 1];
                 }
-                products[currentIdx-1] = null;
+                products[currentIdx - 1] = null;
                 currentIdx--;
                 return true;
             }
         }
         return false;
     }
+
+    public int countProdOfTypeKosher(boolean type){
+        int count = 0;
+        for (int i = 0; i < currentIdx; i++) {
+            if (type && products[i] instanceof Food && ((Food) products[i]).isKosher()) {
+                count++;
+            } else if (!type && products[i] instanceof Food && !((Food) products[i]).isKosher()){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public Product[] getKosherProducts(){
+        int count=0;
+        for (int i = 0; i < currentIdx; i++) {
+            if (products[i] instanceof Food && ((Food) products[i]).isKosher()) {
+                count++;
+            }
+        }
+        Product[] arrKosherProducts = new Product[count];
+        count = 0;
+        for (int i = 0; i < currentIdx; i++) {
+            if (products[i] instanceof Food && ((Food) products[i]).isKosher()) {
+                arrKosherProducts[count] = products[i];
+                count++;
+            }
+        }
+        return arrKosherProducts;
+    }
+
+    public Product[] getNotKosherProducts(){
+        int count=0;
+        for (int i = 0; i < currentIdx; i++) {
+            if (products[i] instanceof Food && !((Food) products[i]).isKosher()) {
+                count++;
+            }
+        }
+        Product[] arrKosherProducts = new Product[count];
+        count = 0;
+        for (int i = 0; i < currentIdx; i++) {
+            if (products[i] instanceof Food && !((Food) products[i]).isKosher()) {
+                arrKosherProducts[count] = products[i];
+                count++;
+            }
+        }
+        return arrKosherProducts;
+    }
+
+
 
     public void printKosherProd() {
         for (int i = 0; i < currentIdx; i++) {
