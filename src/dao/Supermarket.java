@@ -106,7 +106,8 @@ public class Supermarket {
         return false;
     }
 
-    public int countProdOfTypeKosher(boolean type){
+    // fun: count kosher or not products;
+    public int countIsKosher(boolean type){
         int count = 0;
         for (int i = 0; i < currentIdx; i++) {
             if (type && products[i] instanceof Food && ((Food) products[i]).isKosher()) {
@@ -118,13 +119,9 @@ public class Supermarket {
         return count;
     }
 
+    // Get array kosher prod
     public Product[] getKosherProducts(){
-        int count=0;
-        for (int i = 0; i < currentIdx; i++) {
-            if (products[i] instanceof Food && ((Food) products[i]).isKosher()) {
-                count++;
-            }
-        }
+        int count = countIsKosher(true);
         Product[] arrKosherProducts = new Product[count];
         count = 0;
         for (int i = 0; i < currentIdx; i++) {
@@ -136,13 +133,9 @@ public class Supermarket {
         return arrKosherProducts;
     }
 
+    // Get array not kosher prod
     public Product[] getNotKosherProducts(){
-        int count=0;
-        for (int i = 0; i < currentIdx; i++) {
-            if (products[i] instanceof Food && !((Food) products[i]).isKosher()) {
-                count++;
-            }
-        }
+        int count = countIsKosher(false);
         Product[] arrKosherProducts = new Product[count];
         count = 0;
         for (int i = 0; i < currentIdx; i++) {
@@ -156,25 +149,25 @@ public class Supermarket {
 
 
 
-    public void printKosherProd() {
-        for (int i = 0; i < currentIdx; i++) {
-            if (products[i] instanceof Food && ((Food) products[i]).isKosher()) {
-                System.out.println(products[i]);
-                if (i != products.length - 1)
-                    System.out.println("============== NEXT PRODUCT==============");
-            }
-        }
-    }
-
-    public void printNotKosherProd() {
-        for (int i = 0; i < currentIdx; i++) {
-            if (products[i] instanceof Food && !((Food) products[i]).isKosher()) {
-                System.out.println(products[i]);
-                if (i != products.length - 1)
-                    System.out.println("============== NEXT PRODUCT==============");
-            }
-        }
-    }
+//    public void printKosherProd() {
+//        for (int i = 0; i < currentIdx; i++) {
+//            if (products[i] instanceof Food && ((Food) products[i]).isKosher()) {
+//                System.out.println(products[i]);
+//                if (i != products.length - 1)
+//                    System.out.println("============== NEXT PRODUCT==============");
+//            }
+//        }
+//    }
+//
+//    public void printNotKosherProd() {
+//        for (int i = 0; i < currentIdx; i++) {
+//            if (products[i] instanceof Food && !((Food) products[i]).isKosher()) {
+//                System.out.println(products[i]);
+//                if (i != products.length - 1)
+//                    System.out.println("============== NEXT PRODUCT==============");
+//            }
+//        }
+//    }
 
     public double totalPrice() {
         double sum = 0;
@@ -215,6 +208,5 @@ public class Supermarket {
         }
         System.out.println("====================================");
         System.out.println(currentIdx + " products in the mall");
-
     }
 }

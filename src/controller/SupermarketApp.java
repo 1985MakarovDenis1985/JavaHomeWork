@@ -31,7 +31,7 @@ public class SupermarketApp {
         mall.changeName(668986581, "Cake");
 //        Product[] arrKosherProducts = mall.getKosherProducts();
 //        Product[] arrNotKosherProducts = mall.getNotKosherProducts();
-        System.out.println(mall.countProdOfTypeKosher(true));
+        System.out.println(mall.countIsKosher(true));
 
     }
 }
