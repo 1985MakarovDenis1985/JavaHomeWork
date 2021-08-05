@@ -1,5 +1,6 @@
 package telran.cars.tests;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import telran.cars.dao.Garage;
@@ -8,7 +9,7 @@ import telran.cars.model.Car;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GarageTest{
+class GarageTest {
 
     Garage garage;
     Car[] cars;
@@ -17,17 +18,17 @@ class GarageTest{
     void setUp() {
         garage = new Garage(6);
         cars = new Car[5];
-        cars[0] = new Car("1000", "m3", "BMW",2.0,"blue");
-        cars[1] = new Car("2000", "m5", "BMW",2.5,"red");
-        cars[2] = new Car("3000", "a7", "Audi",3.0,"blue");
-        cars[3] = new Car("4000", "m3", "Audi",1.6,"white");
-        cars[4] = new Car("5000", "m3", "Audi",1.8,"blue");
+        cars[0] = new Car("1000", "m3", "BMW", 2.0, "blue");
+        cars[1] = new Car("2000", "m5", "BMW", 2.5, "red");
+        cars[2] = new Car("3000", "a7", "Audi", 3.0, "blue");
+        cars[3] = new Car("4000", "m3", "Audi", 1.6, "white");
+        cars[4] = new Car("5000", "m3", "Audi", 1.8, "blue");
 
         for (int i = 0; i < cars.length; i++) {
             garage.addCar(cars[i]);
         }
         for (int i = 0; i < cars.length; i++) {
-        System.out.println(cars[i]);
+            System.out.println(cars[i]);
 
         }
     }
@@ -35,10 +36,11 @@ class GarageTest{
 
     @Test
     void testAddCar() {
-        Car car = new Car("6000", "a5", "Audi",1.8,"white");
+        assertFalse(garage.addCar(cars[1]));
+        Car car = new Car("6000", "a5", "Audi", 1.8, "white");
         assertTrue(garage.addCar(car));
-        assertEquals(6, garage.quantity());
-        car = new Car("7000", "a5", "Audi",1.8,"white");
+        Assertions.assertEquals(car, garage.findCarByRegNumber("6000"));
+        car = new Car("7000", "a5", "Audi", 1.8, "white");
         assertFalse(garage.addCar(car));
     }
 
@@ -48,7 +50,7 @@ class GarageTest{
         assertEquals(cars[1], actual);
         assertEquals(cars[1].getModel(), actual.getModel());
         assertNull(garage.findCarByRegNumber("2000"));
-        assertEquals(4, garage.quantity());
+        assertNull(garage.removeCar("7000"));
     }
 
     @Test
