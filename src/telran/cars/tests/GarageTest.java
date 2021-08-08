@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GarageTest {
 
-    Garage garage;
+    IGarage garage;
     Car[] cars;
 
     @BeforeEach

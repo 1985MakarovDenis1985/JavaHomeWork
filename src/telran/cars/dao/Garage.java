@@ -3,6 +3,8 @@ package telran.cars.dao;
 import telran.cars.interfaces.IGarage;
 import telran.cars.model.Car;
 
+import java.util.function.Predicate;
+
 public class Garage implements IGarage {
     Car[] cars;
     int size;
@@ -21,10 +23,6 @@ public class Garage implements IGarage {
         return true;
     }
 
-    @Override
-    public int quantity() {
-        return size;
-    }
 
     @Override
     public Car removeCar(String regNum) {
@@ -49,81 +47,21 @@ public class Garage implements IGarage {
     }
 
     @Override
-    public Car[] findCarByModel(String model) {
+    public Car[] findCarsByPredicate(Predicate<Car> tester) { // можно вынести в интерфейс (остальные сделать дефолтными)
         int count = 0;
         for (int i = 0; i < size; i++) {
-            if (cars[i].getModel().equals(model)) {
-                count++;
-            }
-        }
-        Car[] carsArr = new Car[count];
-        count = 0;
-        for (int i = 0; i < size; i++) {
-            if (cars[i].getModel().equals(model)) {
-                carsArr[count] = cars[i];
-                count++;
-            }
-        }
-        return carsArr;
-    }
-
-    @Override
-    public Car[] findCarByCompany(String company) {
-        int count = 0;
-        for (int i = 0; i < size; i++) {
-            if (cars[i].getCompany().equals(company)) {
-                count += 1;
-            }
-        }
-        Car[] carsArr = new Car[count];
-        count = 0;
-        for (int i = 0; i < size; i++) {
-            if (cars[i].getCompany().equals(company)) {
-                carsArr[count] = cars[i];
-                count++;
-            }
-        }
-        return carsArr;
-    }
-
-    @Override
-    public Car[] findCarByEngine(double min, double max) {
-        int count = 0;
-        for (int i = 0; i < size; i++) {
-            if (cars[i].getEngine() > min && cars[i].getEngine() < max) {
-                count++;
-            }
-        }
-        Car[] carEngine = new Car[count];
-        count = 0;
-        for (int i = 0; i < size; i++) {
-            if (cars[i].getEngine() > min && cars[i].getEngine() < max) {
-                carEngine[count] = cars[i];
-                count++;
-            }
-        }
-        return carEngine;
-    }
-
-    @Override
-    public Car[] findCarByColor(String color) {
-        int count = 0;
-        for (int i = 0; i < size; i++) {
-            if (cars[i].getColor().equals(color)) {
+            if (tester.test(cars[i])) {
                 count++;
             }
         }
         Car[] carColor = new Car[count];
         count = 0;
         for (int i = 0; i < size; i++) {
-            if (cars[i].getColor().equals(color)) {
+            if (tester.test(cars[i])) {
                 carColor[count] = cars[i];
                 count++;
             }
         }
         return carColor;
     }
-
-
-
 }
