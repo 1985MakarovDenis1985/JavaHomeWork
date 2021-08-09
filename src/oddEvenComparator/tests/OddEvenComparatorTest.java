@@ -7,11 +7,11 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OddEvenComparatorTest {
-    Integer[] origin = {1, 2, 3, 6, 5, 4, 7, 8, 9, 3};
-    Integer[] expected = {2, 4, 6, 8, 9, 7, 5, 3, 3, 1};
-
     @Test
     void testInteger() {
+        Integer[] origin = {1, 2, 3, 6, 5, 4, 7, 8, 9, 3};
+        Integer[] expected = {2, 4, 6, 8, 9, 7, 5, 3, 3, 1};
+
         Arrays.sort(origin, (a, b) -> {
             if (a % 2 == 1 && b % 2 == 0) {
                 return 1;
