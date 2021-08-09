@@ -27,7 +27,7 @@ public class OddEvenComparator {
 //
 //        });
 //        printArray(origin);
-        String[] a = {"55-02-1999", "34-14-3720", "33-02-1999", "12-33-2120", "67-08-2120", "12-12-2018", "75-55-2120", "09-05-2720", "21-02-1999", "21-08-3120"};
+        String[] a = {"55-02-1999", "34-14-3720", "55-03-1999", "33-02-1999", "12-33-2120", "67-08-2120", "12-12-2018", "75-55-2120", "09-05-2720", "21-02-1999", "21-08-3120"};
         String[] dates = {"12-04-1999", "05-03-1999", "30-10-1970", "10-10-2018"};
         String[] expected = {"10-10-1970", "12-03-1999", "05-04-1999", "10-10-2018"};
 
@@ -50,19 +50,33 @@ class IComparator implements Comparator<String> {
         String[] o11 = o1.split("-");
         String[] o22 = o2.split("-");
 
-        if (Integer.parseInt(o11[2]) > Integer.parseInt(o22[2])) {
-            return 1;
-        }
-        if (Integer.parseInt(o11[2]) == Integer.parseInt(o22[2])) {
-            if (Integer.parseInt(o11[1]) > Integer.parseInt(o22[1])) {
-                return 1;
-            } else if (Integer.parseInt(o11[1]) == Integer.parseInt(o22[1])) {
-                if (Integer.parseInt(o11[0]) > Integer.parseInt(o22[0])) {
-                    return 1;
-                }
-                return -1;
+        //============= first solution================//
+
+        int res = Integer.compare(Integer.parseInt(o11[2]), Integer.parseInt(o22[2])); // возвращает 1, 0, -1
+        if (res == 0) {
+            res = Integer.compare(Integer.parseInt(o11[1]), Integer.parseInt(o22[1]));
+            if (res == 0) {
+                return Integer.compare(Integer.parseInt(o11[0]), Integer.parseInt(o22[0]));
             }
+            return res;
         }
-        return -1;
+        return res;
+
+        //============= second solution================//
+
+//        if (Integer.parseInt(o11[2]) > Integer.parseInt(o22[2])) {
+//            return 1;
+//        }
+//        if (Integer.parseInt(o11[2]) == Integer.parseInt(o22[2])) {
+//            if (Integer.parseInt(o11[1]) > Integer.parseInt(o22[1])) {
+//                return 1;
+//            } else if (Integer.parseInt(o11[1]) == Integer.parseInt(o22[1])) {
+//                if (Integer.parseInt(o11[0]) > Integer.parseInt(o22[0])) {
+//                    return 1;
+//                }
+//                return -1;
+//            }
+//        }
+//        return 0;
     }
 }

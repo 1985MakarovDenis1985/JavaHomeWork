@@ -3,7 +3,6 @@ package oddEvenComparator.tests;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,29 +32,23 @@ class OddEvenComparatorTest {
     }
 
     @Test
-    void testString() {
-        String[] dates = {"12-203-1999", "05-304-1999", "30-110-1970", "10-410-2018"};
+    void testDate() {
+        String[] dates = {"12-03-1999", "05-04-1999", "10-10-1970", "10-10-2018"};
         String[] expected = {"10-10-1970", "12-03-1999", "05-04-1999", "10-10-2018"};
 
-
-        Comparator<String> comp = (a, b) -> {
-            String[] aa = a.split("-");
-            String[] bb = b.split("-");
-
-            if (Integer.parseInt(aa[2]) > Integer.parseInt(bb[2])) {
-                return 1;
+        Arrays.sort(dates, (d1, d2) -> {
+                String[] d1Separated = d1.split("-");
+                String[] d2Separated = d2.split("-");
+            int res = Integer.compare(Integer.parseInt(d1Separated[2]), Integer.parseInt(d2Separated[2])); // возвращает 1, 0, -1
+            if (res == 0) {
+                res = Integer.compare(Integer.parseInt(d1Separated[1]), Integer.parseInt(d2Separated[1]));
+                if (res == 0) {
+                    return Integer.compare(Integer.parseInt(d1Separated[0]), Integer.parseInt(d2Separated[0]));
+                }
+                return res;
             }
-
-            return a.compareTo(b);
-        };
-
-
-        Arrays.sort(dates);
-        System.out.println("============");
-        for (int i = 0; i < dates.length; i++) {
-            System.out.println(dates[i]);
-        }
-
-//        assertArrayEquals(expected, origin);
+            return res;
+        });
+        assertArrayEquals(expected, dates);
     }
 }
