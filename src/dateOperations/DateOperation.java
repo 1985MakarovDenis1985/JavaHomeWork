@@ -8,17 +8,17 @@ import java.util.Arrays;
 public class DateOperation {
 
     public static String[] sortStringDates(String[] dates) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter_1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter_2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        Arrays.sort(dates, (s1, s2) -> {
-            if (s1.matches("\\d{4}-\\d{2}-\\d{2}") && s2.matches("\\d{2}/\\d{2}/\\d{4}")){
-               return LocalDate.parse(s1, formatter).compareTo(LocalDate.parse(s2, formatter2));
+        Arrays.sort(dates, (el_1, el_2) -> {
+            if (el_1.matches("\\d{4}-\\d{2}-\\d{2}") && el_2.matches("\\d{2}/\\d{2}/\\d{4}")){
+               return LocalDate.parse(el_1, formatter_1).compareTo(LocalDate.parse(el_2, formatter_2));
             }
-            if (s1.matches( "\\d{2}/\\d{2}/\\d{4}") && s2.matches("\\d{4}-\\d{2}-\\d{2}")){
-               return LocalDate.parse(s1, formatter2).compareTo(LocalDate.parse(s2, formatter));
+            if (el_1.matches( "\\d{2}/\\d{2}/\\d{4}") && el_2.matches("\\d{4}-\\d{2}-\\d{2}")){
+               return LocalDate.parse(el_1, formatter_2).compareTo(LocalDate.parse(el_2, formatter_1));
             }
-            return s1.compareTo(s2);
+            return el_1.compareTo(el_2);
         });
         return dates;
     }
