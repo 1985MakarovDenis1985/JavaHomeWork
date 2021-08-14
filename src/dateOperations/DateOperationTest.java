@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DateOperationTest extends DateOperation {
+class DateOperationTest {
     @Test
     void testSortStringDates() {
         String[] dates = {

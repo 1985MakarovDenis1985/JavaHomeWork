@@ -18,7 +18,7 @@ public class DateOperation {
             if (el_1.matches( "\\d{2}/\\d{2}/\\d{4}") && el_2.matches("\\d{4}-\\d{2}-\\d{2}")){
                return LocalDate.parse(el_1, formatter_2).compareTo(LocalDate.parse(el_2, formatter_1));
             }
-            return el_1.compareTo(el_2);
+            return LocalDate.parse(el_1).compareTo(LocalDate.parse(el_2));
         });
         return dates;
     }
