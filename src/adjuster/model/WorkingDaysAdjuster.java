@@ -19,16 +19,27 @@ public class WorkingDaysAdjuster implements TemporalAdjuster {
     @Override
     public Temporal adjustInto(Temporal temporal) {
 
-//      solution by while:
+
         while (nDays > 0){
             temporal = temporal.plus(1, ChronoUnit.DAYS);
-            if (temporal.get(ChronoField.DAY_OF_WEEK) == daysOff[0].getValue()) {
-                temporal = temporal.plus(2, ChronoUnit.DAYS);
-            } else if (temporal.get(ChronoField.DAY_OF_WEEK) == daysOff[1].getValue()) {
-                temporal = temporal.plus(2, ChronoUnit.DAYS);
+            for (int i = 0; i < daysOff.length; i++) {
+                if (temporal.get(ChronoField.DAY_OF_WEEK) == daysOff[i].getValue()) {
+                    temporal = temporal.plus(2, ChronoUnit.DAYS);
+                }
             }
             nDays--;
         }
+
+//      solution by while:
+//        while (nDays > 0){
+//            temporal = temporal.plus(1, ChronoUnit.DAYS);
+//            if (temporal.get(ChronoField.DAY_OF_WEEK) == daysOff[0].getValue()) {
+//                temporal = temporal.plus(2, ChronoUnit.DAYS);
+//            } else if (temporal.get(ChronoField.DAY_OF_WEEK) == daysOff[1].getValue()) {
+//                temporal = temporal.plus(2, ChronoUnit.DAYS);
+//            }
+//            nDays--;
+//        }
 
 //        solution by for:
 //        for (int i = 0; i < nDays; i++) {
