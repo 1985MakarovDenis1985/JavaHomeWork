@@ -27,6 +27,7 @@ public class DateOperation {
     public static int getAge(String date) {
         LocalDate currentDate = LocalDate.now();
         if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            // ofPattern("[dd/MM/yyyy][yyyy-MM-dd])
             return (int) ChronoUnit.YEARS.between(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")), currentDate);
         }
         return (int) ChronoUnit.YEARS.between(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")), currentDate);
