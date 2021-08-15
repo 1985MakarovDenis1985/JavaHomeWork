@@ -9,34 +9,38 @@ import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 
 public class Friday13Adjuster implements TemporalAdjuster {
-
     @Override
     public Temporal adjustInto(Temporal temporal) {
-        LocalDate ld = LocalDate.now();
-        LocalDate ls = LocalDate.now();
-
-        for (int i = temporal.get(ChronoField.DAY_OF_YEAR); i < 500; i++) {
-            ld = ld.plusDays(1);
-            if ( ld.getDayOfWeek() == DayOfWeek.FRIDAY && ld.getDayOfMonth() == 13) {
-                System.out.println(ld);
-                return ld;
-            }
-        }
-
-
-//		int temp = year + 6;
-//		System.out.println(date);
-
-        return LocalDate.now();
-    }
-
-//	DateTime date = DateTime.Now; // as today is 13th. If system date changes then hardcode date.
+//        LocalDate date = LocalDate.now();
+//        date = date.withYear(2025);
+//        date = date.withMonth(3);
+//        date = date.withDayOfMonth(28);
+//        date = date.withDayOfYear(256);
+//        System.out.println(date);
 //
-//while (date < <Some date in the future you want to report to>)
-//	{
-//		date = date.AddMonths(1);
-//		if (date.DayOfWeek == DayOfWeek.Friday)
-//			System.Console.PrintLine(date.ToString());
-//	}
+//        date = date.with(ChronoField.YEAR, 2022); // какое поле на что изменить
+//        System.out.println(date);
+//
+//        date = date.with(TemporalAdjusters.firstDayOfNextMonth());
+//        System.out.println(date);
+//        date = date.with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
+//        System.out.println(date);
+//        date = date.with(TemporalAdjusters.dayOfWeekInMonth(4, DayOfWeek.FRIDAY)); // 4 пятница в этом месяце
+//        System.out.println(date);
 
+//        LocalDate ls = LocalDate.from(temporal);
+//        System.out.println(ls);
+        LocalDate ld = LocalDate.from(temporal);
+        while ((ld.getDayOfWeek() == DayOfWeek.FRIDAY && ld.getDayOfMonth() == 13) != true) {
+            ld = ld.plusDays(1);
+        }
+//        for loop
+//        for (int i = temporal.get(ChronoField.DAY_OF_YEAR); i < 500; i++) {
+//            ld = ld.plusDays(1);
+//            if ( ld.getDayOfWeek() == DayOfWeek.FRIDAY && ld.getDayOfMonth() == 13) {
+//                return ld;
+//            }
+//        }
+        return ld;
+    }
 }
