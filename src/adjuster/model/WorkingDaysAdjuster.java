@@ -19,22 +19,31 @@ public class WorkingDaysAdjuster implements TemporalAdjuster {
     @Override
     public Temporal adjustInto(Temporal temporal) {
 
-
-        LocalDate ld = LocalDate.from(temporal);
-
-        for (int i = 0; i < nDays; i++) {
-            ld = ld.plusDays(1);
-            if (ld.getDayOfWeek() == daysOff[0]) {
-                ld = ld.plusDays(2);
-            }else if (ld.getDayOfWeek() == daysOff[1]){
-                ld = ld.plusDays(2);
+//      solution by for:
+        while (nDays > 0){
+            temporal = temporal.plus(1, ChronoUnit.DAYS);
+            if (temporal.get(ChronoField.DAY_OF_WEEK) == daysOff[0].getValue()) {
+                temporal = temporal.plus(2, ChronoUnit.DAYS);
+            } else if (temporal.get(ChronoField.DAY_OF_WEEK) == daysOff[1].getValue()) {
+                temporal = temporal.plus(2, ChronoUnit.DAYS);
             }
-
+            nDays--;
         }
-        return ld;
 
-//        while ((temporal.get(ChronoField.DAY_OF_WEEK) == 5 && temporal.get(ChronoField.DAY_OF_MONTH) == 13) != true) {
+//        solution by for:
+//        for (int i = 0; i < nDays; i++) {
 //            temporal = temporal.plus(1, ChronoUnit.DAYS);
+//            if (temporal.get(ChronoField.DAY_OF_WEEK) == daysOff[0].getValue()) {
+//                temporal = temporal.plus(2, ChronoUnit.DAYS);
+//            } else if (temporal.get(ChronoField.DAY_OF_WEEK) == daysOff[1].getValue()) {
+//                temporal = temporal.plus(2, ChronoUnit.DAYS);
+//            }
 //        }
+        return temporal;
     }
 }
+
+// daysOff[0].getValue() -> цифровое значение дня недели;
+// temporal.plus(2, ChronoUnit.DAYS) -> что - кого
+
+
