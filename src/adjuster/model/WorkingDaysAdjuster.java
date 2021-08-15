@@ -19,7 +19,7 @@ public class WorkingDaysAdjuster implements TemporalAdjuster {
     @Override
     public Temporal adjustInto(Temporal temporal) {
 
-//      solution by for:
+//      solution by while:
         while (nDays > 0){
             temporal = temporal.plus(1, ChronoUnit.DAYS);
             if (temporal.get(ChronoField.DAY_OF_WEEK) == daysOff[0].getValue()) {
