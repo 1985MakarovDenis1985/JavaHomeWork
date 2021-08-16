@@ -1,3 +1,4 @@
+
 package memory.service;
 
 public class MemoryService {
@@ -8,9 +9,11 @@ public class MemoryService {
 
         while (left <= right) {
             middle = (left + right) / 2;
-            if (!trueArrLength(middle + 1) && trueArrLength(middle)) {
+            boolean lengthOfArr = trueArrLength(middle + 1);
+
+            if (!lengthOfArr && trueArrLength(middle)) {
                 return middle;
-            } else if (trueArrLength(middle + 1)) {
+            } else if (lengthOfArr) {
                 left = middle + 1;
             } else {
                 right = middle - 1;
