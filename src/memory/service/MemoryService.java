@@ -10,6 +10,8 @@ public class MemoryService {
             middle = (left + right) / 2;
             if (!trueArrLength(middle + 1) && trueArrLength(middle)) {
                 return middle;
+            } else if (trueArrLength(middle + 1)) {
+                left = middle + 1;
             } else {
                 right = middle - 1;
             }
