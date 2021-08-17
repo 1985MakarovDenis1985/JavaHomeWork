@@ -15,6 +15,5 @@ public class FibonacciApp {
             sum += num;
         }
         System.out.println("Sum= " + sum);
-
     }
 }

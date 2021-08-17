@@ -22,7 +22,6 @@ public class Fibonacci implements Iterable<Integer> {
         return new FibonacciIteratorN();
     }
 
-
     private class FibonacciIteratorN implements Iterator<Integer> {
         private int current = 0;
         private int a = 1;
@@ -42,5 +41,4 @@ public class Fibonacci implements Iterable<Integer> {
             return value;
         }
     }
-
 }
