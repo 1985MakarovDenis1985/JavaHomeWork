@@ -25,8 +25,8 @@ public class Fibonacci implements Iterable<Integer> {
 
     private class FibonacciIteratorN implements Iterator<Integer> {
         private int current = 0;
-        private int a = 0;
-        private int b = 1;
+        private int a = 1;
+        private int b = 0;
 
         @Override
         public boolean hasNext() {
