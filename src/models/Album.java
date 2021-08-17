@@ -3,6 +3,9 @@ package models;
 import interfaces.IAlbums;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class Album implements IAlbums {
     Photo[] photos;
@@ -14,18 +17,32 @@ public class Album implements IAlbums {
 
     @Override
     public boolean addPhoto(Photo photo) {
-//        getPhotoFromAlbum(photo.getAlbumId(), photo.getPhotoId());
-        if (getPhotoFromAlbum(photo.getAlbumId(), photo.getPhotoId()) != null) {
+        if (size < photos.length && getPhotoFromAlbum(photo.getAlbumId(), photo.getPhotoId()) == null) {
             photos[size] = photo;
             size++;
-            System.out.println("true");
-
             return true;
         }
-        System.out.println("false");
-
         return false;
     }
+
+
+    public int searchBinary(Photo photo) {
+        int left = 0;
+        int right = size - 1;
+        int middle = 0;
+        while (left < right) {
+            middle = (left + right) / 2;
+            if (LocalDate.from(photos[middle].getDate()).isAfter(LocalDate.from(photo.getDate()))) {
+                right = middle;
+            } else if (LocalDate.from(photos[middle].getDate()).isBefore(LocalDate.from(photo.getDate()))) {
+                left = middle + 1;
+            } else {
+                return middle;
+            }
+        }
+        return -(left + 1);
+    }
+
 
     @Override
     public boolean removePhoto(int albumId, int photoId) {
@@ -109,7 +126,9 @@ public class Album implements IAlbums {
         return size;
     }
 
-
-
-
+    public void printArr() {
+        for (int i = 0; i < size; i++) {
+            System.out.println(photos[i]);
+        }
+    }
 }
