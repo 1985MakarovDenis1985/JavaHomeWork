@@ -12,7 +12,7 @@ public class FibonacciApp {
         int sum = 0;
         for (Integer num : fibonacci) {
             System.out.println(num);
-            sum += sum + num;
+            sum += num;
         }
         System.out.println("Sum= " + sum);
 
