@@ -1,6 +1,6 @@
 package tests;
 
-import interfaces.IAlbums;
+import models.IAlbums;
 import models.Album;
 import models.Photo;
 import org.junit.jupiter.api.Assertions;

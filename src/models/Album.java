@@ -1,17 +1,13 @@
 package models;
 
-import interfaces.IAlbums;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Comparator;
 
-public class Album implements IAlbums {
+
+public class Albums implements IAlbums {
     Photo[] photos;
     int size;
 
-    public Album(int capacity) {
+    public Albums(int capacity) {
         this.photos = new Photo[capacity];
     }
 
@@ -86,12 +82,12 @@ public class Album implements IAlbums {
     public Photo[] getAllPhotosFromAlbum(int albumId) {
         int count = 0;
         Photo[] photosFromAlbum;
-
         for (int i = 0; i < size; i++) {
             if (photos[i].albumId == albumId) {
                 count++;
             }
         }
+
         photosFromAlbum = new Photo[count];
         count = 0;
         for (int i = 0; i < size; i++) {

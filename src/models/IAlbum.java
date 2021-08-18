@@ -1,4 +1,4 @@
-package interfaces;
+package models;
 
 import models.Photo;
 
