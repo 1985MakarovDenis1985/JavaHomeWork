@@ -1,10 +1,11 @@
 package models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 
-public class Photo {
+public class Photo implements Comparable<Photo>{
     int albumId;
     int photoId;
     String title;
@@ -64,6 +65,19 @@ public class Photo {
     @Override
     public int hashCode() {
         return Objects.hash(albumId, photoId);
+    }
+
+
+    @Override
+    public int compareTo(Photo o) {
+
+        if (LocalDate.from(this.getDate()).isAfter(LocalDate.from(o.getDate()))) {
+            return -1;
+        } else if (LocalDate.from(this.getDate()).isBefore(LocalDate.from(o.getDate()))) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
 }

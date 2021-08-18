@@ -1,6 +1,9 @@
 package models;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 
 public class Album implements IAlbum {
@@ -11,39 +14,65 @@ public class Album implements IAlbum {
         this.photos = new Photo[capacity];
     }
 
+//    @Override
+//    public boolean addPhoto(Photo photo) {
+//        try {
+//            if (getPhotoFromAlbum(photo.getAlbumId(), photo.getPhotoId()) == null) {
+////            Photo[] start = Arrays.copyOfRange(photos, 0, Math.abs(index + 1)+1);
+//                photos[size] = photo;
+//                size++;
+//                return true;
+//            }
+//        } catch (ArrayIndexOutOfBoundsException e) {
+//            System.out.println("Sorry, memory is full");
+//            return false;
+//        }
+//        return false;
+//    }
+
     @Override
     public boolean addPhoto(Photo photo) {
-        try {
-            if (getPhotoFromAlbum(photo.getAlbumId(), photo.getPhotoId()) == null) {
-//            Photo[] start = Arrays.copyOfRange(photos, 0, Math.abs(index + 1)+1);
-                photos[size] = photo;
-                size++;
-                return true;
-            }
-        }catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Sorry, memory is full");
+//        try {
+        if (size == photos.length || getPhotoFromAlbum(photo.getAlbumId(), photo.getPhotoId()) != null) {
             return false;
         }
-     return false;
+
+        int index = searchBinary(photo);
+        index = index >= 0 ? index : -index - 1;
+
+        Photo[] res = new Photo[photos.length + 1];
+        System.arraycopy(photos, 0, res, 0, index);
+        System.arraycopy(photos, index, res, index + 1, size - index);
+        res[index] = photo;
+
+        photos = res;
+        size++;
+        return true;
+
+
+//        } catch (ArrayIndexOutOfBoundsException e) {
+//            System.out.println("Sorry, memory is full");
+//            return false;
+//        }
     }
 
 
-//    public int searchBinary(Photo photo) {
-//        int left = 0;
-//        int right = size - 1;
-//        int middle = 0;
-//        while (left < right) {
-//            middle = (left + right) / 2;
-//            if (LocalDate.from(photos[middle].getDate()).isAfter(LocalDate.from(photo.getDate()))) {
-//                right = middle;
-//            } else if (LocalDate.from(photos[middle].getDate()).isBefore(LocalDate.from(photo.getDate()))) {
-//                left = middle + 1;
-//            } else {
-//                return middle;
-//            }
-//        }
-//        return -(left + 1);
-//    }
+    public int searchBinary(Photo photo) {
+        int left = 0;
+        int right = this.size;
+        int middle = 0;
+        while (left < right) {
+            middle = (left + right) / 2;
+            if (LocalDate.from(photos[middle].getDate()).isAfter(LocalDate.from(photo.getDate()))) {
+                right = middle;
+            } else if (LocalDate.from(photos[middle].getDate()).isBefore(LocalDate.from(photo.getDate()))) {
+                left = middle + 1;
+            } else {
+                return middle;
+            }
+        }
+        return -(left + 1);
+    }
 
 
     @Override
@@ -60,10 +89,10 @@ public class Album implements IAlbum {
     @Override
     public boolean updatePhoto(int albumId, int photoId, String url) {
         Photo p = getPhotoFromAlbum(albumId, photoId);
-            if (p != null) {
-                p.setUrl(url);
-                return true;
-            }
+        if (p != null) {
+            p.setUrl(url);
+            return true;
+        }
         return false;
     }
 
@@ -124,5 +153,11 @@ public class Album implements IAlbum {
     @Override
     public int size() {
         return size;
+    }
+
+    public void printArr() {
+        for (int i = 0; i < size; i++) {
+            System.out.println(photos[i]);
+        }
     }
 }
