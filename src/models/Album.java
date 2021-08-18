@@ -14,21 +14,7 @@ public class Album implements IAlbum {
         this.photos = new Photo[capacity];
     }
 
-//    @Override
-//    public boolean addPhoto(Photo photo) {
-//        try {
-//            if (getPhotoFromAlbum(photo.getAlbumId(), photo.getPhotoId()) == null) {
-////            Photo[] start = Arrays.copyOfRange(photos, 0, Math.abs(index + 1)+1);
-//                photos[size] = photo;
-//                size++;
-//                return true;
-//            }
-//        } catch (ArrayIndexOutOfBoundsException e) {
-//            System.out.println("Sorry, memory is full");
-//            return false;
-//        }
-//        return false;
-//    }
+
 
     @Override
     public boolean addPhoto(Photo photo) {
@@ -150,5 +136,11 @@ public class Album implements IAlbum {
     @Override
     public int size() {
         return size;
+    }
+
+    public void printArr() {
+        for (int i = 0; i < size; i++) {
+            System.out.println(photos[i]);
+        }
     }
 }
