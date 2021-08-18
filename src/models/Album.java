@@ -17,12 +17,18 @@ public class Album implements IAlbums {
 
     @Override
     public boolean addPhoto(Photo photo) {
-        if (size < photos.length && getPhotoFromAlbum(photo.getAlbumId(), photo.getPhotoId()) == null) {
-            photos[size] = photo;
-            size++;
-            return true;
+        try {
+            if (getPhotoFromAlbum(photo.getAlbumId(), photo.getPhotoId()) == null) {
+//            Photo[] start = Arrays.copyOfRange(photos, 0, Math.abs(index + 1)+1);
+                photos[size] = photo;
+                size++;
+                return true;
+            }
+        }catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Sorry, memory is full");
+            return false;
         }
-        return false;
+     return false;
     }
 
 
@@ -57,12 +63,11 @@ public class Album implements IAlbums {
 
     @Override
     public boolean updatePhoto(int albumId, int photoId, String url) {
-        for (int i = 0; i < size; i++) {
-            if (photos[i].photoId == photoId && photos[i].albumId == albumId) {
-                photos[i].setUrl(url);
+        Photo p = getPhotoFromAlbum(albumId, photoId);
+            if (p != null) {
+                p.setUrl(url);
                 return true;
             }
-        }
         return false;
     }
 
@@ -127,7 +132,7 @@ public class Album implements IAlbums {
     }
 
     public void printArr() {
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < photos.length; i++) {
             System.out.println(photos[i]);
         }
     }
