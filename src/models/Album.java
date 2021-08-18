@@ -32,28 +32,20 @@ public class Album implements IAlbum {
 
     @Override
     public boolean addPhoto(Photo photo) {
-//        try {
-        if (size == photos.length || getPhotoFromAlbum(photo.getAlbumId(), photo.getPhotoId()) != null) {
+        try {
+            if (size == photos.length || getPhotoFromAlbum(photo.getAlbumId(), photo.getPhotoId()) != null) {
+                return false;
+            }
+            int index = searchBinary(photo);
+            index = index >= 0 ? index : -index - 1;
+            System.arraycopy(photos, index, photos, index + 1, size - index);
+            photos[index] = photo;
+            size++;
+            return true;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Sorry, memory is full");
             return false;
         }
-
-        int index = searchBinary(photo);
-        index = index >= 0 ? index : -index - 1;
-
-        Photo[] res = new Photo[photos.length + 1];
-        System.arraycopy(photos, 0, res, 0, index);
-        System.arraycopy(photos, index, res, index + 1, size - index);
-        res[index] = photo;
-
-        photos = res;
-        size++;
-        return true;
-
-
-//        } catch (ArrayIndexOutOfBoundsException e) {
-//            System.out.println("Sorry, memory is full");
-//            return false;
-//        }
     }
 
 
@@ -74,12 +66,15 @@ public class Album implements IAlbum {
         return -(left + 1);
     }
 
-
+// 19 19 23
     @Override
     public boolean removePhoto(int albumId, int photoId) {
         for (int i = 0; i < size; i++) {
             if (photos[i].photoId == photoId && photos[i].albumId == albumId) {
-                photos[i] = photos[--size];
+                for (int j = i; j < photos.length - 1; j++) {
+                    photos[j] = photos[j + 1];
+                }
+                size--;
                 return true;
             }
         }
