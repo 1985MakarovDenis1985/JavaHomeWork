@@ -48,6 +48,8 @@ class AlbumsTest {
         assertNull(albums.getPhotoFromAlbum(2, 2000));
         assertEquals(3, albums.size());
         assertFalse(albums.removePhoto(2, 2000));
+        assertEquals(3, albums.size());
+        assertFalse(albums.removePhoto(2, 2000));
     }
 
     @Test

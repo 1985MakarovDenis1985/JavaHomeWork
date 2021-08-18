@@ -71,10 +71,12 @@ public class Album implements IAlbum {
     public boolean removePhoto(int albumId, int photoId) {
         for (int i = 0; i < size; i++) {
             if (photos[i].photoId == photoId && photos[i].albumId == albumId) {
-                for (int j = i; j < photos.length - 1; j++) {
-                    photos[j] = photos[j + 1];
-                }
+                System.arraycopy(photos, i+1, photos, i, size - i-1);
+//                for (int j = i; j < photos.length - 1; j++) {
+//                    photos[j] = photos[j + 1];
+//                }
                 size--;
+                System.out.println(size);
                 return true;
             }
         }
@@ -148,11 +150,5 @@ public class Album implements IAlbum {
     @Override
     public int size() {
         return size;
-    }
-
-    public void printArr() {
-        for (int i = 0; i < size; i++) {
-            System.out.println(photos[i]);
-        }
     }
 }
