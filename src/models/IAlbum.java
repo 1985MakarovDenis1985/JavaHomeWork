@@ -4,7 +4,7 @@ import models.Photo;
 
 import java.time.LocalDate;
 
-public interface IAlbums {
+public interface IAlbum {
     boolean addPhoto(Photo photo);
     boolean removePhoto(int photoId, int albumId);
     boolean updatePhoto(int photoId, int albumId, String url);

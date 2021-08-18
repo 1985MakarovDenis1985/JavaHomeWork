@@ -1,6 +1,6 @@
 package tests;
 
-import models.IAlbums;
+import models.IAlbum;
 import models.Album;
 import models.Photo;
 import org.junit.jupiter.api.Assertions;
@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AlbumTest {
+class AlbumsTest {
 
-    IAlbums albums;
+    IAlbum albums;
     Photo[] photos;
 
     @BeforeEach

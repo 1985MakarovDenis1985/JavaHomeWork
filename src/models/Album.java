@@ -3,11 +3,11 @@ package models;
 import java.time.LocalDate;
 
 
-public class Albums implements IAlbums {
+public class Album implements IAlbum {
     Photo[] photos;
     int size;
 
-    public Albums(int capacity) {
+    public Album(int capacity) {
         this.photos = new Photo[capacity];
     }
 
