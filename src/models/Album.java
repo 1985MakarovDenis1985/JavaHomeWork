@@ -129,10 +129,4 @@ public class Album implements IAlbums {
     public int size() {
         return size;
     }
-
-    public void printArr() {
-        for (int i = 0; i < photos.length; i++) {
-            System.out.println(photos[i]);
-        }
-    }
 }
