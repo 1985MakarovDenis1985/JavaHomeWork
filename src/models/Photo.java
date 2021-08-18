@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 
-public class Photo{
+public class Photo {
     int albumId;
     int photoId;
     String title;
@@ -58,11 +58,12 @@ public class Photo{
         if (this == o) return true;
         if (!(o instanceof Photo)) return false;
         Photo photo = (Photo) o;
-        return albumId == photo.albumId && photoId == photo.photoId && Objects.equals(title, photo.title) && Objects.equals(url, photo.url) && Objects.equals(date, photo.date);
+        return albumId == photo.albumId && photoId == photo.photoId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(albumId, photoId, title, url, date);
+        return Objects.hash(albumId, photoId);
     }
+
 }

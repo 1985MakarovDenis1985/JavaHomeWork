@@ -32,22 +32,22 @@ public class Album implements IAlbums {
     }
 
 
-    public int searchBinary(Photo photo) {
-        int left = 0;
-        int right = size - 1;
-        int middle = 0;
-        while (left < right) {
-            middle = (left + right) / 2;
-            if (LocalDate.from(photos[middle].getDate()).isAfter(LocalDate.from(photo.getDate()))) {
-                right = middle;
-            } else if (LocalDate.from(photos[middle].getDate()).isBefore(LocalDate.from(photo.getDate()))) {
-                left = middle + 1;
-            } else {
-                return middle;
-            }
-        }
-        return -(left + 1);
-    }
+//    public int searchBinary(Photo photo) {
+//        int left = 0;
+//        int right = size - 1;
+//        int middle = 0;
+//        while (left < right) {
+//            middle = (left + right) / 2;
+//            if (LocalDate.from(photos[middle].getDate()).isAfter(LocalDate.from(photo.getDate()))) {
+//                right = middle;
+//            } else if (LocalDate.from(photos[middle].getDate()).isBefore(LocalDate.from(photo.getDate()))) {
+//                left = middle + 1;
+//            } else {
+//                return middle;
+//            }
+//        }
+//        return -(left + 1);
+//    }
 
 
     @Override
@@ -73,10 +73,9 @@ public class Album implements IAlbums {
 
     @Override
     public Photo getPhotoFromAlbum(int albumId, int photoId) {
-        Photo photo;
         for (int i = 0; i < size; i++) {
             if (photos[i].photoId == photoId && photos[i].albumId == albumId) {
-                photo = photos[i];
+                Photo photo = photos[i];
                 return photo;
             }
         }
