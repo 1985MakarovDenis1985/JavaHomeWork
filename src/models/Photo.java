@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 
-public class Photo{
+public class Photo implements Comparable<Photo>{
     int albumId;
     int photoId;
     String title;
@@ -59,13 +59,17 @@ public class Photo{
         if (this == o) return true;
         if (!(o instanceof Photo)) return false;
         Photo photo = (Photo) o;
-        return albumId == photo.albumId && photoId == photo.photoId;
+        return albumId == photo.albumId && photoId == photo.photoId && Objects.equals(title, photo.title) && Objects.equals(url, photo.url) && Objects.equals(date, photo.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(albumId, photoId);
+        return Objects.hash(albumId, photoId, title, url, date);
     }
 
-
+    @Override
+    public int compareTo(Photo o) {
+        return this.date.compareTo(o.date);
+//        return LocalDate.from(this.getDate()).compareTo(LocalDate.from(o.getDate()));
+    }
 }
