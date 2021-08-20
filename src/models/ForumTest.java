@@ -45,9 +45,11 @@ class ForumTest extends Forum {
         assertFalse(forum.removePost(2));
     }
 
-//    @Test
-//    void testUpdatePost() {
-//    }
+    @Test
+    void testUpdatePost() {
+        assertTrue(forum.updatePost(4, "Updated"));
+        assertFalse(forum.updatePost(7, "Updated"));
+    }
 
     @Test
     void testGetPostById() {

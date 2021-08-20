@@ -63,6 +63,11 @@ public class Forum implements IForum {
 
     @Override
     public boolean updatePost(int postId, String content) {
+        Post p = getPostById(postId);
+        if (p != null) {
+            p.setContent(content);
+            return true;
+        }
         return false;
     }
 

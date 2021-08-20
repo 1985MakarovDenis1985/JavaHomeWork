@@ -40,7 +40,8 @@ public class Controller {
         forum.addPost(p);
 
         forum.removePost(5);
-        forum.removePost(3);
+//        forum.removePost(3);
+        forum.updatePost(4, "Updated");
 
         forum.printForum();
         System.out.println(forum.size());
