@@ -56,7 +56,7 @@ public class Post implements Comparable<Post>{
 
     @Override
     public int compareTo(Post otherPost) {
-        return this.postId - otherPost.postId;
-//        return this.date.compareTo(otherPost.date);
+//        return this.postId - otherPost.postId;
+        return this.date.compareTo(otherPost.date);
     }
 }
