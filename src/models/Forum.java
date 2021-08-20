@@ -6,39 +6,47 @@ import java.util.Arrays;
 public class Forum implements IForum {
     Post[] posts = new Post[3];
     int size;
-    private Post[] newPostsArr;
 
+    private void findIndex(Post[] arr, Post post){
+        int index = Arrays.binarySearch(posts, 0, size, post);
+        index = index > 0 ? index : -index - 1;
+        System.arraycopy(arr, index, arr, index + 1, size - index);
+        arr[index] = post;
+    }
 
     @Override
     public boolean addPost(Post post) {
         try {
-            if (getPostById(post.postId) != null){
+            if (getPostById(post.postId) != null) {
                 return false;
             }
-            int index = Arrays.binarySearch(posts,0, size, post);
-            index = index > 0 ? index : -index-1;
-            System.arraycopy(posts, index, posts, index + 1, size - index);
-            posts[index] = post;
+            findIndex(posts, post);
+
+//            int index = Arrays.binarySearch(posts, 0, size, post);
+//            index = index > 0 ? index : -index - 1;
+//            System.arraycopy(posts, index, posts, index + 1, size - index);
+//            posts[index] = post;
+
             size++;
             return true;
-        }
-        catch (ArrayIndexOutOfBoundsException e) {
-            Post[] newPosts = new Post[size + 3];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Post[] newPosts = new Post[posts.length + 3];
+
             for (int i = 0; i < posts.length; i++) {
                 newPosts[i] = posts[i];
             }
-            int index = Arrays.binarySearch(newPosts,0, size, post);
-            index = index > 0 ? index : -index-1;
-            System.arraycopy(newPosts, index, newPosts, index + 1, size - index);
+            findIndex(newPosts, post);
 
+//            int index = Arrays.binarySearch(newPosts, 0, size, post);
+//            index = index > 0 ? index : -index - 1;
+//            System.arraycopy(newPosts, index, newPosts, index + 1, size - index);
+//            newPosts[index] = post;
 
             posts = newPosts;
-            posts[index] = post;
             size++;
             return true;
         }
     }
-
 
 
     @Override
@@ -71,7 +79,7 @@ public class Forum implements IForum {
         return this.size;
     }
 
-    public void printForum(){
+    public void printForum() {
         for (int i = 0; i < size; i++) {
             System.out.println(posts[i]);
         }

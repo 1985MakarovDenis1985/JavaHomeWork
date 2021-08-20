@@ -22,10 +22,10 @@ public class Controller {
         forum.addPost(new Post("MJs",3, "smt", "Hey"));
         forum.addPost(new Post("SmJ",7, "smt", "By"));
         forum.addPost(new Post("Jms",2, "smt", "Hello"));
-        forum.addPost(new Post("MJs",6, "smt", "Hey"));
-        forum.addPost(new Post("SMJ",4, "smt", "Good"));
-        forum.addPost(new Post("SmJ",5, "smt", "By"));
-        forum.addPost(new Post("SmJ",8, "smt", "By"));
+//        forum.addPost(new Post("MJs",6, "smt", "Hey"));
+//        forum.addPost(new Post("SMJ",4, "smt", "Good"));
+//        forum.addPost(new Post("SmJ",5, "smt", "By"));
+//        forum.addPost(new Post("SmJ",8, "smt", "By"));
 
 
         forum.printForum();
