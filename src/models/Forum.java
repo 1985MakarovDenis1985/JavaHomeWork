@@ -1,6 +1,7 @@
 package models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class Forum implements IForum {
@@ -91,12 +92,37 @@ public class Forum implements IForum {
 
     @Override
     public Post[] getByAuthor(String author) {
-        return new Post[0];
+        Post[] arrOfAuthor;
+
+        int count = 0;
+        for (int i = 0; i < size; i++) {
+            if (posts[i].author.equals(author)) count++;
+        }
+        arrOfAuthor = new Post[count];
+        count = 0;
+        for (int i = 0; i < size; i++ ) {
+            if (posts[i].author.equals(author)){
+                arrOfAuthor[count] = posts[i];
+                count++;
+            }
+        }
+        return arrOfAuthor;
     }
 
     @Override
     public Post[] getByAuthor(String author, LocalDate dateFrom, LocalDate dateTo) {
-        return new Post[0];
+        Post[] arrOfAuthor = getByAuthor(author);
+        Post startIndex = new Post(" ", 0, "", "");
+        startIndex.setDate(dateFrom.atStartOfDay());
+        Post endIndex = new Post(" ", 0, "", "");
+        endIndex.setDate(dateTo.atStartOfDay());
+
+        int start = -Arrays.binarySearch(arrOfAuthor, 0, arrOfAuthor.length, startIndex) -1 ;
+        int end = -Arrays.binarySearch(arrOfAuthor, 0, arrOfAuthor.length, endIndex) - 1;
+
+        Post[] arrOfDate = new Post[end - start];
+        System.arraycopy(arrOfAuthor, start, arrOfDate, 0, end-start);
+        return arrOfDate;
     }
 
     @Override
