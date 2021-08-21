@@ -34,8 +34,10 @@ class ForumTest extends Forum {
 
     @Test
     void testAddPost() {
-        forum.addPost(new Post("Nelson", 7, "smt", "Hey"));
+        Post p = new Post("Nelson", 7, "smt", "Hey");
+        forum.addPost(p);
         assertEquals(5, forum.size());
+        assertEquals(p, forum.getPostById(7));
         forum.addPost(new Post("Jimmy", 3, "smt", "Hey"));
         assertEquals(5, forum.size());
     }
