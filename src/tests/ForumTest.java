@@ -1,5 +1,8 @@
-package models;
+package tests;
 
+import models.Forum;
+import models.IForum;
+import models.Post;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -82,7 +85,6 @@ class ForumTest extends Forum {
         forum.addPost(p2);
         Post[] arr = forum.getByAuthor("Jimmy", LocalDate.of(2019, 1, 8), LocalDate.of(2022, 12, 8));
         assertEquals(3, arr.length);
-
         assertEquals(p1, forum.getPostById(7));
         assertEquals(p2, forum.getPostById(8));
         assertEquals(new Post("Jimmy", 3, "smt", "Hello"), forum.getPostById(3));

@@ -1,43 +1,33 @@
 package models;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.function.Predicate;
 
 public class Forum implements IForum {
-    Post[] posts = new Post[3];
+    /* chunks of size 3i*/
+    private final int chunksOfArr = 3;
+    Post[] posts = new Post[chunksOfArr];
     int size;
+
 
     @Override
     public boolean addPost(Post post) {
         try {
-            if (getPostById(post.postId) != null) {
-                return false;
-            }
+            if (getPostById(post.postId) != null) return false;
             addNewPostWithSort(posts, post);
-//            int index = Arrays.binarySearch(posts, 0, size, post);
-//            index = index > 0 ? index : -index - 1;
-//            System.arraycopy(posts, index, posts, index + 1, size - index);
-//            posts[index] = post;
             size++;
             return true;
         } catch (ArrayIndexOutOfBoundsException e) {
-            Post[] newPosts = new Post[posts.length + 3];
-//            for (int i = 0; i < size; i++) {
-//                newPosts[i] = posts[i];
-//            }
+            /* increase size of arr while length is end by chunks*/
+            Post[] newPosts = new Post[posts.length + chunksOfArr];
             System.arraycopy(posts, 0, newPosts, 0, size);
             addNewPostWithSort(newPosts, post);
-//            int index = Arrays.binarySearch(newPosts, 0, size, post);
-//            index = index > 0 ? index : -index - 1;
-//            System.arraycopy(newPosts, index, newPosts, index + 1, size - index);
-//            newPosts[index] = post;
             posts = newPosts;
             size++;
             return true;
         }
     }
-
     private void addNewPostWithSort(Post[] arr, Post post) {
         int index = Arrays.binarySearch(posts, 0, size, post);
         index = index > 0 ? index : -index - 1;
@@ -54,7 +44,8 @@ public class Forum implements IForum {
         System.arraycopy(posts, index + 1, posts, index, size - index - 1);
         size--;
 
-        if (size%3 == 0){
+        /* decrease size of arr while length decreased by chunks*/
+        if (size% chunksOfArr == 0){
             Post[] newPosts = new Post[size];
             System.arraycopy(posts, 0, newPosts, 0, size);
             posts = newPosts;
@@ -72,6 +63,14 @@ public class Forum implements IForum {
         return false;
     }
 
+    @Override
+    public Post getPostById(int postId) {
+        int index = searchIndex(postId);
+        if (index != -1) {
+            return posts[index];
+        }
+        return null;
+    }
     private int searchIndex(int postId) {
         for (int i = 0; i < size; i++) {
             if (posts[i].postId == postId) {
@@ -82,18 +81,8 @@ public class Forum implements IForum {
     }
 
     @Override
-    public Post getPostById(int postId) {
-        int index = searchIndex(postId);
-        if (index != -1) {
-            return posts[index];
-        }
-        return null;
-    }
-
-    @Override
     public Post[] getByAuthor(String author) {
         Post[] arrOfAuthor;
-
         int count = 0;
         for (int i = 0; i < size; i++) {
             if (posts[i].author.equals(author)) count++;
@@ -111,28 +100,38 @@ public class Forum implements IForum {
 
     @Override
     public Post[] getByAuthor(String author, LocalDate dateFrom, LocalDate dateTo) {
-        Post[] arrOfAuthor = getByAuthor(author);
-        Post startIndex = new Post(" ", 0, "", "");
-        startIndex.setDate(dateFrom.atStartOfDay());
-        Post endIndex = new Post(" ", 0, "", "");
-        endIndex.setDate(dateTo.atStartOfDay());
+        Post[] arrOfAuthor;
+        int count = 0;
+        for (int i = 0; i < size; i++) {
+            if (posts[i].author.equals(author) && posts[i].date.isAfter(dateFrom.atStartOfDay()) && posts[i].date.isBefore(dateTo.atStartOfDay()))
+                count++;
+        }
 
-        int start = -Arrays.binarySearch(arrOfAuthor, 0, arrOfAuthor.length, startIndex) -1 ;
-        int end = -Arrays.binarySearch(arrOfAuthor, 0, arrOfAuthor.length, endIndex) - 1;
+        arrOfAuthor = new Post[count];
+        count = 0;
+        for (int i = 0; i < size; i++ ) {
+            if (posts[i].author.equals(author) && posts[i].date.isAfter(dateFrom.atStartOfDay()) && posts[i].date.isBefore(dateTo.atStartOfDay())){
+                arrOfAuthor[count] = posts[i];
+                count++;
+            }
+        }
+        return arrOfAuthor;
 
-        Post[] arrOfDate = new Post[end - start];
-        System.arraycopy(arrOfAuthor, start, arrOfDate, 0, end-start);
-        return arrOfDate;
+//---- solution with binary search ---- //
+//        Post[] arrOfAuthor = getByAuthor(author);
+//        Post startIndex = new Post(" ", 0, "", "");
+//        startIndex.setDate(dateFrom.atStartOfDay());
+//        Post endIndex = new Post(" ", 0, "", "");
+//        endIndex.setDate(dateTo.atStartOfDay());
+//
+//        int start = -Arrays.binarySearch(arrOfAuthor, 0, arrOfAuthor.length, startIndex) -1 ;
+//        int end = -Arrays.binarySearch(arrOfAuthor, 0, arrOfAuthor.length, endIndex) - 1;
+//
+//        Post[] arrOfDate = new Post[end - start];
+//        System.arraycopy(arrOfAuthor, start, arrOfDate, 0, end-start);
+//        return arrOfDate;
     }
 
     @Override
-    public int size() {
-        return this.size;
-    }
-
-    public void printForum() {
-        for (int i = 0; i < size; i++) {
-            System.out.println(posts[i]);
-        }
-    }
+    public int size() {return this.size;}
 }
