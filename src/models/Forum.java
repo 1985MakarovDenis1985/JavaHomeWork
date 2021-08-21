@@ -6,8 +6,8 @@ import java.util.function.Predicate;
 
 public class Forum implements IForum {
     /* chunks of size 3i*/
-    private final int chunksOfArr = 3;
-    Post[] posts = new Post[chunksOfArr];
+    private final int CHUNKS_OF_SIZE = 3;
+    Post[] posts = new Post[CHUNKS_OF_SIZE];
     int size;
 
 
@@ -20,7 +20,7 @@ public class Forum implements IForum {
             return true;
         } catch (ArrayIndexOutOfBoundsException e) {
             /* increase size of arr while length is end by chunks*/
-            Post[] newPosts = new Post[posts.length + chunksOfArr];
+            Post[] newPosts = new Post[posts.length + CHUNKS_OF_SIZE];
             System.arraycopy(posts, 0, newPosts, 0, size);
             addNewPostWithSort(newPosts, post);
             posts = newPosts;
@@ -45,7 +45,7 @@ public class Forum implements IForum {
         size--;
 
         /* decrease size of arr while length decreased by chunks*/
-        if (size% chunksOfArr == 0){
+        if (size% CHUNKS_OF_SIZE == 0){
             Post[] newPosts = new Post[size];
             System.arraycopy(posts, 0, newPosts, 0, size);
             posts = newPosts;
