@@ -67,9 +67,8 @@ class NumberBoxTest extends NumberBoxList {
     @Test
     void testUnion() {
         box.union(nd);
-        checkBox(box, 2, 2, 3, 4, 5, 7);
+        checkBox(box, 2, 2, 3, 3, 4, 5, 7);
     }
-
     // ------------------------------------------------------------------------------------ //
 
     @Test

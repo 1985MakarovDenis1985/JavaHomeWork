@@ -3,6 +3,7 @@ package tests;
 import model.NumberBox;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -36,7 +37,7 @@ public class NumberBoxList implements NumberBox {
     public NumberBox getNumberByPredicate(Predicate<Integer> filter) {
         NumberBox nb = new NumberBoxList();
         for (Integer in : numbers) {
-            if (filter.test(in)){
+            if (filter.test(in)) {
                 nb.addNumber(in);
             }
         }
@@ -52,29 +53,44 @@ public class NumberBoxList implements NumberBox {
                 numbers.remove(numbers.lastIndexOf(i));
             }
         }
-
-//        Object[] st = lst.toArray();
-//        for (Object s : st) {
-//            if (lst.indexOf(s) != lst.lastIndexOf(s)) {
-//                lst.remove(lst.lastIndexOf(s));
-//            }
-//        }
     }
 
     @Override
     public void union(NumberBox nb) {
-
+        for (Integer i : nb) {
+            if (!numbers.contains(i)) {
+                numbers.add(i);
+            }
+        }
     }
+
+    @Override
+    public void intersection(NumberBox nb) {
+        Integer[] a = numbers.toArray(new Integer[0]);
+        ArrayList<Integer> temp = new ArrayList<>();
+
+        int count = 0;
+        for (Integer i : nb) {
+            if (i.equals(a[count])) {
+                temp.add(i);
+            }
+            count++;
+        }
+        numbers = temp;
+    }
+
 
     @Override
     public void subtract(NumberBox nb) {
-
+        for (Integer i : nb) {
+            if (numbers.contains(i)) {
+                for (int j = 0; j < numbers.size(); j++) {
+                    numbers.remove(i);
+                }
+            }
+        }
     }
 
-    @Override
-    public void intersection(NumberBox nd) {
-
-    }
 
     @Override
     public Iterator<Integer> iterator() {
