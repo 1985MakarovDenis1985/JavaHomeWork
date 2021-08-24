@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -82,6 +83,12 @@ public class NumberBoxList implements NumberBox {
                 for (int j = 0; j < numbers.size(); j++) {
                     numbers.remove(i);
                 }
+//                Iterator<Integer> iterator = numbers.iterator();
+//                while (iterator.hasNext()) {
+//                    if (iterator.next().equals(i)) {
+//                        iterator.remove();
+//                    }
+//                }
             }
         }
     }
