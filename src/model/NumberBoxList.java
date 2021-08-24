@@ -1,9 +1,6 @@
-package tests;
-
-import model.NumberBox;
+package model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -66,12 +63,10 @@ public class NumberBoxList implements NumberBox {
 
     @Override
     public void intersection(NumberBox nb) {
-        Integer[] a = numbers.toArray(new Integer[0]);
         ArrayList<Integer> temp = new ArrayList<>();
-
         int count = 0;
         for (Integer i : nb) {
-            if (i.equals(a[count])) {
+            if (i.equals(numbers.get(count))) {
                 temp.add(i);
             }
             count++;

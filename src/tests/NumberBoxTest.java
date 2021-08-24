@@ -1,8 +1,9 @@
-package model;
+package tests;
 
+import model.NumberBox;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tests.NumberBoxList;
+import model.NumberBoxList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
