@@ -4,10 +4,7 @@ import comparators.AgeComparator;
 import comparators.LastNameComparator;
 import interfaces.ICitizens;
 import models.Person;
-
-import java.time.LocalDate;
 import java.util.*;
-import java.util.function.Predicate;
 
 public class Citizens implements ICitizens {
     List<Person> idList;
@@ -16,8 +13,7 @@ public class Citizens implements ICitizens {
     static Comparator<Person> lastNameComparator = new LastNameComparator();
     static Comparator<Person> ageComparator = new AgeComparator();
 
-    public Citizens() {
-    }
+    public Citizens() {}
 
     public Citizens(List<Person> citizens) {
         ArrayList temp = new ArrayList(citizens);
@@ -33,9 +29,9 @@ public class Citizens implements ICitizens {
         Collections.sort(lastNamesList, lastNameComparator);
     }
 
-    private void removeRepeated(ArrayList arr) {
-        Person[] people = (Person[]) arr.toArray(new Person[0]);
-        for (Person i : people) {
+    private void removeRepeated(List arr) {
+//        Person[] people = (Person[]) arr.toArray(new Person[0]);
+        for (Object i : arr) {
             if (arr.indexOf(i) != arr.lastIndexOf(i)) {
                 arr.remove(arr.lastIndexOf(i));
             }
@@ -55,6 +51,7 @@ public class Citizens implements ICitizens {
         } else {
             ageList.add(indexAge, person);
         }
+
         int indexLastName = Collections.binarySearch(lastNamesList, person, lastNameComparator);
         if (indexLastName < 0){
             lastNamesList.add(-indexLastName - 1, person);
@@ -110,10 +107,6 @@ public class Citizens implements ICitizens {
 
     @Override
     public Iterable<Person> getAllPersonsSortedByID() {
-        for (Person p : idList) {
-        System.out.println(p);
-
-        }
         return idList;
     }
 
@@ -131,15 +124,4 @@ public class Citizens implements ICitizens {
     public int size() {
         return idList.size();
     }
-
-
-    public Iterator<Person> iterator() {
-        return idList.iterator();
-    }
-//
-//    private void printArr(List arr) {
-//        for (Object p : arr) {
-//            System.out.println(p);
-//        }
-//    }
 }

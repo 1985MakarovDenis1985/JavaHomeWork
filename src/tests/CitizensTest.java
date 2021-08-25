@@ -127,7 +127,8 @@ class CitizensTest{
     @Test
     void testConstructor() {
         citizens = new Citizens(Arrays.asList(
-                new Person(1, "Peter", "Jackson", 23), new Person(1, "Peter", "Jackson", 23)
+                new Person(1, "Peter", "Jackson", 23),
+                new Person(1, "Peter", "Jackson", 23)
         ));
         assertEquals(1, citizens.size());
     }
