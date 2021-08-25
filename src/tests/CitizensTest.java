@@ -32,7 +32,7 @@ class CitizensTest{
         assertFalse(citizens.add(new Person(2, "John", "Smith", 20)));
         assertEquals(4, citizens.size());
         assertTrue(citizens.add(new Person(5, "Pony", "Smith", 27)));
-        assertEquals(4, citizens.size());
+        assertEquals(5, citizens.size());
 
     }
 
