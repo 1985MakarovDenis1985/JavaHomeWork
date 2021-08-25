@@ -1,5 +1,6 @@
 package models;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Person implements Comparable<Person>{
@@ -7,12 +8,14 @@ public class Person implements Comparable<Person>{
     String firstName;
     String lastName;
     int age;
+    LocalDate dateBirthday;
 
-    public Person(int id, String firstName, String lastName, int age) {
+    public Person(int id, String firstName, String lastName, int age, LocalDate dateBirthday) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
+        this.dateBirthday = dateBirthday;
     }
 
     public int getId() {
@@ -39,7 +42,9 @@ public class Person implements Comparable<Person>{
     public void setAge(int age) {
         this.age = age;
     }
-
+    public LocalDate getDateBirthday() {
+        return dateBirthday;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,11 +60,12 @@ public class Person implements Comparable<Person>{
 
     @Override
     public String toString() {
-        return "Person: " +
+        return "Person : " +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", age=" + age;
+                ", age=" + age +
+                ", dateBirthday= " + dateBirthday;
     }
 
     @Override

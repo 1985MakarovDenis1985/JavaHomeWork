@@ -4,6 +4,7 @@ import comparators.AgeComparator;
 import interfaces.ICitizens;
 import models.Person;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -44,12 +45,16 @@ public class Citizens implements ICitizens {
     @Override
     public boolean add(Person person) {
         int indexId = Collections.binarySearch(idList, person);
-        int indexAge = Collections.binarySearch(ageList, person, ageComparator);
-
-
-        if (indexId > 0 && indexAge > 0) return false;
+        if (indexId >= 0) return false;
         idList.add(-indexId - 1, person);
-        ageList.add(-indexAge - 1, person);
+
+        int indexAge = Collections.binarySearch(ageList, person, ageComparator);
+        if (indexAge < 0){
+            ageList.add(-indexAge - 1, person);
+        } else {
+            ageList.add(indexAge, person);
+        }
+
         return true;
     }
 
@@ -63,7 +68,7 @@ public class Citizens implements ICitizens {
 
     @Override
     public Person find(int id) {
-        int index = Collections.binarySearch(idList, new Person(id, " ", " ", 0));
+        int index = Collections.binarySearch(idList, new Person(id, " ", " ", 0, LocalDate.of(1988, 1, 21)));
         if (index < 0) return null;
         return idList.get(index);
     }
@@ -75,23 +80,24 @@ public class Citizens implements ICitizens {
 
     @Override
     public Iterable<Person> find(int minAge, int maxAge) {
-        Person p1 = new Person(0, " ", " ", minAge);
-        Person p2 = new Person(0, " ", " ", maxAge);
-//        ArrayList<Person> temp = new ArrayList<>();
+        Person p1 = new Person(0, " ", " ", minAge, LocalDate.of(1988, 1, 21));
+        Person p2 = new Person(0, " ", " ", maxAge, LocalDate.of(1988, 1, 21));
 
         int indexStart = Collections.binarySearch(ageList, p1, ageComparator);
-        indexStart = (indexStart > 0) ? indexStart : -indexStart - 1;
+        indexStart = (indexStart >= 0) ? indexStart : -indexStart - 1;
+//        System.out.println(indexStart);
 
         int indexFinal = Collections.binarySearch(ageList, p2, ageComparator);
-        indexFinal = (indexFinal > 0) ? indexFinal + 1: -indexFinal - 1;
-
+        indexFinal = (indexFinal >= 0) ? indexFinal + 1 : -indexFinal - 1;
+//        System.out.println(indexFinal);
+//
         List<Person> temp = ageList.subList(indexStart, indexFinal);
 
         for (Person p : temp) {
             System.out.println(p);
         }
 
-        return ageList;
+        return temp;
     }
 
     @Override
