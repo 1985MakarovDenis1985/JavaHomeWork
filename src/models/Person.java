@@ -8,14 +8,12 @@ public class Person implements Comparable<Person>{
     String firstName;
     String lastName;
     int age;
-    LocalDate dateBirthday;
 
-    public Person(int id, String firstName, String lastName, int age, LocalDate dateBirthday) {
+    public Person(int id, String firstName, String lastName, int age) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
-        this.dateBirthday = dateBirthday;
     }
 
     public int getId() {
@@ -42,9 +40,7 @@ public class Person implements Comparable<Person>{
     public void setAge(int age) {
         this.age = age;
     }
-    public LocalDate getDateBirthday() {
-        return dateBirthday;
-    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,8 +60,7 @@ public class Person implements Comparable<Person>{
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                ", dateBirthday= " + dateBirthday;
+                ", age=" + age;
     }
 
     @Override

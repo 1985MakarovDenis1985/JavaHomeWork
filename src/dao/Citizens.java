@@ -1,6 +1,7 @@
 package dao;
 
 import comparators.AgeComparator;
+import comparators.LastNameComparator;
 import interfaces.ICitizens;
 import models.Person;
 
@@ -12,7 +13,7 @@ public class Citizens implements ICitizens {
     List<Person> idList;
     List<Person> lastNamesList;
     List<Person> ageList;
-    static Comparator<Person> lastNameComparator;
+    static Comparator<Person> lastNameComparator = new LastNameComparator();
     static Comparator<Person> ageComparator = new AgeComparator();
 
     public Citizens() {
@@ -24,12 +25,12 @@ public class Citizens implements ICitizens {
 
         idList = new ArrayList<>(temp);
         Collections.sort(idList);
+
         ageList = new ArrayList<>(temp);
         Collections.sort(ageList, ageComparator);
 
-//        printArr(ageList);
-//        Collections.sort(lastNamesList = new ArrayList<Person>(citizens));
-//        Collections.sort(ageList = new ArrayList<Person>(citizens));
+        lastNamesList = new ArrayList<>(temp);
+        Collections.sort(lastNamesList, lastNameComparator);
     }
 
     private void removeRepeated(ArrayList arr) {
@@ -54,6 +55,12 @@ public class Citizens implements ICitizens {
         } else {
             ageList.add(indexAge, person);
         }
+        int indexLastName = Collections.binarySearch(lastNamesList, person, lastNameComparator);
+        if (indexLastName < 0){
+            lastNamesList.add(-indexLastName - 1, person);
+        } else {
+            lastNamesList.add(indexLastName, person);
+        }
 
         return true;
     }
@@ -68,51 +75,56 @@ public class Citizens implements ICitizens {
 
     @Override
     public Person find(int id) {
-        int index = Collections.binarySearch(idList, new Person(id, " ", " ", 0, LocalDate.of(1988, 1, 21)));
+        int index = Collections.binarySearch(idList, new Person(id, " ", " ", 0));
         if (index < 0) return null;
         return idList.get(index);
     }
 
     @Override
     public Iterable<Person> find(String lastName) {
-        return null;
+        Person p1 = new Person(Integer.MIN_VALUE, " ", lastName, 0);
+        Person p2 = new Person(Integer.MAX_VALUE, " ", lastName, 0);
+
+        int indexStart = Collections.binarySearch(lastNamesList, p1, lastNameComparator);
+        indexStart = (indexStart >= 0) ? indexStart : -indexStart - 1;
+
+        int indexFinal = Collections.binarySearch(lastNamesList, p2, lastNameComparator);
+        indexFinal = (indexFinal >= 0) ? indexFinal: -indexFinal - 1;
+
+        return lastNamesList.subList(indexStart, indexFinal);
     }
 
     @Override
     public Iterable<Person> find(int minAge, int maxAge) {
-        Person p1 = new Person(0, " ", " ", minAge, LocalDate.of(1988, 1, 21));
-        Person p2 = new Person(0, " ", " ", maxAge, LocalDate.of(1988, 1, 21));
+        Person p1 = new Person(Integer.MIN_VALUE, " ", " ", minAge);
+        Person p2 = new Person(Integer.MAX_VALUE, " ", " ", maxAge);
 
         int indexStart = Collections.binarySearch(ageList, p1, ageComparator);
         indexStart = (indexStart >= 0) ? indexStart : -indexStart - 1;
-//        System.out.println(indexStart);
 
         int indexFinal = Collections.binarySearch(ageList, p2, ageComparator);
-        indexFinal = (indexFinal >= 0) ? indexFinal + 1 : -indexFinal - 1;
-//        System.out.println(indexFinal);
-//
-        List<Person> temp = ageList.subList(indexStart, indexFinal);
+        indexFinal = (indexFinal >= 0) ? indexFinal: -indexFinal - 1;
 
-        for (Person p : temp) {
-            System.out.println(p);
-        }
-
-        return temp;
+        return ageList.subList(indexStart, indexFinal);
     }
 
     @Override
     public Iterable<Person> getAllPersonsSortedByID() {
-        return null;
+        for (Person p : idList) {
+        System.out.println(p);
+
+        }
+        return idList;
     }
 
     @Override
     public Iterable<Person> getAllPersonsSortedByAge() {
-        return null;
+        return ageList;
     }
 
     @Override
     public Iterable<Person> getAllPersonsSortedByLastName() {
-        return null;
+        return lastNamesList;
     }
 
     @Override
@@ -124,11 +136,10 @@ public class Citizens implements ICitizens {
     public Iterator<Person> iterator() {
         return idList.iterator();
     }
-
-    private void printArr(List arr) {
-        for (Object p : arr) {
-            System.out.println(p);
-
-        }
-    }
+//
+//    private void printArr(List arr) {
+//        for (Object p : arr) {
+//            System.out.println(p);
+//        }
+//    }
 }
