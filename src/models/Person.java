@@ -59,7 +59,7 @@ public class Person implements Comparable<Person>{
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", age=";
+                ", age=" + age;
     }
 
     @Override

@@ -1,26 +1,43 @@
 package dao;
 
+import comparators.AgeComparator;
 import interfaces.ICitizens;
 import models.Person;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Citizens implements ICitizens {
     List<Person> idList;
     List<Person> lastNamesList;
     List<Person> ageList;
     static Comparator<Person> lastNameComparator;
-    static Comparator<Person> ageComparator;
+    static Comparator<Person> ageComparator = new AgeComparator();
 
     public Citizens() {
-
     }
 
     public Citizens(List<Person> citizens) {
+        ArrayList temp = new ArrayList(citizens);
+        removeRepeated(temp);
+        printArr(temp);
+
+
         idList = new ArrayList<>(citizens);
+        Collections.sort(idList);
+        ageList = new ArrayList<>(citizens);
+        Collections.sort(ageList, ageComparator);
+//        printArr(ageList);
+//        Collections.sort(lastNamesList = new ArrayList<Person>(citizens));
+//        Collections.sort(ageList = new ArrayList<Person>(citizens));
+    }
+
+    private void removeRepeated(ArrayList arr) {
+        Person[] people = (Person[]) arr.toArray(new Person[0]);
+        for (Person i : people) {
+            if (arr.indexOf(i) != arr.lastIndexOf(i)) {
+                arr.remove(arr.lastIndexOf(i));
+            }
+        }
     }
 
     @Override
@@ -71,5 +88,12 @@ public class Citizens implements ICitizens {
 
     public Iterator<Person> iterator() {
         return idList.iterator();
+    }
+
+    private void printArr(List arr) {
+        for (Object p : arr) {
+            System.out.println(p);
+
+        }
     }
 }

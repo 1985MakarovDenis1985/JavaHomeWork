@@ -1,10 +1,19 @@
 package comparators;
 
+import models.Person;
+
 import java.util.Comparator;
 
-//public class AgeComparator<Person> implements Comparator<T> {
-//    @Override
-//    public int compare(T o1, T o2) {
-//        return 0;
-//    }
-//}
+public class AgeComparator implements Comparator<Person> {
+
+    @Override
+    public int compare(Person o1, Person o2) {
+        if (o1.getAge() > o2.getAge()){
+            return 1;
+        }
+        if (o1.getAge() < o2.getAge()){
+            return -1;
+        }
+        return 0;
+    }
+}
