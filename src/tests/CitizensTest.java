@@ -21,18 +21,18 @@ class CitizensTest{
     @BeforeEach
     void setUp() {
         citizens = new Citizens(Arrays.asList(
-                new Person(1, "Peter", "Jackson", 23),
-                new Person(2, "John", "Smith", 20),
-                new Person(3, "Mary", "Jackson", 20),
-                new Person(4, "Tigran", "Petrosian", 25)
+                new Person(1, "Peter", "Jackson", 23, LocalDate.of(1998, 4, 23)),
+                new Person(2, "John", "Smith", 20, LocalDate.of(2001, 4, 23)),
+                new Person(3, "Mary", "Jackson", 20, LocalDate.of(2001, 4, 23)),
+                new Person(4, "Tigran", "Petrosian", 25, LocalDate.of(1996, 4, 23))
                 ));
     }
 
     @Test
     void testAdd() {
-        assertFalse(citizens.add(new Person(2, "John", "Smith", 20)));
+        assertFalse(citizens.add(new Person(2, "John", "Smith", 20, LocalDate.of(2001, 4, 23))));
         assertEquals(4, citizens.size());
-        assertTrue(citizens.add(new Person(5, "Pony", "Smith", 27)));
+        assertTrue(citizens.add(new Person(5, "Pony", "Smith", 27, LocalDate.of(1994, 4, 23))));
         assertEquals(5, citizens.size());
 
     }
@@ -60,8 +60,8 @@ class CitizensTest{
     void testFindLastName() {
         Iterable<Person> persons = citizens.find("Jackson");
         Person[] expected = {
-                new Person(1, "Peter", "Jackson", 23),
-                new Person(3, "Mary", "Jackson", 20),
+                new Person(1, "Peter", "Jackson", 23, LocalDate.of(1998, 4, 23)),
+                new Person(3, "Mary", "Jackson", 20, LocalDate.of(2001, 4, 23)),
         };
         List<Person> tmp = new ArrayList<>();
         for (Person person : persons) {
@@ -76,9 +76,26 @@ class CitizensTest{
     void testFindAgeAge() {
         Iterable<Person> persons = citizens.find(20,23);
         Person[] expected = {
-                new Person(1, "Peter", "Jackson", 23),
-                new Person(2, "John", "Smith", 20),
-                new Person(3, "Mary", "Jackson", 20),
+                new Person(1, "Peter", "Jackson", 23, LocalDate.of(1998, 4, 23)),
+                new Person(2, "John", "Smith", 20, LocalDate.of(2001, 4, 23)),
+                new Person(3, "Mary", "Jackson", 20, LocalDate.of(2001, 4, 23)),
+        };
+        List<Person> tmp = new ArrayList<>();
+        for (Person person : persons) {
+            tmp.add(person);
+        }
+        Collections.sort(tmp);
+        Person[] actual = tmp.toArray(new Person[0]);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void testFindDateDate() {
+        Iterable<Person> persons = citizens.find(LocalDate.of(1998, 1, 1),LocalDate.of(2001, 12, 1));
+        Person[] expected = {
+                new Person(1, "Peter", "Jackson", 23, LocalDate.of(1998, 4, 23)),
+                new Person(2, "John", "Smith", 20, LocalDate.of(2001, 4, 23)),
+                new Person(3, "Mary", "Jackson", 20, LocalDate.of(2001, 4, 23)),
         };
         List<Person> tmp = new ArrayList<>();
         for (Person person : persons) {
@@ -127,8 +144,8 @@ class CitizensTest{
     @Test
     void testConstructor() {
         citizens = new Citizens(Arrays.asList(
-                new Person(1, "Peter", "Jackson", 23),
-                new Person(1, "Peter", "Jackson", 23)
+                new Person(1, "Peter", "Jackson", 23, LocalDate.of(1998, 4, 23)),
+                new Person(1, "Peter", "Jackson", 23, LocalDate.of(1998, 4, 23))
         ));
         assertEquals(1, citizens.size());
     }
