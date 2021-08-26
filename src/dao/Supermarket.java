@@ -9,30 +9,30 @@ import java.util.Iterator;
 
 public class Supermarket implements ISuperMarket{
 
-    Collection<Product> productCollection ;
+    Collection<Product> products;
 
     public Supermarket() {
-        productCollection = new ArrayList<>();
+        products = new ArrayList<>();
     }
 
     @Override
     public boolean addProduct(Product product) {
-        if (productCollection.contains(product)) return false;
-        productCollection.add(product);
+        if (products.contains(product)) return false;
+        products.add(product);
         return true;
     }
 
     @Override
     public Product removeProduct(long barCode) {
         Product p = findByBarCode(barCode);
-        if (p != null) productCollection.remove(p);
+        if (p != null) products.remove(p);
         return p;
     }
 
 
     @Override
     public Product findByBarCode(long barCode) {
-        for (Product p : productCollection){
+        for (Product p : products){
             if (p.getBarCode() == barCode) return p;
         }
         return null;
@@ -41,7 +41,7 @@ public class Supermarket implements ISuperMarket{
     @Override
     public Iterable<Product> findByCategory(String category) {
         Collection<Product> temp = new ArrayList<>();
-        for (Product p : productCollection) {
+        for (Product p : products) {
             if (p.getCategory().equals(category)) temp.add(p);
         }
         return temp;
@@ -50,7 +50,7 @@ public class Supermarket implements ISuperMarket{
     @Override
     public Iterable<Product> findByBrand(String brand) {
         Collection<Product> temp = new ArrayList<>();
-        for (Product p : productCollection) {
+        for (Product p : products) {
             if (p.getBrand().equals(brand)) temp.add(p);
         }
         return temp;
@@ -59,7 +59,7 @@ public class Supermarket implements ISuperMarket{
     @Override
     public Iterable<Product> findProductWithExpDate() {
         Collection<Product> temp = new ArrayList<>();
-        for (Product p : productCollection) {
+        for (Product p : products) {
             if (p.getExpDate().isBefore(LocalDate.now())) temp.add(p);
         }
         return temp;
@@ -67,12 +67,12 @@ public class Supermarket implements ISuperMarket{
 
     @Override
     public int skuQuantity() {
-        return productCollection.size();
+        return products.size();
     }
 
     @Override
     public Iterator<Product> iterator() {
-        return productCollection.iterator();
+        return products.iterator();
     }
 
     public static void main(String[] args) {
