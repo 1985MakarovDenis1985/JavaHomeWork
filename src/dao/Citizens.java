@@ -7,16 +7,20 @@ import models.Person;
 import java.util.*;
 
 public class Citizens implements ICitizens {
-    List<Person> idList;
-    List<Person> lastNamesList;
-    List<Person> ageList;
-    static Comparator<Person> lastNameComparator = new LastNameComparator();
-    static Comparator<Person> ageComparator = new AgeComparator();
+    private List<Person> idList;
+    private List<Person> lastNamesList;
+    private List<Person> ageList;
+    private static Comparator<Person> lastNameComparator = new LastNameComparator(); // static инициализируем только в этом месте
+    private static Comparator<Person> ageComparator = new AgeComparator();
 
-    public Citizens() {}
+    public Citizens() {
+        idList = new ArrayList<>();
+        ageList = new ArrayList<>();
+        lastNamesList = new ArrayList<>();
+    }
 
     public Citizens(List<Person> citizens) {
-        ArrayList temp = new ArrayList(citizens);
+        ArrayList<Person> temp = new ArrayList<>(citizens);
         removeRepeated(temp);
 
         idList = new ArrayList<>(temp);
@@ -30,7 +34,6 @@ public class Citizens implements ICitizens {
     }
 
     private void removeRepeated(List arr) {
-//        Person[] people = (Person[]) arr.toArray(new Person[0]);
         for (Object i : arr) {
             if (arr.indexOf(i) != arr.lastIndexOf(i)) {
                 arr.remove(arr.lastIndexOf(i));
@@ -67,6 +70,8 @@ public class Citizens implements ICitizens {
         Person p = find(id);
         if (p == null) return false;
         idList.remove(p);
+        ageList.remove(p);
+        lastNamesList.remove(p);
         return false;
     }
 
@@ -104,6 +109,7 @@ public class Citizens implements ICitizens {
 
         return ageList.subList(indexStart, indexFinal);
     }
+
 
     @Override
     public Iterable<Person> getAllPersonsSortedByID() {
