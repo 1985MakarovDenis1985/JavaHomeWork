@@ -6,9 +6,10 @@ import telran.citizens.interfaces.ICitizens;
 import telran.citizens.model.Person;
 
 public class Citizens implements ICitizens {
-    private Set<Person> idList;
-    private TreeSet<Person> lastNameList;
-    private TreeSet<Person> ageList;
+    private Set<Person> idList = new HashSet<>();
+    private TreeSet<Person> lastNameList = new TreeSet<>(lastNameComparator);
+    private TreeSet<Person> ageList = new TreeSet<>(ageComparator);
+
     private static Comparator<Person> lastNameComparator = (o1, o2) -> {
         int res = o1.getLastName().compareTo(o2.getLastName());
         return res != 0 ? res : Integer.compare(o1.getId(), o2.getId());
@@ -19,18 +20,12 @@ public class Citizens implements ICitizens {
     };
 
     public Citizens() {
-        idList = new HashSet<>();
-        lastNameList = new TreeSet<>();
-        ageList = new TreeSet<>();
+
     }
 
     public Citizens(List<Person> citizens) {
-        idList = new HashSet<>(citizens);
-
-        lastNameList = new TreeSet<>(lastNameComparator);
+        idList.addAll(citizens);
         lastNameList.addAll(citizens);
-
-        ageList = new TreeSet<>(ageComparator);
         ageList.addAll(citizens);
     }
 
