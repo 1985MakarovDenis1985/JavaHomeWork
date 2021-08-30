@@ -29,6 +29,8 @@ class CitizensTest {
 
 	@Test
 	void testAdd() {
+		System.out.println(citizens.size());
+
 		assertFalse(citizens.add(new Person(2, "John", "Smith", 20)));
 		assertEquals(4, citizens.size());
 		assertTrue(citizens.add(new Person(5, "John", "Smith", 20)));

@@ -6,7 +6,9 @@ import telran.citizens.interfaces.ICitizens;
 import telran.citizens.model.Person;
 
 public class Citizens implements ICitizens {
-    private Set<Person> idList = new HashSet<>();
+    private TreeSet<Person> idList = new TreeSet<>((o1, o2) -> {
+        return Integer.compare(o1.getId(), o2.getId());
+    });
     private TreeSet<Person> lastNameList = new TreeSet<>((o1, o2) -> {
         int res = o1.getLastName().compareTo(o2.getLastName());
         return res != 0 ? res : Integer.compare(o1.getId(), o2.getId());
@@ -32,6 +34,9 @@ public class Citizens implements ICitizens {
         if (person == null) {
             return false;
         }
+
+        lastNameList.add(person);
+        ageList.add(person);
         return idList.add(person);
     }
 
@@ -49,28 +54,28 @@ public class Citizens implements ICitizens {
 
     @Override
     public Person find(int id) {
-        Person pattern = new Person(id, null, null, 0);
-        if (idList.contains(pattern)) {
-            for (Person p : idList) {
-                if (p.getId() == id) {
-                    return p;
-                }
-            }
-        }
+        Person pattern = idList.floor(new Person(id, "", "", 0));
+        if (pattern.getId() == id) return pattern;
+
+//        for (Person p : idList) {
+//            if (p.getId() == id) {
+//                return p;
+//            }
+//        }
         return null;
     }
 
     @Override
     public Iterable<Person> find(int minAge, int maxAge) {
-        Person pattern1 = new Person(Integer.MIN_VALUE, null, null, minAge);
-        Person pattern2 = new Person(Integer.MAX_VALUE, null, null, maxAge);
+        Person pattern1 = new Person(Integer.MIN_VALUE, "", "", minAge);
+        Person pattern2 = new Person(Integer.MAX_VALUE, "", "", maxAge);
         return ageList.subSet(pattern1, true, pattern2, true);
     }
 
     @Override
     public Iterable<Person> find(String lastName) {
-        Person pattern1 = new Person(Integer.MIN_VALUE, null, lastName, 0);
-        Person pattern2 = new Person(Integer.MAX_VALUE, null, lastName, 0);
+        Person pattern1 = new Person(Integer.MIN_VALUE, "", lastName, 0);
+        Person pattern2 = new Person(Integer.MAX_VALUE, "", lastName, 0);
         return lastNameList.subSet(pattern1, true, pattern2, true);
     }
 
