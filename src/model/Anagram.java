@@ -1,58 +1,31 @@
 package model;
-
-//public class Anagram {
-//    public static boolean isAnagram(String w1, String w2){
-//
-//        String a = new String(w1);
-//        String b = new String(w2);
-//
-//        return false;
-//    }
-//}
-
-
 import java.util.*;
 
-class App {
-    public static boolean isAnagram(String w1, String w2) {
-
-        String[] c = w1.split("");
-        String[] v = w2.split("");
-        Map<String, Integer> res = new HashMap<>();
-        Map<String, Integer> res2 = new HashMap<>();
-        boolean isTrue = true;
-
-        for (int i = 0; i < c.length; i++) {
-            String newValue = c[i].toLowerCase();
+public class Anagram {
+    private static void margeInHashMap(String[] arr, Map<String, Integer> res) {
+        for (int i = 0; i < arr.length; i++) {
+            String newValue = arr[i].toLowerCase();
             res.merge(newValue, 1, (oldValue, value) -> oldValue + 1);
         }
-        for (int i = 0; i < v.length; i++) {
-            String newValue = v[i].toLowerCase();
-            res2.merge(newValue, 1, (oldValue, value) -> oldValue + 1);
-        }
-
-        Iterator it = res2.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-//            System.out.println(pair.getKey());
-//            System.out.println(pair.getValue());
-
-//            System.out.println("r : " + res.get(pair.getKey()));
-//            System.out.println("p : " + pair.getValue());
-            if (!(res.containsKey(pair.getKey()) && (int) pair.getValue() <= res.get(pair.getKey()))) {
-                isTrue = false;
-            }
-//            else {
-//                isTrue =  false;
-//            }
-        }
-        return isTrue;
     }
 
+    public static boolean isAnagram(String w1, String w2) {
+        if (w2 == null || w1 == null) {
+            return false;
+        }
+        Map<String, Integer> wordFirst = new HashMap<>();
+        Map<String, Integer> wordSecond = new HashMap<>();
 
-    public static void main(String[] args) {
-        System.out.println(isAnagram("EhlohheLE", "ELLhhHeE"));
+        margeInHashMap(w1.split(""), wordFirst);
+        margeInHashMap(w2.split(""), wordSecond);
 
-//        isAnagram("EhlohheLE", "Ehlheee");
+        Iterator it = wordSecond.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            if (!(wordFirst.containsKey(pair.getKey()) && (int) pair.getValue() <= wordFirst.get(pair.getKey()))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
