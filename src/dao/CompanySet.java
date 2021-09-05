@@ -34,7 +34,6 @@ public class CompanySet implements ICompany {
     @Override
     public Employee findEmployee(int id) {
         return employees.stream().filter(el -> el.getId() == id).findFirst().orElse(null);
-
     }
 
     @Override
