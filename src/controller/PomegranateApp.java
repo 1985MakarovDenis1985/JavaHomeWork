@@ -5,14 +5,15 @@ import model.Box;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class PomegranateApp {
     public static void main(String[] args) {
         List<Box> boxes = new ArrayList<>();
-        int randomN = Box.randomNum(1, 3);
+        int randomN = Box.randomNum(5, 10);
 
         for (int i = 0; i < randomN; i++) {
-            boxes.add(new Box("box:" + i));
+            boxes.add(new Box("box_" + i));
         }
 //        for (int i = 0; i < boxes.size(); i++) {
 //            System.out.println("box_" + i + " : granads - " + boxes.get(i).getGranates().size());
@@ -21,7 +22,6 @@ public class PomegranateApp {
 //            }
 //            System.out.println();
 //        }
-//        Map<Integer, List<Box>> mapOfBoxes = new HashMap<>();
 
 //        int sumAllSeeds = getAllSeeds(boxes);
 //        System.out.println("all seeds : " + sumAllSeeds);
@@ -29,15 +29,19 @@ public class PomegranateApp {
         int maxSeedInTheBox = getMaxSeedInTheBox(boxes);
         System.out.println("max seeds in one box: " + maxSeedInTheBox);
 
-
-        for (Box box : boxes) {
-            mapOfBoxes.computeIfAbsent(box.getGranates()
-                    .stream().map(t -> t.getSeeds().size()).reduce((a, b) -> a + b)
-                    .orElse(0), k -> new ArrayList<>()).add(box);
-        }
+        Map<Integer, List<Box>> mapOfBoxes = boxes.stream()
+                .collect(Collectors.groupingBy(e -> e.getGranates()
+                        .stream()
+                        .mapToInt(el -> el.getSeeds().size()).sum())
+                );
 
         System.out.println("--------- keys -----------");
-        System.out.println("max arr : " + mapOfBoxes.get(maxSeedInTheBox));
+        System.out.println("max box : " + mapOfBoxes.get(maxSeedInTheBox).size());
+
+        mapOfBoxes.get(maxSeedInTheBox).stream()
+                .forEach(e -> System.out.println(e.getName()));
+
+        System.out.println(mapOfBoxes);
 
     }
 
@@ -49,10 +53,13 @@ public class PomegranateApp {
 
     public static int getMaxSeedInTheBox(List<Box> boxes) {
        return boxes.stream()
-               .map(e -> e.getGranates().stream().map(t -> t.getSeeds().size()).reduce((a, b) -> a + b).orElse(0))
+               .map(e -> e.getGranates().stream()
+                       .map(t -> t.getSeeds().size())
+                       .reduce((a, b) -> a + b)
+                       .orElse(0))
+
                .peek(e -> System.out.println(e))
                .max(Integer::compareTo).orElse(0);
     }
-
 
 }

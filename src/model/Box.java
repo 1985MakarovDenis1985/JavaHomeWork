@@ -42,7 +42,8 @@ public class Box implements Iterable {
 
     @Override
     public String toString() {
-        return name + " " +
-                granates;
+        return name + " "
+//                + granates;
+        ;
     }
 }
