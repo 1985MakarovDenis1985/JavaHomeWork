@@ -10,7 +10,7 @@ public class Box implements Iterable {
     List<Pomegranate> granates = new ArrayList<>();
 
     public Box(String name) {
-        int randomN = randomNum(2, 3);
+        int randomN = randomNum(10, 20);
         for (int i = 0; i < randomN; i++) {
             granates.add(new Pomegranate());
         }
@@ -39,10 +39,4 @@ public class Box implements Iterable {
         return iterator();
     }
 
-    @Override
-    public String toString() {
-        return name + " "
-                + granates;
-//        ;
-    }
 }
