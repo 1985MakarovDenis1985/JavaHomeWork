@@ -2,17 +2,14 @@ package controller;
 
 import model.Box;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class PomegranateApp {
     public static void main(String[] args) {
 
-        int randomN = Box.randomNum(100, 200);
+        int randomN = randomNum(100, 200);
         Map<Integer, ArrayList<Box>> mapOfBoxes = new HashMap<>();
 
         for (int i = 0; i < randomN; i++) {
@@ -48,5 +45,13 @@ public class PomegranateApp {
                 .collect(Collectors.toList());
         StreamSupport.stream(str.spliterator(), false)
                 .forEach(System.out::println);
+    }
+
+    public static int randomNum(int from, int to) {
+        int min = from;
+        int max = to;
+        int diff = max - min;
+        int i = new Random().nextInt(diff + 1);
+        return i += min;
     }
 }

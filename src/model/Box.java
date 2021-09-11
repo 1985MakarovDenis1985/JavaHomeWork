@@ -1,5 +1,7 @@
 package model;
 
+import controller.PomegranateApp;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +12,7 @@ public class Box implements Iterable {
     List<Pomegranate> granates = new ArrayList<>();
 
     public Box(String name) {
-        int randomN = randomNum(10, 20);
+        int randomN = PomegranateApp.randomNum(10, 20);
         for (int i = 0; i < randomN; i++) {
             granates.add(new Pomegranate());
         }
@@ -23,14 +25,6 @@ public class Box implements Iterable {
 
     public List<Pomegranate> getGranates() {
         return granates;
-    }
-
-    public static int randomNum(int from, int to) {
-        int min = from;
-        int max = to;
-        int diff = max - min;
-        int i = new Random().nextInt(diff + 1);
-        return i += min;
     }
 
     @Override
