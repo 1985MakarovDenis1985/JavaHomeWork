@@ -14,15 +14,11 @@ public class PomegranateApp {
 
         for (int i = 0; i < randomN; i++) {
             Box box = new Box("box_" + i);
-            int newKey = box.getGranates()
-                    .stream()
-                    .mapToInt(el -> el.getSeeds().size()).sum();
-            if (!mapOfBoxes.containsKey(newKey)) {
-                mapOfBoxes.put(newKey, new ArrayList<>());
-                mapOfBoxes.get(newKey).add(box);
-            } else {
-                mapOfBoxes.get(newKey).add(box);
-            }
+            int newKey = box.getGranates().stream()
+                    .mapToInt(el -> el.getSeeds().size())
+                    .sum();
+            if (!mapOfBoxes.containsKey(newKey)) mapOfBoxes.put(newKey, new ArrayList<>());
+            mapOfBoxes.get(newKey).add(box);
         }
 
         int getMaxSeedInTheBox = mapOfBoxes.entrySet().stream()
