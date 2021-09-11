@@ -4,11 +4,11 @@ import model.Box;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class PomegranateApp {
     public static void main(String[] args) {
-
         int randomN = randomNum(100, 200);
         Map<Integer, ArrayList<Box>> mapOfBoxes = new HashMap<>();
 
@@ -26,11 +26,11 @@ public class PomegranateApp {
                 .max(Integer::compareTo).orElse(0);
         System.out.println("max seed in box: " + getMaxSeedInTheBox);
 
-        int sumOfSeeds = mapOfBoxes.entrySet().stream()
-                .mapToInt(e -> e.getKey()).sum();
+        int sumOfSeeds = mapOfBoxes.entrySet().stream() // sol where have several boxes with same count of seeds
+                .mapToInt(e -> e.getValue().size() > 1 ? e.getKey() * e.getValue().size() : e.getKey()).sum();
         System.out.println("sum of seeds " + sumOfSeeds);
 
-//  ------ names of boxes just ptint ------ //
+//  ------ names of boxes just print ------ //
 //        mapOfBoxes.get(getMaxSeedInTheBox).stream()
 //                .forEach(e -> System.out.println(e.getName()));
 
