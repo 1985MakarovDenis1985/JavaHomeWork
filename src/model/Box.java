@@ -17,7 +17,6 @@ public class Box implements Iterable {
         this.name = name;
     }
 
-
     public String getName() {
         return name;
     }
@@ -36,7 +35,6 @@ public class Box implements Iterable {
 
     @Override
     public Iterator iterator() {
-        return iterator();
+        return this.iterator();
     }
-
 }

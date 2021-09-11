@@ -20,7 +20,7 @@ public class Pomegranate implements Iterable {
 
     @Override
     public Iterator iterator() {
-        return iterator();
+        return this.iterator();
     }
 
 }
