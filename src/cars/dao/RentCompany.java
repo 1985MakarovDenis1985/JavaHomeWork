@@ -65,6 +65,8 @@ public class RentCompany extends AbstractRentCompany {
         if (!drivers.containsKey(licenceId)) return CarsReturnCode.NO_DRIVER;
         if (cars.get(regNumber).isInUse()) return CarsReturnCode.CAR_IN_USE;
 
+        if (cars.get(regNumber).isIfRemoved()) return CarsReturnCode.CAR_NOT_EXIST;
+
         RentRecord newRent = new RentRecord(licenceId, regNumber, rentDate, rentDays);
         float contractCoast = rentDays * models.get(cars.get(regNumber).getModelName()).getPriceDay();
         newRent.setCoast(contractCoast);
@@ -89,45 +91,56 @@ public class RentCompany extends AbstractRentCompany {
         RentRecord lastRecordOfThisCar = carRecords.get(regNumber).get(carRecords.get(regNumber).size() - 1);
         System.out.println(lastRecordOfThisCar);
 
+        Car thisCar = getCar(regNumber);
+        int thisModelPrice = getModel(thisCar.getModelName()).getPriceDay();
+        int thisModelGasTank = getModel(thisCar.getModelName()).getGasTank();
+
+        lastRecordOfThisCar.setDamages(damages);
+        lastRecordOfThisCar.setReturnDate(returnDate);
+        lastRecordOfThisCar.setGasTankPercent(gasTankPercent);
+
+
         int factDaysRent = returnDate.getDayOfYear() - lastRecordOfThisCar.getRentDate().getDayOfYear();
         int difOfDays = factDaysRent - lastRecordOfThisCar.getRentDays();
 
-        float priceInDay = models.get(cars.get(regNumber).getModelName()).getPriceDay();
+        if (returnDate.isBefore(lastRecordOfThisCar.getRentDate())) {
+            return CarsReturnCode.RETURN_DATE_WRONG;
+        }
 
         // sum coast over rent
         float sumOverRent = 0;
-        if (returnDate.isAfter(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays()))){
-            sumOverRent = difOfDays * (priceInDay + (priceInDay / 100 * finePercent));
+        if (returnDate.isAfter(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays()))) {
+            sumOverRent = difOfDays * (thisModelPrice + (thisModelPrice / 100 * finePercent));
             lastRecordOfThisCar.setCoast(lastRecordOfThisCar.getCoast() + sumOverRent);
         }
 
         // sum coast if car returned before contract
         float factCoast = 0;
-        if (returnDate.isBefore(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays())) && !returnDate.isBefore(lastRecordOfThisCar.getRentDate())){
+        if (returnDate.isBefore(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays())) && !returnDate.isBefore(lastRecordOfThisCar.getRentDate())) {
             factCoast = factDaysRent * models.get(cars.get(regNumber).getModelName()).getPriceDay();
             lastRecordOfThisCar.setCoast(factCoast);
+        }
+
+        // price of petrol
+        float coastPetrol = 0;
+        if (lastRecordOfThisCar.getGasTankPercent() < 100) {
+            System.out.println("Gas : " + thisModelGasTank);
+            System.out.println(Math.round((double) thisModelGasTank / 100 * gasTankPercent));
+            float petrolCoast = (thisModelGasTank - Math.round((double) thisModelGasTank / 100 * gasTankPercent)) * gasPrice;
+            System.out.println(petrolCoast);
+            lastRecordOfThisCar.setCoast(lastRecordOfThisCar.getCoast() + petrolCoast);
+
         }
 
         System.out.println("fact days : " + factDaysRent);
         System.out.println("sum : " + sumOverRent);
 
 
-
-        lastRecordOfThisCar.setDamages(10);
-        lastRecordOfThisCar.setReturnDate(returnDate);
-        lastRecordOfThisCar.setGasTankPercent(100);
-
-//        System.out.println(100 + (100/15));
-//        System.out.println((float) 100 * 1.15);
-//        System.out.println((float) 15/100);
-
-
-
 //        System.out.println(carRecords.get(regNumber));
 //        System.out.println(driverRecords.get(licenceId));
         System.out.println(lastRecordOfThisCar);
 
-        return null;
+        return CarsReturnCode.OK;
     }
 
     @Override

@@ -40,7 +40,7 @@ public class App {
 
 
 
-        myCompany.returnCar("1000", 2000, LocalDate.of(2021, 9, 23), 100, 10);
+        myCompany.returnCar("1000", 2000, LocalDate.of(2021, 9, 23), 90, 10);
 
 
 
