@@ -14,7 +14,7 @@ public interface IRentCompany {
     CarsReturnCode addModel(Model model); // OK, MODEL_EXIST
     CarsReturnCode addCar(Car car); // OK, CAR_EXIST, NO_MODEL
     CarsReturnCode addDriver(Driver driver); // OK, DRIVER_EXIST
-    Model getModel(String modelMane);
+    Model getModel(String modelName);
     Car getCar(String regNumber);
     Driver getDriver(long licence);
     CarsReturnCode rentCar(String regNumber, long licence, LocalDate rentDate, int rentDays); // OK, CAR_IN_USE, CAR_NOT_EXIST, NO_DRIVER

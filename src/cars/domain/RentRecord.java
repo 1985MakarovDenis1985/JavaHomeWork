@@ -1,10 +1,11 @@
 package cars.domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class RentRecord {
 
-    long licence;
+    long licenceId;
     String regNumber;
     LocalDate rentDate;
     LocalDate returnDate;
@@ -15,15 +16,15 @@ public class RentRecord {
 
     public RentRecord() {}
 
-    public RentRecord(long licence, String regNumber, LocalDate rentDate, int rentDays) {
-        this.licence = licence;
+    public RentRecord(long licenceId, String regNumber, LocalDate rentDate, int rentDays) {
+        this.licenceId = licenceId;
         this.regNumber = regNumber;
         this.rentDate = rentDate;
         this.rentDays = rentDays;
     }
 
-    public long getLicence() {
-        return licence;
+    public long getLicenceId() {
+        return licenceId;
     }
 
     public String getRegNumber() {
@@ -71,9 +72,22 @@ public class RentRecord {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RentRecord)) return false;
+        RentRecord that = (RentRecord) o;
+        return licenceId == that.licenceId && Objects.equals(regNumber, that.regNumber) && Objects.equals(rentDate, that.rentDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(licenceId, regNumber, rentDate);
+    }
+
+    @Override
     public String toString() {
         return "RentRecord{" +
-                "licence=" + licence +
+                "licence=" + licenceId +
                 ", regNumber='" + regNumber + '\'' +
                 ", rentDate=" + rentDate +
                 ", returnDate=" + returnDate +

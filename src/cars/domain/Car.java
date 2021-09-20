@@ -18,6 +18,9 @@ public class Car {
         this.regNumber = regNumber;
         this.color = color;
         this.modelName = modelName;
+        this.state = State.EXCELLENT;
+        this.inUse = false;
+        this.ifRemoved = false;
     }
 
     public String getRegNumber() {
