@@ -7,6 +7,7 @@ import cars.domain.Driver;
 import cars.domain.Model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
@@ -17,10 +18,13 @@ public class App {
 
         myCompany.addCar(new Car("1000", "red", "z4"));
         myCompany.addCar(new Car("2000", "red", "polo"));
-        myCompany.addCar(new Car("3000", "red", "z4"));
+        myCompany.addCar(new Car("3000", "red", "z3"));
 
         myCompany.addDriver(new Driver(1000, "Peter", 1975, "0547630001"));
         myCompany.addDriver(new Driver(2000, "Sam", 1986, "0547630002"));
+        myCompany.addDriver(new Driver(3000, "Jim", 1986, "0547630003"));
+        myCompany.addDriver(new Driver(4000, "Sara", 1986, "0547630004"));
+//        myCompany.addDriver(new Driver(2000, "Dodik", 1986, "0547630005"));
 
 //        System.out.println(myCompany.addCar(new Car("1000", "red", "bmw")));
 
@@ -32,16 +36,44 @@ public class App {
 //        myCompany.getAllCars()
 //        .forEach(System.out::println);
 
-        myCompany.rentCar("1000", 2000, LocalDate.of(2021, 9, 21), 5);
-//        myCompany.rentCar("2000", 2000, LocalDate.of(2021, 9, 10), 5);
-//        myCompany.rentCar("1000", 2000, LocalDate.of(2021, 9, 23), 5);
-//        myCompany.rentCar("2000", 2000, LocalDate.of(2021, 9, 28), 5);
-//        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 9, 17), 5);
+        myCompany.rentCar("2000", 1000, LocalDate.of(2021, 11, 21), 5);
+        myCompany.returnCar("2000", 1000, LocalDate.of(2021, 11, 23), 10, 10);
+
+        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 2, 10), 5);
+        myCompany.returnCar("1000", 1000, LocalDate.of(2021, 2, 23), 10, 10);
+
+        myCompany.rentCar("1000", 3000, LocalDate.of(2021, 3, 15), 5);
+        myCompany.returnCar("1000", 3000, LocalDate.of(2021, 3, 23), 10, 10);
+
+        myCompany.rentCar("1000", 2000, LocalDate.of(2021, 4, 15), 5);
+        myCompany.returnCar("1000", 2000, LocalDate.of(2021, 4, 23), 10, 10);
+
+        myCompany.rentCar("3000", 4000, LocalDate.of(2021, 5, 15), 5);
+        myCompany.returnCar("3000", 4000, LocalDate.of(2021, 5, 23), 10, 10);
+
+        myCompany.rentCar("2000", 1000, LocalDate.of(2021, 6, 15), 5);
+        myCompany.returnCar("2000", 1000, LocalDate.of(2021, 6, 23), 10, 10);
+
+        myCompany.rentCar("2000", 1000, LocalDate.of(2021, 6, 15), 5);
+        myCompany.returnCar("2000", 1000, LocalDate.of(2021, 6, 23), 10, 10);
 
 
 
-        myCompany.returnCar("1000", 2000, LocalDate.of(2021, 9, 23), 90, 10);
+        myCompany.getAllRecords()
+                .forEach(System.out::println);
 
+        System.out.println("-------------------");
+        myCompany.getMostPopularModeNames();
+
+//
+//        myCompany.getAllCars()
+//                .forEach(System.out::println);
+//
+//        myCompany.getAllDrivers()
+//                .forEach(System.out::println);
+
+//        List<Driver> drv = myCompany.getCarDrivers("1000");
+//        System.out.println(drv);
 
 
     }

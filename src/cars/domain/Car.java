@@ -35,6 +35,10 @@ public class Car {
         return modelName;
     }
 
+    public State getState() {
+        return state;
+    }
+
     public boolean isInUse() {
         return inUse;
     }

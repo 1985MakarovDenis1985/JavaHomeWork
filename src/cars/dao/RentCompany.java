@@ -5,10 +5,13 @@ import cars.domain.Driver;
 import cars.domain.Model;
 import cars.domain.RentRecord;
 import enums.CarsReturnCode;
+import enums.State;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class RentCompany extends AbstractRentCompany {
     HashMap<String, Car> cars = new HashMap<>(); // number of model, car
@@ -83,13 +86,17 @@ public class RentCompany extends AbstractRentCompany {
         return CarsReturnCode.OK;
     }
 
-    // ========================= next ======================= //
-
     @Override
     public CarsReturnCode returnCar(String regNumber, long licenceId, LocalDate returnDate, int gasTankPercent, int damages) {
-        // get last rent record
+
+        if (!cars.containsKey(regNumber) || !cars.get(regNumber).isInUse()) return CarsReturnCode.CAR_NOT_RENTED;
         RentRecord lastRecordOfThisCar = carRecords.get(regNumber).get(carRecords.get(regNumber).size() - 1);
-        System.out.println(lastRecordOfThisCar);
+
+//        System.out.println(lastRecordOfThisCar);
+        if (!drivers.containsKey(licenceId) || lastRecordOfThisCar.getLicenceId() != licenceId)
+            return CarsReturnCode.NO_DRIVER;
+        if (returnDate.isBefore(lastRecordOfThisCar.getRentDate())) return CarsReturnCode.RETURN_DATE_WRONG;
+
 
         Car thisCar = getCar(regNumber);
         int thisModelPrice = getModel(thisCar.getModelName()).getPriceDay();
@@ -99,24 +106,19 @@ public class RentCompany extends AbstractRentCompany {
         lastRecordOfThisCar.setReturnDate(returnDate);
         lastRecordOfThisCar.setGasTankPercent(gasTankPercent);
 
-
         int factDaysRent = returnDate.getDayOfYear() - lastRecordOfThisCar.getRentDate().getDayOfYear();
         int difOfDays = factDaysRent - lastRecordOfThisCar.getRentDays();
 
-        if (returnDate.isBefore(lastRecordOfThisCar.getRentDate())) {
-            return CarsReturnCode.RETURN_DATE_WRONG;
-        }
-
         // sum coast over rent
-        float sumOverRent = 0;
         if (returnDate.isAfter(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays()))) {
+            float sumOverRent = 0;
             sumOverRent = difOfDays * (thisModelPrice + (thisModelPrice / 100 * finePercent));
             lastRecordOfThisCar.setCoast(lastRecordOfThisCar.getCoast() + sumOverRent);
         }
 
         // sum coast if car returned before contract
-        float factCoast = 0;
         if (returnDate.isBefore(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays())) && !returnDate.isBefore(lastRecordOfThisCar.getRentDate())) {
+            float factCoast = 0;
             factCoast = factDaysRent * models.get(cars.get(regNumber).getModelName()).getPriceDay();
             lastRecordOfThisCar.setCoast(factCoast);
         }
@@ -124,28 +126,40 @@ public class RentCompany extends AbstractRentCompany {
         // price of petrol
         float coastPetrol = 0;
         if (lastRecordOfThisCar.getGasTankPercent() < 100) {
-            System.out.println("Gas : " + thisModelGasTank);
-            System.out.println(Math.round((double) thisModelGasTank / 100 * gasTankPercent));
+//            System.out.println("Gas : " + thisModelGasTank);
+//            System.out.println(Math.round((double) thisModelGasTank / 100 * gasTankPercent));
             float petrolCoast = (thisModelGasTank - Math.round((double) thisModelGasTank / 100 * gasTankPercent)) * gasPrice;
-            System.out.println(petrolCoast);
+//            System.out.println(petrolCoast);
             lastRecordOfThisCar.setCoast(lastRecordOfThisCar.getCoast() + petrolCoast);
-
         }
 
-        System.out.println("fact days : " + factDaysRent);
-        System.out.println("sum : " + sumOverRent);
+//        System.out.println("fact days : " + factDaysRent);
+//        System.out.println("sum : " + sumOverRent);
+//        System.out.println(lastRecordOfThisCar);
 
-
-//        System.out.println(carRecords.get(regNumber));
-//        System.out.println(driverRecords.get(licenceId));
-        System.out.println(lastRecordOfThisCar);
-
+        if (lastRecordOfThisCar.getDamages() <= 10) {
+            cars.get(regNumber).setState(State.GOOD);
+        } else if (lastRecordOfThisCar.getDamages() > 10 && lastRecordOfThisCar.getDamages() <= 30) {
+            cars.get(regNumber).setState(State.BAD);
+        } else if (lastRecordOfThisCar.getDamages() > 30) {
+            cars.get(regNumber).setIfRemoved(true);
+        }
+        cars.get(regNumber).setInUse(false);
+        if (!returnedRecords.containsKey(returnDate)) returnedRecords.put(returnDate, new ArrayList<>());
+        returnedRecords.get(returnDate).add(lastRecordOfThisCar);
+        if (!returnedRecords.containsKey(returnDate)) {
+            returnedRecords.put(returnDate, new ArrayList<>());
+        }
+        returnedRecords.get(returnDate).add(lastRecordOfThisCar);
         return CarsReturnCode.OK;
     }
 
     @Override
     public CarsReturnCode removeCar(String regNumber) {
-        return null;
+        if (!cars.containsKey(regNumber)) return CarsReturnCode.CAR_NOT_EXIST;
+        if (getCar(regNumber).isInUse()) return CarsReturnCode.CAR_IN_USE;
+        getCar(regNumber).setIfRemoved(true);
+        return CarsReturnCode.OK;
     }
 
     @Override
@@ -153,14 +167,24 @@ public class RentCompany extends AbstractRentCompany {
         return null;
     }
 
+    // ========================= next ======================= //
+
     @Override
     public List<Driver> getCarDrivers(String regNumber) {
-        return null;
+        return carRecords.entrySet().stream()
+                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
+                .map(o -> drivers.get(o.getLicenceId()))
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Car> getDriverCars(long licence) {
-        return null;
+        return driverRecords.entrySet().stream()
+                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
+                .map(o -> cars.get(o.getRegNumber()))
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -175,11 +199,19 @@ public class RentCompany extends AbstractRentCompany {
 
     @Override
     public Stream<RentRecord> getAllRecords() {
-        return null;
+        return carRecords.entrySet().stream()
+                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false));
     }
 
     @Override
     public List<String> getMostPopularModeNames() {
+        Map<String, Long> mostPopularModel = getAllRecords()
+                .map(e -> cars.get(e.getRegNumber()).getModelName())
+                .collect(Collectors.groupingBy(t -> t, Collectors.counting()));
+
+        System.out.println(mostPopularModel);
+
+
         return null;
     }
 
