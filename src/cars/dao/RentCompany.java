@@ -226,6 +226,18 @@ public class RentCompany extends AbstractRentCompany {
 
     @Override
     public List<String> getMostProfitModelNames() {
-        return null;
+        Map<String, Double> a = returnedRecords.entrySet().stream()
+                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
+                .collect(Collectors.groupingBy(t -> cars.get(t.getRegNumber()).getModelName(), Collectors.summingDouble(RentRecord::getCoast)));
+
+//        Long max = a.entrySet().stream()
+//                .map(e -> e.getValue())
+//                .max((n1, n2) -> Long.compare(n1, n2)).orElse(null);
+//
+//        return a.entrySet().stream()
+//                .filter(e -> e.getValue() == max)
+//                .map(e -> e.getKey())
+//                .collect(Collectors.toList());
+
     }
 }
