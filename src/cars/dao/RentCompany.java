@@ -208,9 +208,21 @@ public class RentCompany extends AbstractRentCompany {
         Map<String, Long> mostPopularModel = getAllRecords()
                 .map(e -> cars.get(e.getRegNumber()).getModelName())
                 .collect(Collectors.groupingBy(t -> t, Collectors.counting()));
+//        System.out.println(mostPopularModel);
 
-        System.out.println(mostPopularModel);
 
+        Long max = mostPopularModel.entrySet().stream()
+                .map(e -> e.getValue())
+                .max((n1, n2) -> Long.compare(n1, n2)).orElse(null);
+        System.out.println(max);
+
+        List<String> s =
+        mostPopularModel.entrySet().stream()
+                .filter(e -> e.getValue() == max)
+                .map(e -> e.getKey())
+                .collect(Collectors.toList());
+
+        System.out.println(s);
 
         return null;
     }
