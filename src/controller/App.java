@@ -12,7 +12,7 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
         RentCompany myCompany = new RentCompany();
-        myCompany.addModel(new Model("z3", 40, "bmw", "Germany", 70));
+        myCompany.addModel(new Model("z3", 40, "bmw", "Germany", 100));
         myCompany.addModel(new Model("z4", 50, "bmw", "Germany", 100));
         myCompany.addModel(new Model("polo", 50, "VW", "Germany", 40));
 
@@ -37,27 +37,27 @@ public class App {
 //        myCompany.getAllCars()
 //        .forEach(System.out::println);
 
-        myCompany.rentCar("2000", 1000, LocalDate.of(2021, 11, 21), 5);
-        myCompany.returnCar("2000", 1000, LocalDate.of(2021, 11, 23), 100, 10);
-//
-        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 2, 10), 5);
-        myCompany.returnCar("1000", 1000, LocalDate.of(2021, 2, 11), 100, 10);
-//
-        myCompany.rentCar("1000", 3000, LocalDate.of(2021, 3, 15), 5);
-        myCompany.returnCar("1000", 3000, LocalDate.of(2021, 3, 16), 100, 10);
-//
-        myCompany.rentCar("1000", 3000, LocalDate.of(2021, 4, 15), 5);
-        myCompany.returnCar("1000", 3000, LocalDate.of(2021, 4, 17), 100, 10);
+        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 11, 15), 5);
+        myCompany.returnCar("1000", 1000, LocalDate.of(2021, 11, 20), 100, 10);
+////
+//        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 2, 10), 5);
+//        myCompany.returnCar("1000", 1000, LocalDate.of(2021, 2, 11), 100, 10);
+////
+//        myCompany.rentCar("1000", 3000, LocalDate.of(2021, 3, 15), 5);
+//        myCompany.returnCar("1000", 3000, LocalDate.of(2021, 3, 16), 100, 10);
+////
+//        myCompany.rentCar("1000", 3000, LocalDate.of(2021, 4, 15), 5);
+//        myCompany.returnCar("1000", 3000, LocalDate.of(2021, 4, 24), 91, 10);
 //
 //        myCompany.rentCar("8000", 2000, LocalDate.of(2021, 4, 15), 5);
 //        myCompany.returnCar("8000", 2000, LocalDate.of(2021, 4, 23), 10, 10);
-//
-//        myCompany.rentCar("3000", 4000, LocalDate.of(2021, 5, 15), 5);
-//        myCompany.returnCar("3000", 4000, LocalDate.of(2021, 5, 23), 10, 10);
-//
-        myCompany.rentCar("3000", 1000, LocalDate.of(2021, 6, 15), 5);
-        myCompany.returnCar("3000", 1000, LocalDate.of(2021, 6, 27), 10, 10);
-//
+
+        myCompany.rentCar("3000", 4000, LocalDate.of(2021, 5, 15), 5);
+        myCompany.returnCar("3000", 4000, LocalDate.of(2021, 5, 21), 100, 10);
+////
+//        myCompany.rentCar("3000", 1000, LocalDate.of(2021, 6, 15), 5);
+//        myCompany.returnCar("3000", 1000, LocalDate.of(2021, 6, 27), 10, 10);
+////
 //        myCompany.rentCar("3000", 1000, LocalDate.of(2021, 6, 15), 5);
 //        myCompany.returnCar("3000", 1000, LocalDate.of(2021, 6, 23), 10, 10);
 
@@ -80,7 +80,7 @@ public class App {
 //        System.out.println(drv);
 
 //        myCompany.getModelProfit("z4");
-        myCompany.getMostProfitModelNames();
+        System.out.println(myCompany.getMostProfitModelNames());
 
     }
 }

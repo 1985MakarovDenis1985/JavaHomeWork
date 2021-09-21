@@ -277,7 +277,26 @@ class RentCompanyTest {
 
     }
 
-//    @Test
-//    void testGetMostProfitModelNames() {
-//    }
+    @Test
+    void testGetMostProfitModelNames() {
+        myCompany.addCar(new Car("3000", "red", "polo"));
+        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 3, 15), 5);
+        myCompany.returnCar("1000", 1000, LocalDate.of(2021, 3, 20), 100, 10);
+        // 750.0
+
+        myCompany.rentCar("2000", 2000, LocalDate.of(2021, 4, 15), 5);
+        myCompany.returnCar("2000", 2000, LocalDate.of(2021, 4, 25), 100, 10);
+        // 1075.0
+        assertEquals(List.of("z3"), myCompany.getMostProfitModelNames());
+
+        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 3, 15), 5);
+        myCompany.returnCar("1000", 1000, LocalDate.of(2021, 3, 20), 100, 10);
+        // 1500.0
+        assertEquals(List.of("z4"), myCompany.getMostProfitModelNames());
+
+        myCompany.rentCar("3000", 1000, LocalDate.of(2021, 3, 1), 5);
+        myCompany.returnCar("3000", 1000, LocalDate.of(2021, 3, 30), 32, 10);
+        assertEquals(List.of("polo", "z4"), myCompany.getMostProfitModelNames());
+
+    }
 }

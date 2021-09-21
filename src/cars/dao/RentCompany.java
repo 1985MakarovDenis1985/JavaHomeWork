@@ -91,16 +91,11 @@ public class RentCompany extends AbstractRentCompany {
 
         if (!cars.containsKey(regNumber) || !cars.get(regNumber).isInUse()) return CarsReturnCode.CAR_NOT_RENTED;
         RentRecord lastRecordOfThisCar = carRecords.get(regNumber).get(carRecords.get(regNumber).size() - 1);
-
-//        System.out.println(lastRecordOfThisCar);
-        if (!drivers.containsKey(licenceId) || lastRecordOfThisCar.getLicenceId() != licenceId)
-            return CarsReturnCode.NO_DRIVER;
+        if (!drivers.containsKey(licenceId) || lastRecordOfThisCar.getLicenceId() != licenceId) return CarsReturnCode.NO_DRIVER;
         if (returnDate.isBefore(lastRecordOfThisCar.getRentDate())) return CarsReturnCode.RETURN_DATE_WRONG;
 
-
-        Car thisCar = getCar(regNumber);
-        int thisModelPrice = getModel(thisCar.getModelName()).getPriceDay();
-        int thisModelGasTank = getModel(thisCar.getModelName()).getGasTank();
+        int thisModelPrice = getModel(getCar(regNumber).getModelName()).getPriceDay();
+        int thisModelGasTank = getModel(getCar(regNumber).getModelName()).getGasTank();
 
         lastRecordOfThisCar.setDamages(damages);
         lastRecordOfThisCar.setReturnDate(returnDate);
@@ -111,31 +106,21 @@ public class RentCompany extends AbstractRentCompany {
 
         // sum coast over rent
         if (returnDate.isAfter(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays()))) {
-            float sumOverRent = 0;
-            sumOverRent = difOfDays * (thisModelPrice + (thisModelPrice / 100 * finePercent));
+            float sumOverRent = difOfDays * (thisModelPrice + (thisModelPrice / 100 * finePercent));
             lastRecordOfThisCar.setCoast(lastRecordOfThisCar.getCoast() + sumOverRent);
         }
 
         // sum coast if car returned before contract
         if (returnDate.isBefore(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays())) && !returnDate.isBefore(lastRecordOfThisCar.getRentDate())) {
-            float factCoast = 0;
-            factCoast = factDaysRent * models.get(cars.get(regNumber).getModelName()).getPriceDay();
+            float factCoast = factDaysRent * models.get(cars.get(regNumber).getModelName()).getPriceDay();
             lastRecordOfThisCar.setCoast(factCoast);
         }
 
         // price of petrol
-        float coastPetrol = 0;
         if (lastRecordOfThisCar.getGasTankPercent() < 100) {
-//            System.out.println("Gas : " + thisModelGasTank);
-//            System.out.println(Math.round((double) thisModelGasTank / 100 * gasTankPercent));
-            float petrolCoast = (thisModelGasTank - Math.round((double) thisModelGasTank / 100 * gasTankPercent)) * gasPrice;
-//            System.out.println(petrolCoast);
+            float petrolCoast = (thisModelGasTank - Math.round((float) thisModelGasTank / 100 * gasTankPercent)) * gasPrice;
             lastRecordOfThisCar.setCoast(lastRecordOfThisCar.getCoast() + petrolCoast);
         }
-
-//        System.out.println("fact days : " + factDaysRent);
-//        System.out.println("sum : " + sumOverRent);
-//        System.out.println(lastRecordOfThisCar);
 
         if (lastRecordOfThisCar.getDamages() <= 10) {
             cars.get(regNumber).setState(State.GOOD);
@@ -164,7 +149,6 @@ public class RentCompany extends AbstractRentCompany {
         return null;
     }
 
-    // ========================= next ======================= //
 
     @Override
     public List<Driver> getCarDrivers(String regNumber) {
@@ -211,7 +195,7 @@ public class RentCompany extends AbstractRentCompany {
                 .max((n1, n2) -> Long.compare(n1, n2)).orElse(null);
 
         return mostPopularModel.entrySet().stream()
-                .filter(e -> e.getValue() == max)
+                .filter(e -> e.getValue().equals(max))
                 .map(e -> e.getKey())
                 .collect(Collectors.toList());
     }
@@ -229,15 +213,16 @@ public class RentCompany extends AbstractRentCompany {
         Map<String, Double> a = returnedRecords.entrySet().stream()
                 .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
                 .collect(Collectors.groupingBy(t -> cars.get(t.getRegNumber()).getModelName(), Collectors.summingDouble(RentRecord::getCoast)));
+        System.out.println(a);
 
-//        Long max = a.entrySet().stream()
-//                .map(e -> e.getValue())
-//                .max((n1, n2) -> Long.compare(n1, n2)).orElse(null);
-//
-//        return a.entrySet().stream()
-//                .filter(e -> e.getValue() == max)
-//                .map(e -> e.getKey())
-//                .collect(Collectors.toList());
+        Double max = a.entrySet().stream()
+                .map(e -> e.getValue())
+                .max((n1, n2) -> Double.compare(n1, n2)).orElse(null);
 
+        return a.entrySet().stream()
+                .filter(e -> e.getValue().equals(max))
+                .map(e -> e.getKey())
+                .collect(Collectors.toList());
     }
+
 }
