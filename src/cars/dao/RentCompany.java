@@ -147,10 +147,7 @@ public class RentCompany extends AbstractRentCompany {
         cars.get(regNumber).setInUse(false);
         if (!returnedRecords.containsKey(returnDate)) returnedRecords.put(returnDate, new ArrayList<>());
         returnedRecords.get(returnDate).add(lastRecordOfThisCar);
-        if (!returnedRecords.containsKey(returnDate)) {
-            returnedRecords.put(returnDate, new ArrayList<>());
-        }
-        returnedRecords.get(returnDate).add(lastRecordOfThisCar);
+
         return CarsReturnCode.OK;
     }
 
@@ -208,28 +205,23 @@ public class RentCompany extends AbstractRentCompany {
         Map<String, Long> mostPopularModel = getAllRecords()
                 .map(e -> cars.get(e.getRegNumber()).getModelName())
                 .collect(Collectors.groupingBy(t -> t, Collectors.counting()));
-//        System.out.println(mostPopularModel);
-
 
         Long max = mostPopularModel.entrySet().stream()
                 .map(e -> e.getValue())
                 .max((n1, n2) -> Long.compare(n1, n2)).orElse(null);
-        System.out.println(max);
 
-        List<String> s =
-        mostPopularModel.entrySet().stream()
+        return mostPopularModel.entrySet().stream()
                 .filter(e -> e.getValue() == max)
                 .map(e -> e.getKey())
                 .collect(Collectors.toList());
-
-        System.out.println(s);
-
-        return null;
     }
 
     @Override
     public double getModelProfit(String modelName) {
-        return 0;
+        return returnedRecords.entrySet().stream()
+                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
+                .filter(e -> cars.get(e.getRegNumber()).getModelName().equals(modelName))
+                .mapToDouble(e -> e.getCoast()).sum();
     }
 
     @Override

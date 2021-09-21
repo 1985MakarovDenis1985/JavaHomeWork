@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -24,8 +25,8 @@ class RentCompanyTest {
     @BeforeEach
     void setUp() {
         myCompany = new RentCompany();
-        myCompany.addModel(new Model("z3", 40, "bmw", "Germany", 70));
-        myCompany.addModel(new Model("z4", 50, "bmw", "Germany", 100));
+        myCompany.addModel(new Model("z3", 50, "bmw", "Germany", 100));
+        myCompany.addModel(new Model("z4", 50, "bmw", "Germany", 150));
         myCompany.addModel(new Model("polo", 50, "VW", "Germany", 40));
         myCompany.addCar(new Car("1000", "red", "z4"));
         myCompany.addCar(new Car("2000", "red", "z3"));
@@ -208,7 +209,7 @@ class RentCompanyTest {
         assertEquals(car2, cars.stream().filter(e -> e.getRegNumber().equals("2000")).findAny().orElse(null));
         assertEquals(car3, cars.stream().filter(e -> e.getRegNumber().equals("3000")).findAny().orElse(null));
 
-        assertNull(cars.stream().filter(e -> e.getRegNumber() == "4000").findAny().orElse(null));
+        assertNull(cars.stream().filter(e -> e.getRegNumber().equals("4000")).findAny().orElse(null));
     }
 
     @Test
@@ -216,22 +217,66 @@ class RentCompanyTest {
 
     }
 
-//    @Test
-//    void testGetAllDrivers() {
-//    }
-//
-//    @Test
-//    void testGetAllRecords() {
-//    }
-//
-//    @Test
-//    void testGetMostPopularModeNames() {
-//    }
-//
-//    @Test
-//    void testGetModelProfit() {
-//    }
-//
+    @Test
+    void testGetAllDrivers() {
+
+    }
+
+    @Test
+    void testGetAllRecords() {
+    }
+
+    @Test
+    void testGetMostPopularModeNames() {
+        myCompany.rentCar("2000", 1000, LocalDate.of(2021, 1, 21), 5);
+        myCompany.returnCar("2000", 1000, LocalDate.of(2021, 1, 23), 10, 10);
+        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 2, 10), 5);
+        myCompany.returnCar("1000", 1000, LocalDate.of(2021, 2, 23), 10, 10);
+        myCompany.rentCar("1000", 2000, LocalDate.of(2021, 3, 15), 5);
+        myCompany.returnCar("1000", 2000, LocalDate.of(2021, 3, 23), 10, 10);
+        assertEquals(List.of("z4"), myCompany.getMostPopularModeNames());
+
+        myCompany.addCar(new Car("3000", "red", "polo"));
+        myCompany.rentCar("3000", 1000, LocalDate.of(2021, 3, 15), 5);
+        myCompany.returnCar("3000", 1000, LocalDate.of(2021, 3, 23), 10, 10);
+        myCompany.rentCar("2000", 2000, LocalDate.of(2021, 4, 15), 5);
+        myCompany.returnCar("2000", 2000, LocalDate.of(2021, 4, 23), 10, 10);
+        assertEquals(List.of("z3", "z4"), myCompany.getMostPopularModeNames());
+
+        myCompany.rentCar("3000", 4000, LocalDate.of(2021, 5, 15), 5);
+        myCompany.returnCar("3000", 4000, LocalDate.of(2021, 5, 23), 10, 10);
+        myCompany.rentCar("3000", 1000, LocalDate.of(2021, 6, 15), 5);
+        myCompany.returnCar("3000", 1000, LocalDate.of(2021, 6, 23), 10, 10);
+        myCompany.rentCar("3000", 1000, LocalDate.of(2021, 6, 15), 5);
+        assertEquals(List.of("polo"), myCompany.getMostPopularModeNames());
+
+    }
+
+    @Test
+    void testGetModelProfit() {
+        myCompany.addCar(new Car("3000", "red", "polo")); // polo : 40$ // 2000 - z3 : 100$
+        myCompany.rentCar("3000", 1000, LocalDate.of(2021, 3, 15), 5);
+        myCompany.returnCar("3000", 1000, LocalDate.of(2021, 3, 20), 100, 10);
+        // 5*40=200
+        assertEquals(200, myCompany.getModelProfit("polo"));
+
+        myCompany.rentCar("3000", 1000, LocalDate.of(2021, 3, 15), 5);
+        myCompany.returnCar("3000", 1000, LocalDate.of(2021, 3, 17), 50, 10);
+        // 2*40=80 + (50/50%=25*10)=250(petrol) + 200 already get(above)
+        assertEquals(530, myCompany.getModelProfit("polo"));
+
+        myCompany.rentCar("2000", 2000, LocalDate.of(2021, 4, 15), 5);
+        myCompany.returnCar("2000", 2000, LocalDate.of(2021, 4, 23), 100, 10);
+        // 5*100=500 + 3*100=300(over contract) + 3*15%=45
+        assertEquals(845, myCompany.getModelProfit("z3"));
+
+        myCompany.rentCar("2000", 2000, LocalDate.of(2021, 4, 15), 5);
+        myCompany.returnCar("2000", 2000, LocalDate.of(2021, 4, 23), 50, 10);
+        // 5*100=500 + 3*100=300(over contract) + 3*15%=45 + (50/50%=25*10)=250(petrol) + 845 already get(above)
+        assertEquals(1940, myCompany.getModelProfit("z3"));
+
+    }
+
 //    @Test
 //    void testGetMostProfitModelNames() {
 //    }
