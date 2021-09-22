@@ -91,7 +91,8 @@ public class RentCompany extends AbstractRentCompany {
 
         if (!cars.containsKey(regNumber) || !cars.get(regNumber).isInUse()) return CarsReturnCode.CAR_NOT_RENTED;
         RentRecord lastRecordOfThisCar = carRecords.get(regNumber).get(carRecords.get(regNumber).size() - 1);
-        if (!drivers.containsKey(licenceId) || lastRecordOfThisCar.getLicenceId() != licenceId) return CarsReturnCode.NO_DRIVER;
+        if (!drivers.containsKey(licenceId) || lastRecordOfThisCar.getLicenceId() != licenceId)
+            return CarsReturnCode.NO_DRIVER;
         if (returnDate.isBefore(lastRecordOfThisCar.getRentDate())) return CarsReturnCode.RETURN_DATE_WRONG;
 
         int thisModelPrice = getModel(getCar(regNumber).getModelName()).getPriceDay();
@@ -111,7 +112,7 @@ public class RentCompany extends AbstractRentCompany {
         }
 
         // sum coast if car returned before contract
-        if (returnDate.isBefore(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays())) && !returnDate.isBefore(lastRecordOfThisCar.getRentDate())) {
+        if (returnDate.isBefore(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays()))) {
             float factCoast = factDaysRent * models.get(cars.get(regNumber).getModelName()).getPriceDay();
             lastRecordOfThisCar.setCoast(factCoast);
         }
@@ -124,9 +125,9 @@ public class RentCompany extends AbstractRentCompany {
 
         if (lastRecordOfThisCar.getDamages() <= 10) {
             cars.get(regNumber).setState(State.GOOD);
-        } else if (lastRecordOfThisCar.getDamages() > 10 && lastRecordOfThisCar.getDamages() <= 30) {
+        } else if (lastRecordOfThisCar.getDamages() > 10 && lastRecordOfThisCar.getDamages() < 30) {
             cars.get(regNumber).setState(State.BAD);
-        } else if (lastRecordOfThisCar.getDamages() > 30) {
+        } else if (lastRecordOfThisCar.getDamages() >= 30) {
             cars.get(regNumber).setIfRemoved(true);
         }
         cars.get(regNumber).setInUse(false);
@@ -139,13 +140,54 @@ public class RentCompany extends AbstractRentCompany {
     @Override
     public CarsReturnCode removeCar(String regNumber) {
         if (!cars.containsKey(regNumber)) return CarsReturnCode.CAR_NOT_EXIST;
-        if (getCar(regNumber).isInUse()) return CarsReturnCode.CAR_IN_USE;
+//        if (getCar(regNumber).isInUse()) return CarsReturnCode.CAR_IN_USE;
         getCar(regNumber).setIfRemoved(true);
         return CarsReturnCode.OK;
     }
 
     @Override
     public List<Car> clear(LocalDate currentDate, int days) {
+//        getAllCars().forEach(System.out::println);
+//        getAllRecords().forEach(System.out::println);
+//        driverRecords.entrySet().stream().forEach(System.out::println);
+
+
+        List<String> removedCar = cars.entrySet().stream()
+                .filter(e -> e.getValue().isIfRemoved())
+                .map(e -> e.getValue().getRegNumber())
+                .collect(Collectors.toList());
+        System.out.println(removedCar);
+
+        Iterator<Map.Entry<Long, List<RentRecord>>> it = driverRecords.entrySet().iterator();
+        while (it.hasNext()){
+            it.next().getValue().removeIf(r -> cars.get(r.getRegNumber()).isIfRemoved());
+        }
+
+        Iterator<Map.Entry<LocalDate, List<RentRecord>>> itDate = returnedRecords.entrySet().iterator();
+        while (itDate.hasNext()){
+            itDate.next().getValue().removeIf(r -> cars.get(r.getRegNumber()).isIfRemoved());
+        }
+
+        carRecords.entrySet().removeIf(e -> cars.get(e.getKey()).isIfRemoved());
+        cars.entrySet().removeIf(e -> e.getValue().isIfRemoved());
+        returnedRecords.entrySet().removeIf(e -> e.getValue().size()==0);
+
+
+        System.out.println();
+        System.out.println("--------- driver ----------");
+        driverRecords.entrySet().stream()
+                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
+                .forEach(System.out::println);
+        System.out.println("--------- carRecords ----------");
+        carRecords.entrySet().stream().forEach(System.out::println);
+        System.out.println("--------- car ----------");
+        cars.entrySet().stream().forEach(System.out::println);
+        System.out.println("--------- returned ----------");
+        returnedRecords.entrySet().stream().forEach(System.out::println);
+
+
+//        getAllCars().forEach(System.out::println);
+//        getAllRecords().forEach(System.out::println);
         return null;
     }
 
@@ -213,7 +255,7 @@ public class RentCompany extends AbstractRentCompany {
         Map<String, Double> a = returnedRecords.entrySet().stream()
                 .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
                 .collect(Collectors.groupingBy(t -> cars.get(t.getRegNumber()).getModelName(), Collectors.summingDouble(RentRecord::getCoast)));
-        System.out.println(a);
+
 
         Double max = a.entrySet().stream()
                 .map(e -> e.getValue())

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -159,6 +160,27 @@ class RentCompanyTest {
 
     @Test
     void testClear() {
+        myCompany.addCar(new Car("3000", "red", "polo"));
+        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 1, 15), 5);
+        myCompany.returnCar("1000", 1000, LocalDate.of(2021, 1, 21), 50, 10);
+        myCompany.rentCar("2000", 2000, LocalDate.of(2021, 2, 15), 5);
+        myCompany.returnCar("2000", 2000, LocalDate.of(2021, 2, 21), 50, 25);
+        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 3, 15), 5);
+        myCompany.returnCar("1000", 1000, LocalDate.of(2021, 3, 21), 50, 50);
+        myCompany.rentCar("3000", 2000, LocalDate.of(2021, 4, 15), 5);
+        myCompany.returnCar("3000", 2000, LocalDate.of(2021, 4, 21), 50, 25);
+
+
+
+//        assertEquals(4, myCompany.getAllRecords().count());
+//        myCompany.clear(LocalDate.of(2021, 5, 1), 5);
+//        assertEquals(2, myCompany.getAllRecords().count());
+//        assertEquals(2, myCompany.getAllCars().count());
+//        myCompany.getCar("2000").setIfRemoved(true);
+//        myCompany.clear(LocalDate.of(2021, 5, 1), 5);
+//        assertEquals(1, myCompany.getAllRecords().count());
+//        assertEquals(1, myCompany.getAllCars().count());
+
 
     }
 
@@ -185,6 +207,7 @@ class RentCompanyTest {
         assertNull(drv.stream().filter(e -> e.getLicenceId() == 4000).findAny().orElse(null));
     }
 
+    // ПЕРЕДЕЛАТЬ
     @Test
     void testGetDriverCars() {
         myCompany.addCar(new Car("3000", "red", "polo"));
@@ -214,16 +237,34 @@ class RentCompanyTest {
 
     @Test
     void testGetAllCars() {
-
+        List<Car> testStreamCarsList = myCompany.getAllCars()
+                .collect(Collectors.toList());
+        assertEquals(List.of(
+                new Car("1000", "red", "z4"),
+                new Car("2000", "red", "z3")),
+                testStreamCarsList);
     }
 
     @Test
     void testGetAllDrivers() {
-
+        List<Driver> testStreamDriversList = myCompany.getAllDrivers()
+                .collect(Collectors.toList());
+        assertEquals(List.of(
+                new Driver(2000, "Sam", 1986, "0547630002"),
+                new Driver(1000, "Peter", 1975, "0547630001")),
+                testStreamDriversList);
     }
 
     @Test
     void testGetAllRecords() {
+        myCompany.rentCar("2000", 1000, LocalDate.of(2021, 1, 21), 5);
+        myCompany.returnCar("2000", 1000, LocalDate.of(2021, 1, 23), 10, 10);
+        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 2, 10), 5);
+        myCompany.returnCar("1000", 1000, LocalDate.of(2021, 2, 23), 10, 10);
+        myCompany.rentCar("1000", 2000, LocalDate.of(2021, 3, 15), 5);
+        List<RentRecord> testStreamRent = myCompany.getAllRecords()
+                .collect(Collectors.toList());
+        assertEquals(3, testStreamRent.size());
     }
 
     @Test
