@@ -1,6 +1,5 @@
 package tests;
 
-import cars.dao.AbstractRentCompany;
 import cars.dao.RentCompany;
 import cars.domain.Car;
 import cars.domain.Driver;
@@ -12,10 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,10 +34,8 @@ class RentCompanyTest {
 
     @Test
     void testAddModel() {
-        Model i8 = new Model("i8", 50, "bmw", "Germany", 180);
-        assertEquals(CarsReturnCode.OK, myCompany.addModel(i8));
-        Model z3 = new Model("z3", 40, "bmw", "Germany", 70);
-        assertEquals(CarsReturnCode.MODEL_EXIST, myCompany.addModel(z3));
+        assertEquals(CarsReturnCode.OK, myCompany.addModel(new Model("i8", 50, "bmw", "Germany", 180)));
+        assertEquals(CarsReturnCode.MODEL_EXIST, myCompany.addModel(new Model("z3", 40, "bmw", "Germany", 70)));
     }
 
     @Test
@@ -95,7 +90,6 @@ class RentCompanyTest {
     void testGetDriver() {
         Driver d1 = new Driver(1000, "Peter", 1975, "0547630001");
         Driver d2 = new Driver(3000, "Jim", 1985, "0547630002");
-        Driver d3 = new Driver(5000, "Sara", 1995, "0547630003");
         assertEquals(d1, myCompany.getDriver(1000));
         assertNull(myCompany.getDriver(3000));
 
@@ -107,12 +101,15 @@ class RentCompanyTest {
     @Test
     void testRentCar() {
         assertFalse(myCompany.getCar("1000").isInUse());
-        assertEquals(CarsReturnCode.OK, myCompany.rentCar("1000", 1000, LocalDate.of(2021, 9, 15), 5));
+        assertEquals(CarsReturnCode.OK, myCompany.rentCar("1000", 1000, LocalDate.of(2021, 5, 15), 5));
         assertTrue(myCompany.getCar("1000").isInUse());
 
         assertEquals(CarsReturnCode.CAR_IN_USE, myCompany.rentCar("1000", 1000, LocalDate.of(2021, 9, 15), 5));
         assertEquals(CarsReturnCode.NO_DRIVER, myCompany.rentCar("2000", 3000, LocalDate.of(2021, 9, 15), 5));
         assertEquals(CarsReturnCode.CAR_NOT_EXIST, myCompany.rentCar("3000", 3000, LocalDate.of(2021, 9, 15), 5));
+
+        myCompany.rentCar("2000", 1000, LocalDate.of(2021, 6, 15), 5);
+        assertEquals(2, myCompany.getAllRecords().count());
     }
 
 
@@ -161,27 +158,35 @@ class RentCompanyTest {
     @Test
     void testClear() {
         myCompany.addCar(new Car("3000", "red", "polo"));
+        myCompany.addCar(new Car("4000", "red", "z4"));
+        myCompany.addDriver(new Driver(3000, "Sara", 1991, "0547630003"));
+        myCompany.addDriver(new Driver(4000, "Moysha", 1991, "0547630004"));
+
         myCompany.rentCar("1000", 1000, LocalDate.of(2021, 1, 15), 5);
         myCompany.returnCar("1000", 1000, LocalDate.of(2021, 1, 21), 50, 10);
         myCompany.rentCar("2000", 2000, LocalDate.of(2021, 2, 15), 5);
         myCompany.returnCar("2000", 2000, LocalDate.of(2021, 2, 21), 50, 25);
-        myCompany.rentCar("1000", 1000, LocalDate.of(2021, 3, 15), 5);
-        myCompany.returnCar("1000", 1000, LocalDate.of(2021, 3, 21), 50, 50);
-        myCompany.rentCar("3000", 2000, LocalDate.of(2021, 4, 15), 5);
-        myCompany.returnCar("3000", 2000, LocalDate.of(2021, 4, 21), 50, 25);
+        myCompany.rentCar("4000", 1000, LocalDate.of(2021, 3, 15), 5);
+        myCompany.returnCar("4000", 1000, LocalDate.of(2021, 3, 21), 50, 60);
+        myCompany.rentCar("2000", 2000, LocalDate.of(2021, 4, 15), 5);
+        myCompany.returnCar("2000", 2000, LocalDate.of(2021, 4, 21), 50, 35);
+        myCompany.rentCar("3000", 3000, LocalDate.of(2021, 4, 15), 5);
+        myCompany.returnCar("3000", 3000, LocalDate.of(2021, 4, 21), 50, 25);
+        myCompany.rentCar("3000", 3000, LocalDate.of(2021, 9, 15), 5);
+        myCompany.returnCar("3000", 3000, LocalDate.of(2021, 9, 21), 50, 50); // date after start removing car
 
+        assertEquals(6, myCompany.getAllRecords().count());
+        assertEquals(4, myCompany.getAllCars().count());
+        List<Car> cars = myCompany.clear(LocalDate.of(2021, 9, 20), 19);
 
-
-//        assertEquals(4, myCompany.getAllRecords().count());
-//        myCompany.clear(LocalDate.of(2021, 5, 1), 5);
-//        assertEquals(2, myCompany.getAllRecords().count());
-//        assertEquals(2, myCompany.getAllCars().count());
-//        myCompany.getCar("2000").setIfRemoved(true);
-//        myCompany.clear(LocalDate.of(2021, 5, 1), 5);
-//        assertEquals(1, myCompany.getAllRecords().count());
-//        assertEquals(1, myCompany.getAllCars().count());
-
-
+        assertEquals(3, myCompany.getAllRecords().count());
+        assertEquals(2, myCompany.getAllCars().count());
+        assertEquals(4, myCompany.getAllDrivers().count());
+        assertEquals(List.of(new Car("4000", "red", "z4"), new Car("2000", "red", "z3")), cars);
+        assertEquals(new Car("3000", "red", "polo"), myCompany.getCar("3000"));
+        assertEquals(new Car("1000", "red", "z4"), myCompany.getCar("1000"));
+        assertNull(myCompany.getCar("2000"));
+        assertNull(myCompany.getCar("4000"));
     }
 
     @Test
@@ -247,8 +252,7 @@ class RentCompanyTest {
 
     @Test
     void testGetAllDrivers() {
-        List<Driver> testStreamDriversList = myCompany.getAllDrivers()
-                .collect(Collectors.toList());
+        List<Driver> testStreamDriversList = myCompany.getAllDrivers().collect(Collectors.toList());
         assertEquals(List.of(
                 new Driver(2000, "Sam", 1986, "0547630002"),
                 new Driver(1000, "Peter", 1975, "0547630001")),
@@ -262,8 +266,7 @@ class RentCompanyTest {
         myCompany.rentCar("1000", 1000, LocalDate.of(2021, 2, 10), 5);
         myCompany.returnCar("1000", 1000, LocalDate.of(2021, 2, 23), 10, 10);
         myCompany.rentCar("1000", 2000, LocalDate.of(2021, 3, 15), 5);
-        List<RentRecord> testStreamRent = myCompany.getAllRecords()
-                .collect(Collectors.toList());
+        List<RentRecord> testStreamRent = myCompany.getAllRecords().collect(Collectors.toList());
         assertEquals(3, testStreamRent.size());
     }
 
