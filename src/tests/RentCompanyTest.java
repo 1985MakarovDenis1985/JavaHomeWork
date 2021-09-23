@@ -140,7 +140,6 @@ class RentCompanyTest {
         myCompany.rentCar("1000", 1000, LocalDate.of(2021, 9, 15), 5);
         myCompany.returnCar("1000", 1000, LocalDate.of(2021, 9, 21), 50, 35);
         assertTrue(myCompany.getCar("1000").isIfRemoved());
-
     }
 
     @Test
@@ -187,8 +186,6 @@ class RentCompanyTest {
         assertEquals(new Car("1000", "red", "z4"), myCompany.getCar("1000"));
         assertNull(myCompany.getCar("2000"));
         assertNull(myCompany.getCar("4000"));
-
-
     }
 
     @Test
@@ -209,7 +206,6 @@ class RentCompanyTest {
         assertEquals(3, drv.size());
 
         Driver d1 = myCompany.getDriver(2000);
-
         assertEquals(d1, drv.stream().filter(e -> e.getLicenceId() == 2000).findAny().orElse(null));
         assertNull(drv.stream().filter(e -> e.getLicenceId() == 4000).findAny().orElse(null));
     }

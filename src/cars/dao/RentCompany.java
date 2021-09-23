@@ -7,7 +7,6 @@ import cars.domain.RentRecord;
 import enums.CarsReturnCode;
 import enums.State;
 
-import java.sql.Array;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -90,9 +89,18 @@ public class RentCompany extends AbstractRentCompany {
 
     @Override
     public CarsReturnCode returnCar(String regNumber, long licenceId, LocalDate returnDate, int gasTankPercent, int damages) {
-
         if (!cars.containsKey(regNumber) || !cars.get(regNumber).isInUse()) return CarsReturnCode.CAR_NOT_RENTED;
+
+        /*
+        ПОДСКАЖИТЕ ПОЖАЛУЙСТА, КАКОЕ РЕШЕНИЕ ПОИСКА НЕ ЗАКРЫТОГО RentRecord ДАННОГО АВТО ЛУЧШЕ??? СПАСИБО!
+        */
+
+        // 1) мы ищем как вы говорили по null...
+//        RentRecord lastRecordOfThisCar = carRecords.get(regNumber).stream().filter(e -> e.getReturnDate()==null).findFirst().orElse(null);
+
+        // 2) можно ли так:  берем последнюю запись в листе данного авто по ключу (она в любом случае всегда не закрытая, иначе авто NOT_RENT) и пробегаться по листу не надо
         RentRecord lastRecordOfThisCar = carRecords.get(regNumber).get(carRecords.get(regNumber).size() - 1);
+
         if (!drivers.containsKey(licenceId) || lastRecordOfThisCar.getLicenceId() != licenceId)
             return CarsReturnCode.NO_DRIVER;
         if (returnDate.isBefore(lastRecordOfThisCar.getRentDate()) || returnDate.isAfter(LocalDate.now()))
@@ -116,7 +124,7 @@ public class RentCompany extends AbstractRentCompany {
 
         // sum coast if car returned before contract
         if (returnDate.isBefore(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays()))) {
-            float factCoast = factDaysRent * models.get(cars.get(regNumber).getModelName()).getPriceDay();
+            float factCoast = factDaysRent * thisModelPrice;
             lastRecordOfThisCar.setCoast(factCoast);
         }
 
@@ -134,6 +142,7 @@ public class RentCompany extends AbstractRentCompany {
             cars.get(regNumber).setIfRemoved(true);
         }
         cars.get(regNumber).setInUse(false);
+
         if (!returnedRecords.containsKey(returnDate)) returnedRecords.put(returnDate, new ArrayList<>());
         returnedRecords.get(returnDate).add(lastRecordOfThisCar);
 
@@ -150,87 +159,39 @@ public class RentCompany extends AbstractRentCompany {
 
     @Override
     public List<Car> clear(LocalDate currentDate, int days) {
-        List<Car> removedCar =
+        List<Car> removedCarList =
                 returnedRecords.entrySet().stream()
-                        .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
-                        .filter(e -> e.getReturnDate().isBefore(currentDate.minusDays(days)))
-                        .filter(e -> e.getDamages() >= DAMAGE_FOR_REMOVE)
+                        .flatMap(e -> e.getValue().stream())
+                        .filter(e -> e.getReturnDate().isBefore(currentDate.minusDays(days)) && e.getDamages() >= DAMAGE_FOR_REMOVE)
                         .map(e -> cars.get(e.getRegNumber()))
                         .distinct()
                         .collect(Collectors.toList());
 
-        List<String> regNumOfRemovedCar = removedCar.stream()
-                .map(e -> e.getRegNumber())
+        List<String> regNumOfRemovedCar = removedCarList.stream()
+                .map(Car::getRegNumber)
                 .collect(Collectors.toList());
 
-        System.out.println(regNumOfRemovedCar);
-//        for (int i = 0; i < removedCar.size(); i++) {
-//            String regNum = removedCar.get(i).getRegNumber();
-//
-//            Iterator<Map.Entry<Long, List<RentRecord>>> it = driverRecords.entrySet().iterator();
-//            while (it.hasNext()) {
-//                it.next().getValue().removeIf(r -> r.getRegNumber().equals(regNum));
-//            }
-//
-//
-//            Iterator<Map.Entry<LocalDate, List<RentRecord>>> itDate = returnedRecords.entrySet().iterator();
-//            while (itDate.hasNext()) {
-//                itDate.next().getValue().removeIf(r -> r.getRegNumber().equals(regNum));
-//            }
-//            carRecords.entrySet().removeIf(r -> cars.get(r.getKey()).getRegNumber().equals(regNum));
-//            cars.entrySet().removeIf(e -> e.getValue().getRegNumber().equals(regNum));
-//        }
-//        driverRecords.entrySet().stream().forEach(System.out::println);
-//        System.out.println("-----");
-        Iterator<Map.Entry<Long, List<RentRecord>>> it = driverRecords.entrySet().iterator();
-        while (it.hasNext()) {
-            it.next().getValue().removeIf(r -> regNumOfRemovedCar.contains(r.getRegNumber()));
+        for (Map.Entry<Long, List<RentRecord>> longListEntry : driverRecords.entrySet()) {
+            longListEntry.getValue().removeIf(r -> regNumOfRemovedCar.contains(r.getRegNumber()));
         }
-//        returnedRecords.entrySet().stream().forEach(System.out::println);
-//        System.out.println("-----");
-//        Iterator<Map.Entry<LocalDate, List<RentRecord>>> itDate = returnedRecords.entrySet().iterator();
-//        while (itDate.hasNext()) {
-//            itDate.next().getValue().removeIf(r -> regNumOfRemovedCar.contains( r.getRegNumber()));
-//        }
-
-//        carRecords.entrySet().stream().forEach(System.out::println);
-//        System.out.println("-----");
-
-        carRecords.entrySet().removeIf(r -> regNumOfRemovedCar.contains(r.getKey()));
-//        carRecords.entrySet().stream().forEach(System.out::println);
-//        System.out.println("-----");
-
-        cars.entrySet().removeIf(r -> regNumOfRemovedCar.contains(r.getKey()));
-//        cars.entrySet().stream().forEach(System.out::println);
-
-
-        returnedRecords.entrySet().removeIf(e -> e.getValue().size() == 0);
         driverRecords.entrySet().removeIf(e -> e.getValue().size() == 0);
 
-//        System.out.println();
-//        System.out.println("--------- driver ----------");
-//        driverRecords.entrySet().stream()
-//                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
-//                .forEach(System.out::println);
-//        System.out.println("--------- carRecords ----------");
-//        carRecords.entrySet().stream()
-//                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
-//                .forEach(System.out::println);
-//        System.out.println("--------- car ----------");
-//        cars.entrySet().stream().forEach(System.out::println);
-//        System.out.println("--------- returned ----------");
-//        returnedRecords.entrySet().stream()
-//                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
-//                .forEach(System.out::println);
+        for (Map.Entry<LocalDate, List<RentRecord>> localDateListEntry : returnedRecords.entrySet()) {
+            localDateListEntry.getValue().removeIf(r -> regNumOfRemovedCar.contains(r.getRegNumber()));
+        }
+        returnedRecords.entrySet().removeIf(e -> e.getValue().size() == 0);
 
-        return removedCar;
+        carRecords.entrySet().removeIf(r -> regNumOfRemovedCar.contains(r.getKey()));
+        cars.entrySet().removeIf(r -> regNumOfRemovedCar.contains(r.getKey()));
+
+        return removedCarList;
     }
 
 
     @Override
     public List<Driver> getCarDrivers(String regNumber) {
         return carRecords.entrySet().stream()
-                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
+                .flatMap(e -> e.getValue().stream())
                 .map(o -> drivers.get(o.getLicenceId()))
                 .distinct()
                 .collect(Collectors.toList());
@@ -239,7 +200,7 @@ public class RentCompany extends AbstractRentCompany {
     @Override
     public List<Car> getDriverCars(long licence) {
         return driverRecords.entrySet().stream()
-                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
+                .flatMap(e -> e.getValue().stream())
                 .map(o -> cars.get(o.getRegNumber()))
                 .distinct()
                 .collect(Collectors.toList());
@@ -258,7 +219,7 @@ public class RentCompany extends AbstractRentCompany {
     @Override
     public Stream<RentRecord> getAllRecords() {
         return carRecords.entrySet().stream()
-                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false));
+                .flatMap(e -> e.getValue().stream());
     }
 
     @Override
@@ -267,39 +228,36 @@ public class RentCompany extends AbstractRentCompany {
                 .map(e -> cars.get(e.getRegNumber()).getModelName())
                 .collect(Collectors.groupingBy(t -> t, Collectors.counting()));
 
-        Long max = mostPopularModel.entrySet().stream()
-                .map(e -> e.getValue())
-                .max((n1, n2) -> Long.compare(n1, n2)).orElse(null);
+        Long max = mostPopularModel.values().stream()
+                .max(Long::compare).orElse(null);
 
         return mostPopularModel.entrySet().stream()
                 .filter(e -> e.getValue().equals(max))
-                .map(e -> e.getKey())
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
 
     @Override
     public double getModelProfit(String modelName) {
         return returnedRecords.entrySet().stream()
-                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
+                .flatMap(e -> e.getValue().stream())
                 .filter(e -> cars.get(e.getRegNumber()).getModelName().equals(modelName))
-                .mapToDouble(e -> e.getCoast()).sum();
+                .mapToDouble(RentRecord::getCoast).sum();
     }
 
     @Override
     public List<String> getMostProfitModelNames() {
         Map<String, Double> a = returnedRecords.entrySet().stream()
-                .flatMap(e -> StreamSupport.stream(e.getValue().spliterator(), false))
+                .flatMap(e -> e.getValue().stream())
                 .collect(Collectors.groupingBy(t -> cars.get(t.getRegNumber()).getModelName(), Collectors.summingDouble(RentRecord::getCoast)));
 
 
-        Double max = a.entrySet().stream()
-                .map(e -> e.getValue())
-                .max((n1, n2) -> Double.compare(n1, n2)).orElse(null);
+        Double max = a.values().stream()
+                .max(Double::compare).orElse(null);
 
         return a.entrySet().stream()
                 .filter(e -> e.getValue().equals(max))
-                .map(e -> e.getKey())
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
-
 }
