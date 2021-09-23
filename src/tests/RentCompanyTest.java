@@ -187,6 +187,8 @@ class RentCompanyTest {
         assertEquals(new Car("1000", "red", "z4"), myCompany.getCar("1000"));
         assertNull(myCompany.getCar("2000"));
         assertNull(myCompany.getCar("4000"));
+
+
     }
 
     @Test
@@ -212,7 +214,6 @@ class RentCompanyTest {
         assertNull(drv.stream().filter(e -> e.getLicenceId() == 4000).findAny().orElse(null));
     }
 
-    // ПЕРЕДЕЛАТЬ
     @Test
     void testGetDriverCars() {
         myCompany.addCar(new Car("3000", "red", "polo"));
@@ -341,6 +342,5 @@ class RentCompanyTest {
         myCompany.rentCar("3000", 1000, LocalDate.of(2021, 3, 1), 5);
         myCompany.returnCar("3000", 1000, LocalDate.of(2021, 3, 30), 32, 10);
         assertEquals(List.of("polo", "z4"), myCompany.getMostProfitModelNames());
-
     }
 }
