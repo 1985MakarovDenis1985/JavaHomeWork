@@ -41,8 +41,7 @@ public class Driver {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Driver)) return false;
-        Driver driver = (Driver) o;
+        if (!(o instanceof Driver driver)) return false;
         return licenceId == driver.licenceId;
     }
 

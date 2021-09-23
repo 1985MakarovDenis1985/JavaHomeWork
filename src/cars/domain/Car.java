@@ -62,8 +62,7 @@ public class Car {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Car)) return false;
-        Car car = (Car) o;
+        if (!(o instanceof Car car)) return false;
         return Objects.equals(regNumber, car.regNumber);
     }
 

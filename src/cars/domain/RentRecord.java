@@ -74,8 +74,7 @@ public class RentRecord {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RentRecord)) return false;
-        RentRecord that = (RentRecord) o;
+        if (!(o instanceof RentRecord that)) return false;
         return licenceId == that.licenceId && Objects.equals(regNumber, that.regNumber) && Objects.equals(rentDate, that.rentDate);
     }
 

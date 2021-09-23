@@ -58,10 +58,10 @@ public class Model {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Model)) return false;
-        Model model = (Model) o;
+        if (!(o instanceof Model model)) return false;
         return Objects.equals(modelName, model.modelName);
     }
+
 
     @Override
     public int hashCode() {

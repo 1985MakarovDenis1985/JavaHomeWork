@@ -1,15 +1,5 @@
 package cars.dao;
 
-import cars.domain.Car;
-import cars.domain.Driver;
-import cars.domain.Model;
-import cars.domain.RentRecord;
-import enums.CarsReturnCode;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Stream;
-
 public abstract class AbstractRentCompany implements IRentCompany{
     protected int finePercent;
     protected int gasPrice;
