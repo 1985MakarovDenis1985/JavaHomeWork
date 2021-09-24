@@ -8,6 +8,7 @@ import enums.CarsReturnCode;
 import enums.State;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -113,8 +114,9 @@ public class RentCompany extends AbstractRentCompany {
         lastRecordOfThisCar.setReturnDate(returnDate);
         lastRecordOfThisCar.setGasTankPercent(gasTankPercent);
 
-        int factDaysRent = returnDate.getDayOfYear() - lastRecordOfThisCar.getRentDate().getDayOfYear();
-        int difOfDays = factDaysRent - lastRecordOfThisCar.getRentDays();
+//        int factDaysRent = returnDate.getDayOfYear() - lastRecordOfThisCar.getRentDate().getDayOfYear();
+        long factDaysRent = ChronoUnit.DAYS.between(lastRecordOfThisCar.getRentDate(), returnDate);
+        long difOfDays = factDaysRent - lastRecordOfThisCar.getRentDays();
 
         // sum coast over rent
         if (returnDate.isAfter(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays()))) {
@@ -223,7 +225,7 @@ public class RentCompany extends AbstractRentCompany {
     }
 
     @Override
-    public List<String> getMostPopularModeNames() {
+    public List<String> getMostPopularModelNames() {
         Map<String, Long> mostPopularModel = getAllRecords()
                 .map(e -> cars.get(e.getRegNumber()).getModelName())
                 .collect(Collectors.groupingBy(t -> t, Collectors.counting()));
@@ -231,6 +233,7 @@ public class RentCompany extends AbstractRentCompany {
         Long max = mostPopularModel.values().stream()
                 .max(Long::compare).orElse(null);
 
+//        if (max == 0) return null;
         return mostPopularModel.entrySet().stream()
                 .filter(e -> e.getValue().equals(max))
                 .map(Map.Entry::getKey)

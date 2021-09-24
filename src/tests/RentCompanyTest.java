@@ -275,21 +275,21 @@ class RentCompanyTest {
         myCompany.returnCar("1000", 1000, LocalDate.of(2021, 2, 23), 10, 10);
         myCompany.rentCar("1000", 2000, LocalDate.of(2021, 3, 15), 5);
         myCompany.returnCar("1000", 2000, LocalDate.of(2021, 3, 23), 10, 10);
-        assertEquals(List.of("z4"), myCompany.getMostPopularModeNames());
+        assertEquals(List.of("z4"), myCompany.getMostPopularModelNames());
 
         myCompany.addCar(new Car("3000", "red", "polo"));
         myCompany.rentCar("3000", 1000, LocalDate.of(2021, 3, 15), 5);
         myCompany.returnCar("3000", 1000, LocalDate.of(2021, 3, 23), 10, 10);
         myCompany.rentCar("2000", 2000, LocalDate.of(2021, 4, 15), 5);
         myCompany.returnCar("2000", 2000, LocalDate.of(2021, 4, 23), 10, 10);
-        assertEquals(List.of("z3", "z4"), myCompany.getMostPopularModeNames());
+        assertEquals(List.of("z3", "z4"), myCompany.getMostPopularModelNames());
 
         myCompany.rentCar("3000", 4000, LocalDate.of(2021, 5, 15), 5);
         myCompany.returnCar("3000", 4000, LocalDate.of(2021, 5, 23), 10, 10);
         myCompany.rentCar("3000", 1000, LocalDate.of(2021, 6, 15), 5);
         myCompany.returnCar("3000", 1000, LocalDate.of(2021, 6, 23), 10, 10);
         myCompany.rentCar("3000", 1000, LocalDate.of(2021, 6, 15), 5);
-        assertEquals(List.of("polo"), myCompany.getMostPopularModeNames());
+        assertEquals(List.of("polo"), myCompany.getMostPopularModelNames());
 
     }
 

@@ -26,7 +26,7 @@ public interface IRentCompany {
     Stream<Car> getAllCars();
     Stream<Driver> getAllDrivers();
     Stream<RentRecord> getAllRecords();
-    List<String> getMostPopularModeNames(); // list of model have been rented most time
+    List<String> getMostPopularModelNames(); // list of model have been rented most time
     double getModelProfit(String modelName); // returns value of money
     List<String> getMostProfitModelNames(); // returns list of most profitable model names
 }
