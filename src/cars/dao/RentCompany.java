@@ -114,13 +114,11 @@ public class RentCompany extends AbstractRentCompany {
         lastRecordOfThisCar.setReturnDate(returnDate);
         lastRecordOfThisCar.setGasTankPercent(gasTankPercent);
 
-//        int factDaysRent = returnDate.getDayOfYear() - lastRecordOfThisCar.getRentDate().getDayOfYear();
         long factDaysRent = ChronoUnit.DAYS.between(lastRecordOfThisCar.getRentDate(), returnDate);
-        long difOfDays = factDaysRent - lastRecordOfThisCar.getRentDays();
 
         // sum coast over rent
         if (returnDate.isAfter(lastRecordOfThisCar.getRentDate().plusDays(lastRecordOfThisCar.getRentDays()))) {
-            float sumOverRent = difOfDays * (thisModelPrice + (thisModelPrice / 100 * finePercent));
+            float sumOverRent = (factDaysRent - lastRecordOfThisCar.getRentDays()) * (thisModelPrice + (thisModelPrice / 100 * finePercent));
             lastRecordOfThisCar.setCoast(lastRecordOfThisCar.getCoast() + sumOverRent);
         }
 
