@@ -117,29 +117,36 @@ class RentCompanyTest {
     void testReturnCar() {
         myCompany.rentCar("1000", 1000, LocalDate.of(2021, 9, 15), 5);
         assertTrue(myCompany.getCar("1000").isInUse());
+        assertEquals(1, myCompany.getAllRecords().count());
         assertEquals(CarsReturnCode.OK, myCompany.returnCar("1000", 1000, LocalDate.of(2021, 9, 17), 100, 10));
         assertEquals(CarsReturnCode.CAR_NOT_RENTED, myCompany.returnCar("1000", 1000, LocalDate.of(2021, 9, 17), 100, 10));
         assertEquals(CarsReturnCode.CAR_NOT_RENTED, myCompany.returnCar("2000", 1000, LocalDate.of(2021, 9, 17), 100, 10));
         assertEquals(CarsReturnCode.CAR_NOT_RENTED, myCompany.returnCar("3000", 1000, LocalDate.of(2021, 9, 17), 100, 10));
+        assertEquals(1, myCompany.getAllRecords().count());
 
         myCompany.rentCar("1000", 1000, LocalDate.of(2021, 9, 15), 5);
         assertEquals(CarsReturnCode.NO_DRIVER, myCompany.returnCar("1000", 2000, LocalDate.of(2021, 9, 17), 100, 10));
         assertEquals(CarsReturnCode.NO_DRIVER, myCompany.returnCar("1000", 3000, LocalDate.of(2021, 9, 17), 100, 10));
+        assertEquals(2, myCompany.getAllRecords().count());
 
         myCompany.rentCar("1000", 1000, LocalDate.of(2021, 9, 15), 5);
         assertEquals(CarsReturnCode.RETURN_DATE_WRONG, myCompany.returnCar("1000", 1000, LocalDate.of(2021, 9, 11), 100, 10));
+        assertEquals(2, myCompany.getAllRecords().count());
 
         myCompany.returnCar("1000", 1000, LocalDate.of(2021, 9, 21), 50, 10);
         assertFalse(myCompany.getCar("1000").isInUse());
         assertEquals(State.GOOD, myCompany.getCar("1000").getState());
+        assertEquals(2, myCompany.getAllRecords().count());
 
         myCompany.rentCar("1000", 1000, LocalDate.of(2021, 9, 15), 5);
         myCompany.returnCar("1000", 1000, LocalDate.of(2021, 9, 21), 50, 25);
         assertEquals(State.BAD, myCompany.getCar("1000").getState());
+        assertEquals(3, myCompany.getAllRecords().count());
 
         myCompany.rentCar("1000", 1000, LocalDate.of(2021, 9, 15), 5);
         myCompany.returnCar("1000", 1000, LocalDate.of(2021, 9, 21), 50, 35);
         assertTrue(myCompany.getCar("1000").isIfRemoved());
+        assertEquals(4, myCompany.getAllRecords().count());
     }
 
     @Test
