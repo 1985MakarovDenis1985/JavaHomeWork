@@ -159,13 +159,23 @@ public class RentCompany extends AbstractRentCompany {
 
     @Override
     public List<Car> clear(LocalDate currentDate, int days) {
-        List<Car> removedCarList =
-                returnedRecords.entrySet().stream()
-                        .flatMap(e -> e.getValue().stream())
-                        .filter(e -> e.getReturnDate().isBefore(currentDate.minusDays(days)) && e.getDamages() >= DAMAGE_FOR_REMOVE)
-                        .map(e -> cars.get(e.getRegNumber()))
-                        .distinct()
-                        .collect(Collectors.toList());
+        //  --- first solution ---
+//        List<Car> removedCarList =
+//                returnedRecords.entrySet().stream()
+//                        .flatMap(e -> e.getValue().stream())
+//                        .filter(e -> e.getReturnDate().isBefore(currentDate.minusDays(days)) && e.getDamages() >= DAMAGE_FOR_REMOVE)
+//                        .map(e -> cars.get(e.getRegNumber()))
+//                        .distinct()
+//                        .collect(Collectors.toList());
+
+        // --- second solution ---
+        List<Car> removedCarList = returnedRecords.headMap(currentDate.minusDays(days)).entrySet().stream()
+                .flatMap(e -> e.getValue().stream())
+                .filter(e -> e.getDamages() >= DAMAGE_FOR_REMOVE)
+                .map(e -> cars.get(e.getRegNumber()))
+                .distinct()
+                .collect(Collectors.toList());
+
 
         List<String> regNumOfRemovedCar = removedCarList.stream()
                 .map(Car::getRegNumber)
