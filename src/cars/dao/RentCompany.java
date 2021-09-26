@@ -162,8 +162,8 @@ public class RentCompany extends AbstractRentCompany {
         List<Car> removedCarList = returnedRecords.headMap(currentDate.minusDays(days)).entrySet().stream()
                 .flatMap(e -> e.getValue().stream())
                 .filter(e -> e.getDamages() >= DAMAGE_FOR_REMOVE)
-                .map(e -> cars.get(e.getRegNumber()))
                 .distinct()
+                .map(e -> cars.get(e.getRegNumber()))
                 .collect(Collectors.toList());
 
 
