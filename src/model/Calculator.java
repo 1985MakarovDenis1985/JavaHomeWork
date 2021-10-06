@@ -26,7 +26,7 @@ public class Calculator {
 
     public void calc(String funName, String firstArg, String secondArg) throws NoSuchMethodException {
 
-        Class<?> clazz = Calculator.class;
+        Class<Calculator> clazz = Calculator.class;
         try {
             Method method = clazz.getDeclaredMethod(funName, int.class, int.class);
             method.invoke(this, Integer.parseInt(firstArg), Integer.parseInt(secondArg));

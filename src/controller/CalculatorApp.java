@@ -2,8 +2,6 @@ package controller;
 
 import model.Calculator;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class CalculatorApp {
     public static void main(String[] args) throws NoSuchMethodException {
         if (args.length != 3){
