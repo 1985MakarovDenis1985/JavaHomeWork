@@ -24,7 +24,7 @@ public class Calculator {
         System.out.println("Div : " + a + " / " + b + " = " + res);
     }
 
-    public void calc(String funName, String firstArg, String secondArg) throws NoSuchMethodException {
+    public void calc(String firstArg, String secondArg, String funName) throws NoSuchMethodException {
 
         Class<Calculator> clazz = Calculator.class;
         try {
