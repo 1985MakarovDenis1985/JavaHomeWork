@@ -2,12 +2,9 @@ package telran.calculator.model;
 
 import telran.calculator.controller.IOperation;
 
-import java.util.Arrays;
-
-public class Sub implements IOperation {
-
+public class Sin implements IOperation {
     @Override
     public double action(double... args) {
-        return Arrays.stream(args).reduce((a, b) -> a - b).orElse(0);
+        return Math.sin(args[0]);
     }
 }

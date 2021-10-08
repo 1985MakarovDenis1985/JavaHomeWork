@@ -9,14 +9,8 @@ public class CalculatorApp {
 //            return;
 //        }
 
-        double a = Calculator.calc(args[0], args[1], args[args.length-1]);
+        double a = Calculator.calc(args[0], args[1], args[2], args[args.length - 1]);
+        System.out.println(a);
 
-//        double a = Calculator.calculate(args[0], args[1], args[2]);
-//        System.out.println(a);
-//        double b = Calculator.calculate(args[0], args[1]);
-//        System.out.println(b);
-//
-//        Calculator calculator = new Calculator();
-//        calculator.calc(args[0], args[1], args[2]);
     }
 }
