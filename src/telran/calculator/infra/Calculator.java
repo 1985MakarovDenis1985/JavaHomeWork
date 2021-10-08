@@ -1,5 +1,8 @@
 package telran.calculator.infra;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class Calculator {
 
     private static final String PACKAGE = "telran.calculator.model.";
