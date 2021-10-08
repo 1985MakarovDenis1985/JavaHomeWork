@@ -1,6 +1,6 @@
 package telran.calculator.model;
 
-import telran.calculator.controller.IOperation;
+import telran.calculator.infra.IOperation;
 
 import java.util.Arrays;
 

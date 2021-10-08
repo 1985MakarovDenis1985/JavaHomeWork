@@ -1,16 +1,23 @@
 package telran.calculator.controller;
 
-import telran.calculator.model.Calculator;
+import telran.calculator.infra.Calculator;
 
 public class CalculatorApp {
-    public static void main(String[] args) throws NoSuchMethodException {
-//        if (args.length > 3 || args.length < 2) {
-//            System.out.println("Wrong numbers of argument");
-//            return;
-//        }
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            System.out.println("Wrong numbers of argument");
+            return;
+        }
+        try {
+            double res = Calculator.calc(args[0], args[1], args[2], args[3], args[args.length - 1]);
+            System.out.println("res : " + res);
+        } catch (NumberFormatException e) {
+            System.out.println("Wrong number format");
+        } catch (Exception e) {
+            System.out.println("Wrong operation");
+        }
 
-        double a = Calculator.calc(args[0], args[1], args[2], args[args.length - 1]);
-        System.out.println(a);
+
 
     }
 }

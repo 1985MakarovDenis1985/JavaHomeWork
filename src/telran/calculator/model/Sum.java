@@ -1,6 +1,6 @@
 package telran.calculator.model;
 
-import telran.calculator.controller.IOperation;
+import telran.calculator.infra.IOperation;
 
 import java.util.Arrays;
 
@@ -9,5 +9,4 @@ public class Sum implements IOperation {
     public double action(double ...args) {
         return Arrays.stream(args).sum();
     }
-
 }

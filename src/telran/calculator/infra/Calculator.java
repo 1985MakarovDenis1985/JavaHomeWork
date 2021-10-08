@@ -1,22 +1,19 @@
-package telran.calculator.model;
-
-import telran.calculator.controller.IOperation;
+package telran.calculator.infra;
 
 public class Calculator {
 
     private static final String PACKAGE = "telran.calculator.model.";
-
     public static double calc(String ...args) {
 
-        double[] d = new double [args.length-1];
+        double[] arrOfArgs = new double [args.length-1];
         for (int i = 0; i < args.length-1; i++){
-            d[i] = Double.parseDouble(args[i]);
+            arrOfArgs[i] = Double.parseDouble(args[i]);
         }
+
         try {
             Class<?> clazz = Class.forName(PACKAGE + args[args.length-1]);
             IOperation calc = (IOperation) clazz.getDeclaredConstructor().newInstance();
-            double res = calc.action(d);
-            return res;
+            return calc.action(arrOfArgs);
         } catch (Exception e) {
             throw new RuntimeException("SomeThing Wrong...");
         }
