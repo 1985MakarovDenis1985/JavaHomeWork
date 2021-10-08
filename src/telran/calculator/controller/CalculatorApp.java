@@ -8,16 +8,16 @@ public class CalculatorApp {
             System.out.println("Wrong numbers of argument");
             return;
         }
+
         try {
-            double res = Calculator.calc(args[0], args[1], args[2], args[3], args[args.length - 1]);
+            String operation = args[args.length - 1];
+            double res = Calculator.calc(args[0], args[1], args[2], args[3], operation);
             System.out.println("res : " + res);
         } catch (NumberFormatException e) {
             System.out.println("Wrong number format");
         } catch (Exception e) {
             System.out.println("Wrong operation");
         }
-
-
 
     }
 }
