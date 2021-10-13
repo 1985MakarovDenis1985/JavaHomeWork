@@ -1,4 +1,4 @@
-package telran;
+package telran.application;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
