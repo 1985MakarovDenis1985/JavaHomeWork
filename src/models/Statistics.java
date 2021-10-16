@@ -36,47 +36,48 @@ public class Statistics implements IStatistic {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String str = br.readLine();
             String[] cells = str.split(",");
+
             str = br.readLine();
             while (str != null) {
-                countOfPas += 1;
+                this.countOfPas += 1;
                 cells = str.split(",");
 
-                double age = (!cells[6].isEmpty()) ? Double.parseDouble(cells[6]) : 18;
+                double age = (!cells[6].isEmpty()) ? Double.parseDouble(cells[6]) : 18.;
 
                 if (cells[1].equals("1")) {
-                    countOfSurvivedPass += 1;
-                    if (cells[1].equals("1") && cells[5].equals("male") && age >= 18) {
-                        survivedMen += 1;
+                    this.countOfSurvivedPass += 1;
+                    if (cells[1].equals("1") && cells[5].equals("male") && age >= 18.) {
+                        this.survivedMen += 1;
                     }
-                    if (cells[1].equals("1") && cells[5].equals("female") && age >= 18) {
-                        survivedWomen += 1;
+                    if (cells[1].equals("1") && cells[5].equals("female") && age >= 18.) {
+                        this.survivedWomen += 1;
                     }
                     if (cells[1].equals("1") && age < 18) {
-                        survivedChildren += 1;
+                        this.survivedChildren += 1;
                     }
                 }
                 if (cells[1].equals("0")) {
-                    countOfNonSurvivedPass += 1;
+                    this.countOfNonSurvivedPass += 1;
                     if (cells[1].equals("0") && cells[5].equals("male") && age >= 18) {
-                        nonSurvivedMen += 1;
+                        this.nonSurvivedMen += 1;
                     }
                     if (cells[1].equals("0") && cells[5].equals("female") && age >= 18) {
-                        nonSurvivedWomen += 1;
+                        this.nonSurvivedWomen += 1;
                     }
                     if (cells[1].equals("0") && age < 18) {
-                        nonSurvivedChildren += 1;
+                        this.nonSurvivedChildren += 1;
                     }
                 }
                 if (cells[2].equals("1")) {
-                    countPassengersOfFirstClass += 1;
+                    this.countPassengersOfFirstClass += 1;
                     this.averageFaresFirstClass += Double.parseDouble(cells[10]);
                 }
                 if (cells[2].equals("2")) {
-                    countPassengersOfSecondClass += 1;
+                    this.countPassengersOfSecondClass += 1;
                     this.averageFaresSecondClass += Double.parseDouble(cells[10]);
                 }
                 if (cells[2].equals("3")) {
-                    countPassengersOfThirdClass += 1;
+                    this.countPassengersOfThirdClass += 1;
                     this.averageFaresThirdClass += Double.parseDouble(cells[10]);
                 }
                 this.totalFares += Double.parseDouble(cells[10]);
@@ -91,11 +92,7 @@ public class Statistics implements IStatistic {
 
     @Override
     public double getTotalFares() {
-        return totalFares;
-    }
-
-    public int countAllPass() {
-        return countOfPas;
+        return this.totalFares;
     }
 
     @Override
@@ -121,11 +118,15 @@ public class Statistics implements IStatistic {
     @Override
     public int getCountOfSurvives(boolean survived, String sex) {
 
-        return (survived && sex.equals("male")) ? survivedMen
-                : (survived && sex.equals("female")) ? survivedWomen
-                : (survived && sex.equals("children") ? survivedChildren
-                : (!survived && sex.equals("male")) ? nonSurvivedMen
-                : (!survived && sex.equals("female")) ? nonSurvivedWomen
-                : (!survived && sex.equals("children")) ? nonSurvivedChildren : 0);
+        return (survived && sex.equals("male")) ? this.survivedMen
+                : (survived && sex.equals("female")) ? this.survivedWomen
+                : (survived && sex.equals("children") ? this.survivedChildren
+                : (!survived && sex.equals("male")) ? this.nonSurvivedMen
+                : (!survived && sex.equals("female")) ? this.nonSurvivedWomen
+                : (!survived && sex.equals("children")) ? this.nonSurvivedChildren : 0);
+    }
+
+    public int countAllPass() {
+        return this.countOfPas;
     }
 }

@@ -5,11 +5,13 @@ import models.Statistics;
 public class StatisticApp {
     public static void main(String[] args) {
         Statistics titanicStatistic = new Statistics("train.csv");
+
         double fare = titanicStatistic.getTotalFares();
         int count = titanicStatistic.countAllPass();
         double averPriceFirstClass = titanicStatistic.getAverageFaresForClasses(1);
         double averPriceSecondClass = titanicStatistic.getAverageFaresForClasses(2);
         double averPriceThirdClass = titanicStatistic.getAverageFaresForClasses(3);
+
         int countOfSurvive = titanicStatistic.getCountOfSurvives(true);
         int countOfNonSurvive = titanicStatistic.getCountOfSurvives(false);
 
@@ -22,7 +24,7 @@ public class StatisticApp {
 
 
         System.out.println("Sum of Price : " + fare);
-        System.out.println("Count passengers : " + count);
+        System.out.println("Count of passengers : " + count);
         System.out.println("Average price of 1 class : " + averPriceFirstClass);
         System.out.println("Average price of 2 class : " + averPriceSecondClass);
         System.out.println("Average price of 3 class : " + averPriceThirdClass);
