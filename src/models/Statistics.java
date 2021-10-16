@@ -14,27 +14,21 @@ public class Statistics implements IStatistic {
     int countPassengersOfFirstClass = 0;
     int countPassengersOfSecondClass = 0;
     int countPassengersOfThirdClass = 0;
+    int countOfSurvivedPass = 0;
+    int countOfNonSurvivedPass = 0;
 
-    double totalFares = 0;
-    double averageFaresFirstClass = 0;
-    double averageFaresSecondClass = 0;
-    double averageFaresThirdClass = 0;
+    int survivedMen = 0;
+    int survivedWomen = 0;
+    int survivedChildren = 0;
+    int nonSurvivedMen = 0;
+    int nonSurvivedWomen = 0;
+    int nonSurvivedChildren = 0;
 
-    public double getTotalFares() {
-        return totalFares;
-    }
+    double totalFares = 0.0;
+    double averageFaresFirstClass = 0.0;
+    double averageFaresSecondClass = 0.0;
+    double averageFaresThirdClass = 0.0;
 
-    public double getAverageFaresFirstClass() {
-        return averageFaresFirstClass;
-    }
-
-    public double getAverageFaresSecondClass() {
-        return averageFaresSecondClass;
-    }
-
-    public double getAverageFaresThirdClass() {
-        return averageFaresThirdClass;
-    }
 
     public Statistics(String path) {
         this.path = path;
@@ -42,41 +36,61 @@ public class Statistics implements IStatistic {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String str = br.readLine();
             String[] cells = str.split(",");
-            System.out.println(cells[9]);
-            System.out.println("PassengerId 0 | Survived 1 | Pclass 2 | Name 3 | Sex 4 | Age 5 | SibSp 6 | Parch 7 | Ticket 8 | Fare 9 | Cabin 10 | Embarked 11 |");
-
             str = br.readLine();
-
             while (str != null) {
                 countOfPas += 1;
                 cells = str.split(",");
+
+                double age = (!cells[6].isEmpty()) ? Double.parseDouble(cells[6]) : 18;
+
+                if (cells[1].equals("1")) {
+                    countOfSurvivedPass += 1;
+                    if (cells[1].equals("1") && cells[5].equals("male") && age >= 18) {
+                        survivedMen += 1;
+                    }
+                    if (cells[1].equals("1") && cells[5].equals("female") && age >= 18) {
+                        survivedWomen += 1;
+                    }
+                    if (cells[1].equals("1") && age < 18) {
+                        survivedChildren += 1;
+                    }
+                }
+                if (cells[1].equals("0")) {
+                    countOfNonSurvivedPass += 1;
+                    if (cells[1].equals("0") && cells[5].equals("male") && age >= 18) {
+                        nonSurvivedMen += 1;
+                    }
+                    if (cells[1].equals("0") && cells[5].equals("female") && age >= 18) {
+                        nonSurvivedWomen += 1;
+                    }
+                    if (cells[1].equals("0") && age < 18) {
+                        nonSurvivedChildren += 1;
+                    }
+                }
                 if (cells[2].equals("1")) {
-                    countPassengersOfFirstClass +=1;
+                    countPassengersOfFirstClass += 1;
                     this.averageFaresFirstClass += Double.parseDouble(cells[10]);
                 }
                 if (cells[2].equals("2")) {
-                    countPassengersOfSecondClass+=1;
+                    countPassengersOfSecondClass += 1;
                     this.averageFaresSecondClass += Double.parseDouble(cells[10]);
                 }
                 if (cells[2].equals("3")) {
-                    countPassengersOfThirdClass+=1;
+                    countPassengersOfThirdClass += 1;
                     this.averageFaresThirdClass += Double.parseDouble(cells[10]);
                 }
                 this.totalFares += Double.parseDouble(cells[10]);
                 str = br.readLine();
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println(averageFaresFirstClass);
     }
 
     @Override
-    public double totalFares() {
+    public double getTotalFares() {
         return totalFares;
     }
 
@@ -85,7 +99,7 @@ public class Statistics implements IStatistic {
     }
 
     @Override
-    public double averageFaresForClasses(int classOfTravel) {
+    public double getAverageFaresForClasses(int classOfTravel) {
         if (classOfTravel == 1) {
             return this.averageFaresFirstClass / countPassengersOfFirstClass;
         }
@@ -94,19 +108,24 @@ public class Statistics implements IStatistic {
         }
         if (classOfTravel == 3) {
             return this.averageFaresThirdClass / countPassengersOfThirdClass;
-        }
-        else {
+        } else {
             return 0;
         }
     }
 
     @Override
-    public int countOfSurvives(boolean survived) {
-        return 0;
+    public int getCountOfSurvives(boolean survived) {
+        return (survived) ? countOfSurvivedPass : countOfNonSurvivedPass;
     }
 
     @Override
-    public int countOfSurvives(boolean survived, String sex) {
-        return 0;
+    public int getCountOfSurvives(boolean survived, String sex) {
+
+        return (survived && sex.equals("male")) ? survivedMen
+                : (survived && sex.equals("female")) ? survivedWomen
+                : (survived && sex.equals("children") ? survivedChildren
+                : (!survived && sex.equals("male")) ? nonSurvivedMen
+                : (!survived && sex.equals("female")) ? nonSurvivedWomen
+                : (!survived && sex.equals("children")) ? nonSurvivedChildren : 0);
     }
 }
