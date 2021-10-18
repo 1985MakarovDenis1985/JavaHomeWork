@@ -29,6 +29,7 @@ public class RentCompany extends AbstractRentCompany implements Serializable {
 
     private final int DAMAGE_BAD_STATE = 10;
     private final int DAMAGE_FOR_REMOVE = 30;
+    private static String DEFAULT_FILE_NAME = "data";
 
 
     /*
@@ -48,6 +49,10 @@ public class RentCompany extends AbstractRentCompany implements Serializable {
         return rentCompany;
     }
 
+    public static RentCompany restoreFromFile() {
+        return restoreFromFile(DEFAULT_FILE_NAME);
+    }
+
     @Override
     public void save(String fileName) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
@@ -58,7 +63,6 @@ public class RentCompany extends AbstractRentCompany implements Serializable {
             e.printStackTrace();
         }
     }
-
     /*
      * --------------------------------- HOMEWORK ---------------------------------
      * */

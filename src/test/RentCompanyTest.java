@@ -47,7 +47,7 @@ class RentCompanyTest {
 
     @BeforeEach
     void setUp() throws Exception {
-//        rentCompany = (IRentCompany) new RentCompany();
+        rentCompany = RentCompany.restoreFromFile();
         rentCompany.addModel(model1);
         rentCompany.addDriver(driver1);
         rentCompany.addCar(car1);
