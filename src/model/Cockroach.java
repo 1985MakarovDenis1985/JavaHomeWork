@@ -1,4 +1,4 @@
-package Race;
+package model;
 
 public class Cockroach implements Runnable {
     private String name;
@@ -14,14 +14,6 @@ public class Cockroach implements Runnable {
         this.dist = dist;
     }
 
-//    public int getChunks() {
-//        return chunks;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-
     public String getWinner() {
         return winner;
     }
@@ -36,14 +28,9 @@ public class Cockroach implements Runnable {
 
     @Override
     public void run() {
-        int a = 2;
-        int b = 4;
-        int time = 0;
-
-//        System.out.println(name + " starting...");
+        int time;
         for (int i = 0; i < dist; i++) {
-            time = a + (int) (Math.random() * b);
-
+            time = 2 + (int) (Math.random() * 4);
             try {
                 Thread.sleep(time);
             } catch (InterruptedException e) {
@@ -52,10 +39,10 @@ public class Cockroach implements Runnable {
 
             this.chunks++;
             if (chunks == dist) {
-                if (winner == null && silver == null && bronze == null) {
+                if (winner == null ) {
                     winner = name;
-                } else if (winner != null && silver == null && bronze == null) {
-                    silver = this.name;
+                } else if (winner != null && silver == null) {
+                    silver = name;
                 } else if (winner != null && silver != null && bronze == null) {
                     bronze = name;
                 }
