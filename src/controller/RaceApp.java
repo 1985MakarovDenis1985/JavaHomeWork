@@ -1,4 +1,4 @@
-package Race;
+package controller;
 
 import model.Race;
 
