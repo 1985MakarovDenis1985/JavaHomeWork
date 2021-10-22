@@ -1,5 +1,10 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Cockroach implements Runnable {
     private String name;
     private int dist;
@@ -32,6 +37,15 @@ public class Cockroach implements Runnable {
 
             this.chunks++;
             if (chunks == dist) {
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter("src/races.txt", true))) {
+                    writer.write(name + ",");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                //---------------
                 if (winner == null ) {
                     winner = name;
                 }

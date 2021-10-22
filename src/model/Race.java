@@ -2,6 +2,9 @@ package model;
 
 import interfaces.IRace;
 
+import java.io.*;
+import java.util.Arrays;
+
 public class Race implements IRace {
 
     public void startRace(String ... args) {
@@ -9,6 +12,11 @@ public class Race implements IRace {
             System.out.println("Wrong args");
             return;
         }
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("src/races.txt"))) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         int count = Integer.parseInt(args[0]);
         int dist = Integer.parseInt(args[1]);
         System.out.println("In competition " + count + " cockroaches and the distance: " + dist + " meters");
@@ -36,7 +44,13 @@ public class Race implements IRace {
             }
         }
 
-        System.out.println("---- Winner : " + cockroaches[0].getWinner());
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/races.txt"))){
+            String[] arr = reader.readLine().split(",");
+            System.out.println("---- Winner ---- : " + arr[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 
