@@ -1,34 +1,26 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class Cockroach implements Runnable {
     private String name;
     private int dist;
     private int chunks = 0;
-    static String winner = null;
 
     public Cockroach(String name, int dist) {
         this.name = name;
         this.dist = dist;
     }
 
-    public String getWinner() {
-        return winner;
-    }
-
-    private int randomMs(int start, int end){
-        return start + (int) (Math.random() * end);
+    private int randomMs(int min, int max){
+        return (int) ((Math.random() * ( max - min )) + min);
     }
 
     @Override
     public void run() {
         int time;
         for (int i = 0; i < dist; i++) {
-            time = randomMs(2, 4);
+            time = randomMs(2, 6);
             try {
                 Thread.sleep(time);
             } catch (InterruptedException e) {
@@ -37,17 +29,10 @@ public class Cockroach implements Runnable {
 
             this.chunks++;
             if (chunks == dist) {
-                try(BufferedWriter writer = new BufferedWriter(new FileWriter("src/races.txt", true))) {
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter("src/results.txt", true))) {
                     writer.write(name + ",");
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
-
-
-
-                //---------------
-                if (winner == null ) {
-                    winner = name;
                 }
                 System.out.println("Finshed = " + name);
             }
