@@ -5,9 +5,6 @@ public class Cockroach implements Runnable {
     private int dist;
     private int chunks = 0;
     static String winner = null;
-    static String silver = null;
-    static String bronze = null;
-
 
     public Cockroach(String name, int dist) {
         this.name = name;
@@ -18,15 +15,7 @@ public class Cockroach implements Runnable {
         return winner;
     }
 
-    public String getSilver() {
-        return silver;
-    }
-
-    public String getBronze() {
-        return bronze;
-    }
-
-    private static int randomMs(int start, int end){
+    private int randomMs(int start, int end){
         return start + (int) (Math.random() * end);
     }
 
@@ -45,10 +34,6 @@ public class Cockroach implements Runnable {
             if (chunks == dist) {
                 if (winner == null ) {
                     winner = name;
-                } else if (winner != null && silver == null) {
-                    silver = name;
-                } else if (winner != null && silver != null && bronze == null) {
-                    bronze = name;
                 }
                 System.out.println("Finshed = " + name);
             }

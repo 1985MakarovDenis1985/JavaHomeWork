@@ -37,8 +37,6 @@ public class Race implements IRace {
         }
 
         System.out.println("---- Winner : " + cockroaches[0].getWinner());
-        System.out.println("---- Silver : " + cockroaches[0].getSilver());
-        System.out.println("---- Bronze : " + cockroaches[0].getBronze());
     }
 }
 
