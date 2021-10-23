@@ -9,10 +9,7 @@ import static java.lang.System.*;
 public class Race implements IRace {
 
     public void startRace(String ... args) {
-        if (args.length > 2 || args.length < 2){
-            out.println("Wrong args");
-            return;
-        }
+
         try(BufferedWriter writer = new BufferedWriter(new FileWriter("src/results.txt"))) {
         } catch (IOException e) {
             e.printStackTrace();
