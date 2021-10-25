@@ -2,9 +2,8 @@ package model;
 
 public class Printer implements Runnable {
     Thread threadLink;
-    final int TOTAL = 11;
-    final int CHUNKS = 5;
-    int x = 0;
+    final int TOTAL = 13;
+    final int CHUNKS = 7;
     int num = 0;
 
     public int getNum() {
@@ -23,42 +22,31 @@ public class Printer implements Runnable {
         this.threadLink = threadLink;
     }
 
-    void startPrint() {
-        for (int i = 1; i < TOTAL + 1; i++) {
-
-            x++;
-            int a = TOTAL%CHUNKS;
-            int b = TOTAL-a;
-            System.out.println(num);
-            if (i % CHUNKS == 0) {
-                threadLink.interrupt();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-
-                }
-
-            }
-            if (i>b && i % a == 0) {
-                threadLink.interrupt();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-
-                }
-
-            }
-
-        }
-
-    }
-
     @Override
     public void run() {
         try {
+
             Thread.sleep(10000);
         } catch (InterruptedException e) {
-                startPrint();
+            for (int i = 1; i < TOTAL + 1; i++) {
+                System.out.print(num + " ");
+                if (i % CHUNKS == 0) {
+                    System.out.println();
+                    threadLink.interrupt();
+                    try {
+                        if (i != TOTAL) {
+                            Thread.sleep(10000);
+                        }
+                    } catch (InterruptedException ex) {
+
+                    }
+                }
+
+                if (i > TOTAL - TOTAL % CHUNKS && i % TOTAL % CHUNKS == 0) {
+                    System.out.println();
+                    threadLink.interrupt();
+                }
+            }
         }
     }
 }

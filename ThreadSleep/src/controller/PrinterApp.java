@@ -10,6 +10,9 @@ public class PrinterApp {
         printer1.setThreadLink(thread2); printer2.setThreadLink(thread3); printer3.setThreadLink(thread1);
 
         Thread[] threads = {thread1, thread2, thread3};
+        for (int i=0; i<threads.length; i++){
+
+        }
 
         for (int i=0; i<threads.length; i++){
             threads[i].start();
