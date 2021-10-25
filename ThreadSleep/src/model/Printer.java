@@ -3,7 +3,7 @@ package model;
 public class Printer implements Runnable {
     Thread threadLink;
     final int count = 6;
-    int counter = 0;
+    int counter = 2;
     int num = 0;
 
     public int getNum() {
@@ -23,18 +23,19 @@ public class Printer implements Runnable {
     }
 
     void startPrint() {
-        for (int i = 0; i < count; i++) {
+        for (int i = 1; i < 7; i++) {
             System.out.println(num);
-            if (i == 1) {
+            if (i%2 == 0) {
                 threadLink.interrupt();
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
+
                 }
             }
+            counter++;
         }
         System.out.println(num + "finally");
-        counter++;
     }
 
     @Override
@@ -42,7 +43,7 @@ public class Printer implements Runnable {
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
-            startPrint();
+                startPrint();
 //            threadLink.interrupt();
         }
     }
